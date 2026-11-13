@@ -31,6 +31,7 @@ PWA-трекер подготовки к стажировке Java Backend. Эт
 ├── sw.js                 # service worker и офлайн-кэш
 ├── icon-192.png          # иконка PWA 192×192
 ├── icon-512.png          # иконка PWA 512×512
+├── fonts/                # Manrope и JetBrains Mono (локально, без CDN)
 ├── generate-icons.html   # генератор иконок в браузере
 └── README.md
 ```

@@ -1,12 +1,16 @@
 // Service worker: офлайн-кэш приложения
-const CACHE_NAME = "java-roadmap-v2";
+const CACHE_NAME = "java-roadmap-v3";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./roadmap.json",
   "./manifest.webmanifest",
   "./icon-192.png",
-  "./icon-512.png"
+  "./icon-512.png",
+  "./fonts/manrope-latin.woff2",
+  "./fonts/manrope-cyrillic.woff2",
+  "./fonts/jetbrains-mono-latin.woff2",
+  "./fonts/jetbrains-mono-cyrillic.woff2"
 ];
 
 // Установка: складываем основные файлы в кэш
