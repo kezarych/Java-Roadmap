@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ru" data-theme="light">
+<html lang="ru" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#171416">
+  <meta name="theme-color" content="#0d0b09">
   <meta name="description" content="Трекер роадмапа Java Backend: этапы, практика LeetCode, ачивки, заметки, чек-лист и синхронизация через GitHub Gist.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -15,16 +15,7 @@
   <link rel="icon" href="./icon-192.png" type="image/png">
   <link rel="apple-touch-icon" href="./icon-192.png">
   <script>
-    // Тема до первой отрисовки, чтобы не было вспышки
-    (function () {
-      var theme = '';
-      try {
-        var saved = JSON.parse(localStorage.getItem('go-roadmap-v1') || 'null');
-        if (saved && (saved.theme === 'light' || saved.theme === 'dark')) theme = saved.theme;
-      } catch (e) {}
-      if (!theme) theme = 'dark';
-      document.documentElement.dataset.theme = theme;
-    })();
+    document.documentElement.dataset.theme = 'dark';
   </script>
   <style>
     @font-face {
@@ -328,7 +319,7 @@
     :root[data-theme="dark"] .icon-moon { display: none; }
 
     /* ---------- Основной контент ---------- */
-    .app-main { padding-block: 22px 10px; }
+    .app-main { padding-block: 14px 10px; }
 
     .dashboard {
       display: grid;
@@ -342,7 +333,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 22px;
-      padding: 30px 30px 30px 32px;
+      padding: 24px 26px 24px 28px;
       border: 1px solid var(--line);
       border-left: 6px solid var(--red);
       border-radius: 26px;
@@ -393,7 +384,7 @@
     .welcome-title {
       margin-top: 7px;
       font-family: var(--font-display);
-      font-size: clamp(30px, 4.2vw, 44px);
+      font-size: clamp(28px, 3.8vw, 40px);
       font-weight: 600;
       letter-spacing: -.025em;
       line-height: 1.08;
@@ -408,7 +399,7 @@
       line-height: 1.55;
     }
 
-    .welcome-progress { margin-top: 20px; max-width: 420px; }
+    .welcome-progress { margin-top: 16px; max-width: 420px; }
 
     .progress-label {
       display: flex;
@@ -939,8 +930,8 @@
     }
     .task input:checked + .check-box,
     .problem-label input:checked + .check-box {
-      background: var(--red);
-      border-color: var(--red);
+      background: var(--green);
+      border-color: var(--green);
     }
     .task input:checked + .check-box::after,
     .problem-label input:checked + .check-box::after {
@@ -1170,8 +1161,8 @@
       line-height: 1.5;
       white-space: nowrap;
     }
-    .level-easy { background: rgba(78, 108, 88, .12); border-color: rgba(78, 108, 88, .22); color: var(--green); }
-    .level-medium { background: rgba(162, 118, 58, .13); border-color: rgba(162, 118, 58, .24); color: var(--amber); }
+    .level-easy { background: rgba(61, 220, 151, .12); border-color: rgba(61, 220, 151, .28); color: var(--green); }
+    .level-medium { background: rgba(91, 140, 255, .14); border-color: rgba(91, 140, 255, .3); color: var(--accent-2); }
     .level-hard { background: var(--red-soft); border-color: rgba(156, 61, 61, .25); color: var(--red); }
 
     .suggest-card {
@@ -1195,7 +1186,7 @@
       border-radius: 50%;
       pointer-events: none;
     }
-    .suggest-card .eyebrow { color: #d99a76; }
+    .suggest-card .eyebrow { color: var(--accent-2); }
     .suggest-card h2 { color: var(--on-ink); }
     .suggest-card .card-desc { color: rgba(247, 239, 232, .62); }
     .suggest-emoji {
@@ -1206,7 +1197,7 @@
       flex: none;
       border: 1px solid rgba(255, 255, 255, .18);
       border-radius: 10px;
-      color: #d99a76;
+      color: var(--accent-2);
       font-family: var(--font-mono);
       font-size: 14px;
     }
@@ -1221,7 +1212,7 @@
     }
     .suggest-empty { color: rgba(247, 239, 232, .62); font-size: 12px; line-height: 1.5; }
     .suggest-topic {
-      color: #d99a76;
+      color: var(--accent-2);
       font-family: var(--font-mono);
       font-size: 8.5px;
       letter-spacing: .1em;
@@ -1326,8 +1317,8 @@
     /* ---------- Ачивки ---------- */
     .panel-dark {
       padding: 26px;
-      border: 1px solid #2b2326;
-      border-top: 3px solid var(--red);
+      border: 1px solid #232a4a;
+      border-top: 3px solid var(--accent);
       border-radius: 26px;
       background: var(--ink);
       color: var(--on-ink);
@@ -1335,7 +1326,7 @@
     }
     .panel-dark .panel-head h2 { color: var(--on-ink); }
     .panel-dark .panel-head p { color: rgba(247, 239, 232, .64); }
-    .panel-dark .eyebrow { color: #d99a76; }
+    .panel-dark .eyebrow { color: var(--accent-2); }
     .panel-dark .card {
       background: rgba(255, 255, 255, .045);
       border-color: rgba(255, 255, 255, .12);
@@ -1345,7 +1336,7 @@
     .panel-dark .achievement-summary-top strong { color: var(--on-ink); }
     .panel-dark .achievement-summary-top span { color: rgba(247, 239, 232, .58); }
     .panel-dark .meter { background: rgba(255, 255, 255, .12); }
-    .panel-dark .meter > span { background: #d99a76; }
+    .panel-dark .meter > span { background: var(--green); }
 
     .achievement-summary { margin-bottom: 14px; }
     .achievement-summary-top {
@@ -1376,7 +1367,7 @@
       height: 36px;
       border: 1px solid rgba(255, 255, 255, .16);
       border-radius: 11px;
-      color: #d99a76;
+      color: var(--accent-2);
       font-family: var(--font-mono);
       font-size: 12px;
     }
@@ -1501,12 +1492,12 @@
     }
     .resource-card:hover {
       transform: translateY(-2px);
-      border-color: var(--red);
+      border-color: var(--accent);
       box-shadow: var(--shadow);
     }
     .resource-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
     .resource-host {
-      color: var(--red);
+      color: var(--accent-2);
       font-family: var(--font-mono);
       font-size: 8.5px;
       font-weight: 700;
@@ -1584,7 +1575,7 @@
       left: 50%;
       width: 64px;
       height: 2px;
-      background: var(--red);
+      background: var(--accent);
       transform: translateX(-50%);
     }
 
@@ -1710,6 +1701,735 @@
       }
     }
 
+  
+    /* ============================================================
+       Путь: карта, костёр, постройки, паспорт путника
+       ============================================================ */
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --paper: #070812;
+      --paper-2: #0a0c18;
+      --surface: #0d1020;
+      --surface-2: #14182c;
+      --surface-3: #1e2340;
+      --ink: #05060d;
+      --on-ink: #f5f6ff;
+      --text: #f0f2ff;
+      --text-soft: #c3c8e6;
+      --muted: #8b91b5;
+      --line: #242a4a;
+      --line-strong: #3b4270;
+      --red: #ff5f5f;
+      --red-deep: #7f2237;
+      --red-bright: #ff7d86;
+      --red-soft: #2a1220;
+      --sand: #5b8cff;
+      --green: #3ddc97;
+      --amber: #7c8cff;
+      --danger: #ff6b74;
+      --bone: #f0f2ff;
+      --dim: #8b91b5;
+      --map-bg: #06070f;
+      --map-road: #3a3f6b;
+      --ember: #8b5cf6;
+      --gold: #3ddc97;
+      --moss: #3ddc97;
+      --accent: #8b5cf6;
+      --accent-2: #5b8cff;
+      --accent-soft: #1b1440;
+      --fire: #ff5f5f;
+      --fire-2: #ff9a5c;
+      --mint: #3ddc97;
+      --shadow: 0 2px 0 rgba(0, 0, 0, .45), 0 20px 44px -28px rgba(0, 0, 0, .95);
+      --shadow-sm: 0 2px 0 rgba(0, 0, 0, .4), 0 10px 22px -16px rgba(0, 0, 0, .9);
+    }
+
+    :root[data-theme="dark"] body {
+      background-color: var(--paper);
+      background-image:
+        radial-gradient(rgba(139, 92, 246, .12) 1px, transparent 1px),
+        radial-gradient(rgba(91, 140, 255, .08) 1px, transparent 1px);
+      background-size: 24px 24px, 96px 96px;
+      background-position: 0 0, 12px 12px;
+    }
+
+    :root[data-theme="dark"] .topbar { background: var(--ink); }
+    :root[data-theme="dark"] .topbar::after { background: var(--accent); }
+    :root[data-theme="dark"] a { color: var(--accent-2); }
+    :root[data-theme="dark"] .brand-mark {
+      background: transparent;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 21px;
+      box-shadow: none;
+    }
+    :root[data-theme="dark"] .welcome-card { border-left-color: var(--accent); }
+    :root[data-theme="dark"] .progress-ring {
+      background: conic-gradient(var(--accent) calc(var(--pct) * 1%), var(--surface-3) 0);
+    }
+    :root[data-theme="dark"] .meter > span { background: var(--accent); }
+    :root[data-theme="dark"] .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    :root[data-theme="dark"] .btn-primary:hover { background: #6d46d9; border-color: #6d46d9; }
+    :root[data-theme="dark"] .eyebrow { color: var(--accent); }
+
+    /* Верхняя навигация */
+    .back-to-map {
+      position: fixed;
+      top: 78px;
+      left: 16px;
+      z-index: 45;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 36px;
+      padding: 7px 13px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: var(--shadow-sm);
+    }
+    .back-to-map:hover { border-color: var(--ember); color: var(--ember); }
+    body:not([data-tab="roadmap"]) .app-main { padding-top: 58px; }
+    @media (max-width: 720px) {
+      .back-to-map { top: 68px; left: 10px; }
+      body:not([data-tab="roadmap"]) .app-main { padding-top: 52px; }
+    }
+
+    /* Костёр */
+    .fire-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .fire-card::after {
+      content: "";
+      position: absolute;
+      right: -44px;
+      top: -56px;
+      width: 170px;
+      height: 170px;
+      border: 1px dashed var(--line);
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: .5;
+    }
+    .fire-top {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .fire-number {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-top: 3px;
+    }
+    .fire-number strong {
+      font-family: var(--font-display);
+      font-size: 44px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -.03em;
+      color: var(--text);
+    }
+    .fire-number span {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .fire-visual {
+      width: 104px;
+      height: 112px;
+      flex: none;
+      margin-top: -6px;
+    }
+    .fire-visual svg { display: block; width: 100%; height: 100%; overflow: visible; }
+    .fire-visual .fire-log { fill: none; stroke: var(--bone); stroke-width: 3; stroke-linecap: round; }
+    .fire-visual .fire-flame {
+      fill: var(--fire);
+      stroke: var(--bone);
+      stroke-width: 1.4;
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: fire-flicker 1.25s ease-in-out infinite alternate;
+    }
+    .fire-visual .fire-flame:nth-child(2) { animation-delay: .18s; }
+    .fire-visual .fire-flame:nth-child(3) { animation-delay: .34s; }
+    .fire-visual .fire-ember {
+      fill: var(--fire-2);
+      animation: ember-rise 2.4s ease-in-out infinite;
+    }
+    .fire-visual .fire-ember:nth-child(2) { animation-delay: .8s; }
+    .fire-visual .fire-ember:nth-child(3) { animation-delay: 1.5s; }
+    @keyframes fire-flicker {
+      from { transform: scaleY(.93) skewX(-2deg); opacity: .88; }
+      to { transform: scaleY(1.06) skewX(2deg); opacity: 1; }
+    }
+    @keyframes ember-rise {
+      0% { transform: translateY(0); opacity: 0; }
+      25% { opacity: .9; }
+      100% { transform: translateY(-26px); opacity: 0; }
+    }
+    .fire-actions { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 7px; }
+    .fire-actions .btn { min-height: 34px; padding: 7px 12px; font-size: 11.5px; }
+    .fire-hint {
+      position: relative;
+      z-index: 1;
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.45;
+    }
+    .fire-card .streak-days { position: relative; z-index: 1; }
+    .fire-card .streak-day { background: var(--surface-2); }
+    .fire-card .streak-day.is-active { background: var(--fire); }
+    .fire-card .streak-day.is-today { border-color: var(--fire); }
+    .fire-card .streak-days { margin-top: 0; }
+
+    /* Заголовок карты */
+    .map-view-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+    .map-view-head h2 {
+      margin-top: 4px;
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3.6vw, 34px);
+      line-height: 1.05;
+      letter-spacing: -.02em;
+    }
+    .map-view-head p {
+      max-width: 56ch;
+      margin-top: 6px;
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .map-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: .04em;
+    }
+    .map-stats b { color: var(--text); font-weight: 700; }
+    .map-frame {
+      position: relative;
+      width: min(620px, 100%);
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--map-bg);
+      box-shadow: var(--shadow);
+    }
+    #journeyMap { display: block; width: 100%; height: auto; }
+    .map-footnote {
+      max-width: 620px;
+      margin: 10px auto 0;
+      color: var(--muted);
+      font-size: 11.5px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* SVG карты */
+    .map-road { fill: none; stroke: var(--map-road); stroke-width: 36; stroke-linecap: round; stroke-linejoin: round; }
+    .map-road-dark { fill: none; stroke: var(--map-bg); stroke-width: 30; stroke-linecap: round; stroke-linejoin: round; }
+    .map-road-dash { fill: none; stroke: var(--bone); stroke-opacity: .38; stroke-width: 1.6; stroke-dasharray: 2 10; stroke-linecap: round; }
+    .map-progress { fill: none; stroke: var(--accent); stroke-width: 24; stroke-linecap: round; stroke-linejoin: round; }
+    .map-deco-line { fill: none; stroke: var(--line-strong); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+    .map-deco-dim { fill: none; stroke: var(--dim); stroke-width: 1; opacity: .5; }
+    .map-star { fill: var(--bone); opacity: .35; }
+    .map-java-mark { fill: none; stroke: var(--bone); stroke-width: 2; opacity: .055; }
+    .map-java-mark .steam { fill: none; stroke: var(--accent-2); stroke-width: 2; opacity: .5; }
+
+    .map-stage { cursor: pointer; outline: none; }
+    .map-current-ring {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 1.2;
+      stroke-dasharray: 3 4;
+      opacity: .85;
+    }
+    .map-campfire .camp-flame {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: fire-flicker 1.4s ease-in-out infinite alternate;
+    }
+    @media (max-width: 720px) {
+      body { padding-bottom: 24px; }
+    }
+    .map-stage .map-node {
+      fill: var(--map-bg);
+      stroke: var(--bone);
+      stroke-width: 2.2;
+      transition: stroke .18s ease, fill .18s ease;
+    }
+    .map-stage.is-done .map-node { fill: var(--green); stroke: var(--green); }
+    .map-stage.is-current .map-node { stroke: var(--accent); stroke-width: 3.2; }
+    .map-stage.is-future .map-node { stroke: var(--dim); }
+    .map-stage .map-node-num { fill: var(--bone); font: 700 11px var(--font-mono); text-anchor: middle; }
+    .map-stage.is-done .map-node-num { fill: #fff; }
+    .map-stage.is-future .map-node-num { fill: var(--dim); }
+    .map-stage .map-plate {
+      fill: rgba(6, 7, 15, .86);
+      stroke: var(--line);
+      stroke-width: 1;
+      rx: 10;
+    }
+    .map-stage.is-current .map-plate { stroke: var(--line-strong); }
+    .map-stage .map-title {
+      fill: var(--bone);
+      font: 700 15px var(--font-display);
+      text-anchor: middle;
+    }
+    .map-stage.is-future .map-title { fill: var(--dim); }
+    .map-stage .map-count {
+      fill: var(--muted);
+      font: 10px var(--font-mono);
+      text-anchor: middle;
+      letter-spacing: .03em;
+    }
+    .map-stage.is-done .map-count { fill: var(--green); }
+    .map-stage .map-icon { fill: none; stroke: var(--bone); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .map-stage.is-future .map-icon { stroke: var(--dim); }
+    .map-stage.is-done .map-icon { stroke: var(--green); }
+    .map-stage:hover .map-node { stroke: var(--accent); fill: var(--accent-soft); }
+    .map-stage:hover .map-title { fill: var(--accent); }
+    .map-stage:focus-visible .map-plate { stroke: var(--accent); stroke-width: 2; }
+
+    .map-building { cursor: pointer; outline: none; }
+    .map-building .bldg-line {
+      fill: none;
+      stroke: var(--bone);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke .18s ease;
+    }
+    .map-building .bldg-accent { fill: var(--fire); stroke: none; opacity: .9; }
+    .map-building .bldg-gold { fill: var(--gold); stroke: none; }
+    .map-building .bldg-moss { fill: var(--moss); stroke: none; }
+    .map-building .bldg-plate { fill: rgba(6, 7, 15, .94); stroke: var(--line); stroke-width: 1; rx: 9; }
+    .map-building .bldg-title {
+      fill: var(--bone);
+      font: 700 13px var(--font-display);
+      text-anchor: middle;
+    }
+    .map-building .bldg-sub {
+      fill: var(--muted);
+      font: 9px var(--font-mono);
+      text-anchor: middle;
+      letter-spacing: .03em;
+    }
+    .map-building:hover .bldg-line { stroke: var(--accent); }
+    .map-building:hover .bldg-title { fill: var(--accent); }
+    .map-building:focus-visible .bldg-plate { stroke: var(--accent); stroke-width: 2; }
+
+    .map-walker { pointer-events: none; }
+    .map-walker .walker-body { animation: walker-bob 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+    .map-walker .walker-head { fill: var(--bone); }
+    .map-walker .walker-line { fill: none; stroke: var(--bone); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .map-walker .walker-lantern { fill: var(--ember); }
+    .map-walker .walker-glow { fill: var(--ember); opacity: .16; }
+    @keyframes walker-bob {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-2.5px) rotate(1deg); }
+    }
+    .map-campfire { cursor: pointer; }
+    .map-campfire .camp-log { fill: none; stroke: var(--bone); stroke-width: 2; stroke-linecap: round; }
+    .map-campfire .camp-flame { fill: var(--fire); stroke: var(--bone); stroke-width: 1; }
+    .map-campfire .camp-label { fill: var(--muted); font: 9px var(--font-mono); text-anchor: middle; letter-spacing: .04em; }
+    .map-campfire:hover .camp-flame { fill: var(--fire-2); }
+
+    /* Шторка этапа */
+    .sheet-scrim {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: rgba(0, 0, 0, .66);
+      animation: fade-in .2s ease both;
+    }
+    .stage-sheet {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      z-index: 81;
+      width: min(640px, 100%);
+      max-height: 84vh;
+      overflow: auto;
+      padding: 18px 20px 30px;
+      border-top: 2px solid var(--ember);
+      border-radius: 22px 22px 0 0;
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 -20px 60px rgba(0, 0, 0, .6);
+      transform: translateX(-50%);
+      animation: sheet-up .26s ease-out both;
+      scrollbar-width: thin;
+    }
+    @keyframes sheet-up {
+      from { transform: translate(-50%, 36px); opacity: 0; }
+      to { transform: translate(-50%, 0); opacity: 1; }
+    }
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+    body.sheet-open { overflow: hidden; }
+    .sheet-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+    .sheet-head h2 {
+      margin-top: 3px;
+      font-family: var(--font-display);
+      font-size: 29px;
+      line-height: 1.08;
+      letter-spacing: -.02em;
+    }
+    .sheet-head .sheet-sub {
+      margin-top: 4px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .sheet-close {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      flex: none;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      background: var(--surface-2);
+      color: var(--text-soft);
+      font-size: 21px;
+      line-height: 1;
+    }
+    .sheet-close:hover { border-color: var(--ember); color: var(--ember); }
+    .sheet-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .sheet-progress .meter { flex: 1; }
+    .sheet-progress span { color: var(--muted); font-family: var(--font-mono); font-size: 9.5px; }
+    .stage-sheet .task-list { gap: 1px; }
+    .stage-sheet .task { padding: 11px 6px; border-bottom: 1px solid var(--line); border-radius: 0; }
+    .stage-sheet .task:hover { background: var(--surface-2); padding-left: 9px; }
+    .stage-sheet .check-box { border-radius: 50%; }
+    .stage-sheet .task-text { font-size: 14px; }
+    .stage-sheet .task-detail { font-size: 12px; }
+    .stage-sheet .stage-tips { margin-top: 16px; }
+    .stage-sheet .notes-block { margin-top: 16px; }
+    .stage-sheet .notes-head { margin-top: 0; }
+    .sheet-icon {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      flex: none;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      background: var(--surface-2);
+      color: var(--ember);
+    }
+    .sheet-icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Паспорт путника */
+    .stamp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 18px 10px;
+      margin-top: 18px;
+    }
+    .passport-stamp { text-align: center; }
+    .passport-stamp svg {
+      display: block;
+      width: 100%;
+      max-width: 150px;
+      margin: 0 auto;
+      transform: rotate(var(--rot, 0deg));
+    }
+    .passport-stamp .stamp-ring {
+      fill: none;
+      stroke: var(--line-strong);
+      stroke-width: 2;
+      stroke-dasharray: 3 4;
+    }
+    .passport-stamp .stamp-ring-2 {
+      fill: none;
+      stroke: var(--line);
+      stroke-width: 1;
+      stroke-dasharray: 2 5;
+    }
+    .passport-stamp .stamp-text {
+      fill: var(--muted);
+      font: 700 11px var(--font-display);
+      text-anchor: middle;
+    }
+    .passport-stamp .stamp-num {
+      fill: var(--muted);
+      font: 8px var(--font-mono);
+      text-anchor: middle;
+      letter-spacing: .08em;
+    }
+    .passport-stamp.is-on .stamp-ring { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2.4; }
+    .passport-stamp.is-on .stamp-ring-2 { stroke: var(--red-deep); stroke-dasharray: none; }
+    .passport-stamp.is-on .stamp-text { fill: var(--accent); }
+    .passport-stamp.is-on .stamp-num { fill: var(--green); }
+    .passport-stamp p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.35;
+    }
+    .passport-stamp .stamp-date {
+      color: var(--gold);
+      font-family: var(--font-mono);
+      font-size: 9px;
+    }
+    .passport-stamp .stamp-progress {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+    }
+    .passport-stamp.is-locked { opacity: .68; }
+    .passport-stamp.is-on { opacity: 1; }
+    .panel-dark .achievement-summary { background: rgba(255, 255, 255, .035); }
+
+    @media (max-width: 720px) {
+      .map-frame { border-radius: 18px; }
+      .map-view-head h2 { font-size: 28px; }
+      .fire-card { padding: 18px; }
+      .fire-visual { width: 86px; height: 94px; }
+      .fire-number strong { font-size: 38px; }
+      .stage-sheet { max-height: 86vh; padding: 16px 15px 26px; }
+      .stamp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .fire-visual .fire-flame, .fire-visual .fire-ember, .map-walker .walker-body { animation: none; }
+      .stage-sheet, .sheet-scrim { animation: none; }
+    }
+
+  
+    /* Компактный костёр на карте */
+    .fire-dock {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 4;
+      width: 196px;
+      padding: 10px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      background: rgba(7, 8, 18, .86);
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow-sm);
+    }
+    .fire-dock-top { display: flex; align-items: center; gap: 8px; }
+    .fire-dock-flame.fire-visual { width: 44px; height: 48px; margin: 0; flex: none; }
+    .fire-dock-flame.fire-visual svg { width: 100%; height: 100%; }
+    .fire-dock-copy { min-width: 0; }
+    .fire-dock-label {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .fire-dock-number { display: flex; align-items: baseline; gap: 5px; margin-top: 1px; }
+    .fire-dock-number strong {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--text);
+    }
+    .fire-dock-number span {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .fire-dock .streak-days { grid-template-columns: repeat(14, minmax(0, 1fr)); gap: 3px; margin-top: 8px; }
+    .fire-dock .streak-day { height: 11px; border-radius: 3px; background: var(--surface-2); }
+    .fire-dock .streak-day.is-active { background: var(--fire); }
+    .fire-dock .streak-day.is-today { border-color: var(--fire); }
+    .fire-dock .fire-actions { margin-top: 8px; gap: 4px; }
+    .fire-dock .btn { min-height: 26px; padding: 3px 8px; border-radius: 7px; font-size: 9.5px; }
+    .fire-stone { fill: var(--dim); opacity: .8; }
+
+    .fire-visual.is-lighting .fire-flame {
+      animation: flame-ignite .75s cubic-bezier(.2, .8, .2, 1) both, fire-flicker 1.25s .75s ease-in-out infinite alternate;
+    }
+    .fire-visual.is-lighting { filter: drop-shadow(0 0 14px rgba(255, 95, 95, .35)); }
+    @keyframes flame-ignite {
+      0% { opacity: 0; transform: scaleY(.08) scaleX(.45); }
+      60% { opacity: 1; transform: scaleY(1.18) scaleX(1.06); }
+      100% { opacity: 1; transform: scaleY(1) scaleX(1); }
+    }
+
+    /* Плавающий прогресс пути */
+    .path-progress {
+      position: fixed;
+      left: 16px;
+      top: 78px;
+      z-index: 60;
+      display: none;
+      place-items: center;
+      width: 66px;
+      height: 66px;
+      padding: 0;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      background: rgba(7, 8, 18, .84);
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow-sm);
+    }
+    body[data-tab="roadmap"] .path-progress { display: grid; }
+    .path-progress:hover { border-color: var(--accent); }
+    .path-progress .progress-ring { width: 58px; height: 58px; animation: none; }
+    .path-progress .progress-ring::before { inset: 6px; }
+    .path-progress .progress-ring span { font-size: 15px; }
+    .path-progress-label {
+      position: absolute;
+      bottom: -13px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    @media (max-width: 720px) {
+      .fire-dock { top: 8px; right: 8px; width: 164px; padding: 8px; }
+      .fire-dock-flame.fire-visual { width: 36px; height: 40px; }
+      .fire-dock-number strong { font-size: 20px; }
+      .fire-dock .streak-day { height: 9px; }
+      .fire-dock .btn { font-size: 8.5px; padding: 2px 6px; min-height: 23px; }
+      .path-progress { left: 10px; top: 68px; width: 60px; height: 60px; }
+      .path-progress .progress-ring { width: 52px; height: 52px; }
+      .path-progress .progress-ring span { font-size: 13px; }
+    }
+
+    @media (min-width: 900px) {
+      body { zoom: 1.1; }
+    }
+    .map-frame { width: min(620px, 100%); }
+    #panel-roadmap { margin-top: 8px; }
+    .map-view-head h2 { font-size: clamp(24px, 3vw, 30px); }
+
+  
+    /* Костёр как объект карты */
+    .camp-plate { fill: rgba(6, 7, 15, .9); stroke: var(--line); stroke-width: 1; }
+    .camp-title {
+      fill: var(--bone);
+      font: 700 13px var(--font-display);
+      text-anchor: middle;
+    }
+    .camp-sub {
+      fill: var(--muted);
+      font: 9px var(--font-mono);
+      text-anchor: middle;
+    }
+    .camp-action { stroke-width: 1; }
+    .camp-action-text {
+      font: 700 8px var(--font-mono);
+      text-anchor: middle;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+    .camp-undo { cursor: pointer; }
+    .camp-undo text {
+      fill: var(--fire);
+      font: 8px var(--font-mono);
+      text-anchor: middle;
+    }
+    .map-campfire.is-lighting .camp-flame {
+      animation: flame-ignite .75s cubic-bezier(.2, .8, .2, 1) both, fire-flicker 1.25s .75s ease-in-out infinite alternate;
+    }
+    .map-campfire.is-lighting { filter: drop-shadow(0 0 12px rgba(255, 95, 95, .35)); }
+
+      /* Меню действий у костра */
+    .camp-menu-plate { fill: rgba(6, 7, 15, .95); stroke: var(--line-strong); stroke-width: 1; }
+    .camp-menu-row { cursor: pointer; }
+    .camp-menu-row.is-disabled { cursor: default; }
+    .camp-menu-action { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1; }
+    .camp-menu-action.is-disabled { fill: rgba(255, 255, 255, .03); stroke: var(--line); }
+    .camp-menu-text { fill: var(--accent); font: 700 8px var(--font-mono); text-anchor: middle; letter-spacing: .06em; text-transform: uppercase; }
+    .camp-menu-text.is-disabled { fill: var(--muted); }
+    .camp-menu-undo { fill: var(--red-soft); stroke: var(--fire); }
+    .camp-menu-undo-text { fill: var(--fire); }
+    .camp-menu-undo-text.is-disabled { fill: var(--muted); }
+
+  
+    /* Красивый чекин этапа и задачи */
+    .map-node-check { stroke-dasharray: 14; stroke-dashoffset: 0; }
+    .map-stage.is-just-completed .map-node-check {
+      stroke-dashoffset: 14;
+      animation: check-draw .45s ease-out .05s forwards;
+    }
+    .map-stage.is-just-completed .map-node {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: node-pop .5s cubic-bezier(.2, .8, .2, 1);
+    }
+    .map-stage.is-just-completed .map-plate { animation: plate-flash .7s ease-out; }
+    @keyframes check-draw { to { stroke-dashoffset: 0; } }
+    @keyframes node-pop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.28); }
+      100% { transform: scale(1); }
+    }
+    @keyframes plate-flash {
+      0% { stroke: var(--green); }
+      100% { stroke: var(--line); }
+    }
+    .task.just-checked { animation: task-done .35s ease; }
+    .task.just-checked input:checked + .check-box { animation: check-pop .28s cubic-bezier(.2, .8, .2, 1); }
+    @keyframes task-done {
+      0% { background: rgba(61, 220, 151, .12); }
+      100% { background: transparent; }
+    }
+    @keyframes check-pop {
+      0% { transform: scale(.82); }
+      55% { transform: scale(1.12); }
+      100% { transform: scale(1); }
+    }
+
+  
+    .camp-glow { filter: blur(2px); }
+    .map-walker .walker-glow { opacity: .1; }
+
   </style>
 </head>
 <body data-tab="roadmap">
@@ -1741,110 +2461,17 @@
           <span class="flame" aria-hidden="true"></span>
           <span id="headerStreak">0</span>
         </span>
-        <button class="icon-btn" type="button" id="themeToggle" aria-label="Включить тёмную тему" title="Сменить тему">
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
       </div>
     </div>
   </header>
 
   <main class="shell app-main" id="main">
-    <section class="dashboard" aria-label="Общий прогресс">
-      <div class="welcome-card">
-        <div class="welcome-copy">
-          <p class="eyebrow">Java Backend</p>
-          <h2 class="welcome-title">Путь до стажировки</h2>
-          <p class="hero-meta"><span id="overallCount">выполнено 0 из 0 задач</span></p>
-          <div class="welcome-progress">
-            <p class="progress-label"><span>Общий прогресс</span></p>
-            <div class="meter" role="progressbar" aria-label="Общий прогресс" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="overallMeter">
-              <span id="overallBar"></span>
-            </div>
-          </div>
-        </div>
-        <div class="progress-ring" id="overallRing" style="--pct: 0" aria-hidden="true">
-          <span id="overallPercent">0%</span>
-        </div>
+    <button class="back-to-map" type="button" id="backToMap" hidden>← На карту</button>
+
+    <section class="panel" id="panel-roadmap" role="tabpanel" aria-label="Карта пути" tabindex="0">
+      <div class="map-frame">
+        <svg id="journeyMap" viewBox="0 0 400 1326" role="group" aria-label="Карта пути до стажировки"></svg>
       </div>
-
-      <aside class="streak-card" aria-labelledby="streakTitle">
-        <div class="streak-top">
-          <div>
-            <p class="eyebrow" id="streakTitle">Серия занятий</p>
-            <p class="streak-number"><strong id="streakDays">0</strong><span id="streakLabel">дней подряд</span></p>
-          </div>
-          <span class="streak-flame" aria-hidden="true">14</span>
-        </div>
-        <div class="streak-days" id="streakCalendar" role="img" aria-label="Активность за последние 14 дней"></div>
-        <p class="streak-hint">Отметьте любую задачу — день засчитается.</p>
-      </aside>
-    </section>
-
-    <section class="stat-row" aria-label="Кратко о прогрессе">
-      <article class="stat-tile">
-        <span class="stat-icon stat-icon-indigo" aria-hidden="true">01</span>
-        <div class="stat-body">
-          <p class="stat-value"><strong id="stagesDone">0</strong><span>из 6</span></p>
-          <p class="stat-label">этапов закрыто</p>
-        </div>
-      </article>
-      <article class="stat-tile">
-        <span class="stat-icon stat-icon-mint" aria-hidden="true">02</span>
-        <div class="stat-body">
-          <p class="stat-value"><strong id="practiceStat">0</strong><span id="practiceUnit">задач</span></p>
-          <p class="stat-label">практики решено</p>
-        </div>
-      </article>
-      <article class="stat-tile">
-        <span class="stat-icon stat-icon-gold" aria-hidden="true">03</span>
-        <div class="stat-body">
-          <p class="stat-value"><strong id="achievementStat">0</strong><span>из 22</span></p>
-          <p class="stat-label">ачивок открыто</p>
-        </div>
-      </article>
-    </section>
-
-    <div class="ticker" aria-hidden="true">
-      <div class="ticker-track">
-        <span>Java Core</span><span>Collections</span><span>Stream API</span><span>Spring Boot</span><span>PostgreSQL</span><span>Docker</span><span>GitHub Actions</span><span>LeetCode</span><span>English</span><span>Belarus</span>
-        <span>Java Core</span><span>Collections</span><span>Stream API</span><span>Spring Boot</span><span>PostgreSQL</span><span>Docker</span><span>GitHub Actions</span><span>LeetCode</span><span>English</span><span>Belarus</span>
-      </div>
-    </div>
-
-    <div class="tabbar" role="tablist" aria-label="Разделы приложения">
-      <button class="tab" type="button" role="tab" id="tab-roadmap" aria-controls="panel-roadmap" aria-selected="true" tabindex="0" data-tab="roadmap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z"/><path d="M9 3v15M15 6v15"/></svg>
-        <span>План</span>
-      </button>
-      <button class="tab" type="button" role="tab" id="tab-practice" aria-controls="panel-practice" aria-selected="false" tabindex="-1" data-tab="practice">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 6-6 6 6 6M16 6l6 6-6 6"/></svg>
-        <span>Практика</span>
-      </button>
-      <button class="tab" type="button" role="tab" id="tab-achievements" aria-controls="panel-achievements" aria-selected="false" tabindex="-1" data-tab="achievements">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>
-        <span>Ачивки</span>
-      </button>
-      <button class="tab" type="button" role="tab" id="tab-checklist" aria-controls="panel-checklist" aria-selected="false" tabindex="-1" data-tab="checklist">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        <span>Минимум</span>
-      </button>
-      <button class="tab" type="button" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false" tabindex="-1" data-tab="settings">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3"/><path d="M1 14h6M9 8h6M17 16h6"/></svg>
-        <span>Ещё</span>
-      </button>
-    </div>
-
-    <section class="panel" id="panel-roadmap" role="tabpanel" aria-labelledby="tab-roadmap" tabindex="0">
-      <div class="panel-head">
-        <div>
-          <p class="eyebrow">6 этапов</p>
-          <h2>Роадмап</h2>
-          <p>Шесть этапов от Java Core до откликов на стажировку. Отмечайте темы, раскрывайте этапы и записывайте заметки — всё сохраняется автоматически.</p>
-        </div>
-      </div>
-      <div class="stage-nav" id="stageNav" aria-label="Быстрый переход по этапам"></div>
-      <div class="stage-list" id="roadmapList"></div>
 
       <section class="resources-block" aria-labelledby="resourcesTitle">
         <h2 id="resourcesTitle">Полезные ссылки</h2>
@@ -1884,7 +2511,7 @@
       </section>
     </section>
 
-    <section class="panel" id="panel-practice" role="tabpanel" aria-labelledby="tab-practice" tabindex="0" hidden>
+    <section class="panel" id="panel-practice" role="tabpanel" aria-label="Практика" tabindex="0" hidden>
       <div class="panel-head">
         <div>
           <p class="eyebrow">LeetCode по темам</p>
@@ -1950,12 +2577,12 @@
       <div class="topic-list" id="practiceList"></div>
     </section>
 
-    <section class="panel panel-dark" id="panel-achievements" role="tabpanel" aria-labelledby="tab-achievements" tabindex="0" hidden>
+    <section class="panel panel-dark" id="panel-achievements" role="tabpanel" aria-label="Ачивки" tabindex="0" hidden>
       <div class="panel-head">
         <div>
-          <p class="eyebrow">Маленькие победы</p>
-          <h2>Ачивки</h2>
-          <p>Награды за прогресс, серию и практику. Открываются сами — достаточно заниматься понемногу.</p>
+          <p class="eyebrow">Штампы маршрута</p>
+          <h2>Паспорт путника</h2>
+          <p>Каждая остановка оставляет штамп. Открывай новые, двигаясь по карте и закрывая темы.</p>
         </div>
       </div>
       <div class="card achievement-summary">
@@ -1967,10 +2594,10 @@
           <span id="achBar"></span>
         </div>
       </div>
-      <div class="achievement-grid" id="achievementGrid"></div>
+      <div class="stamp-grid" id="achievementGrid"></div>
     </section>
 
-    <section class="panel" id="panel-checklist" role="tabpanel" aria-labelledby="tab-checklist" tabindex="0" hidden>
+    <section class="panel" id="panel-checklist" role="tabpanel" aria-label="Минимум" tabindex="0" hidden>
       <div class="panel-head">
         <div>
           <p class="eyebrow">Минимум к собеседованию</p>
@@ -1990,7 +2617,7 @@
       </div>
     </section>
 
-    <section class="panel" id="panel-settings" role="tabpanel" aria-labelledby="tab-settings" tabindex="0" hidden>
+    <section class="panel" id="panel-settings" role="tabpanel" aria-label="Ещё" tabindex="0" hidden>
       <div class="panel-head">
         <div>
           <p class="eyebrow">Данные и устройства</p>
@@ -2063,6 +2690,11 @@
         </div>
       </div>
     </section>
+    <div id="stageSheet"></div>
+    <button class="path-progress" type="button" id="pathProgress" aria-label="Общий прогресс">
+      <span class="progress-ring" id="overallRing" style="--pct: 0" aria-hidden="true"><span id="overallPercent">0%</span></span>
+      <span class="path-progress-label">путь</span>
+    </button>
   </main>
 
   <footer class="shell footer">Java Roadmap · данные не покидают ваши устройства без вашего Gist</footer>
@@ -2653,9 +3285,19 @@
     const PRACTICE_KEYS = new Set(PRACTICE_PROBLEMS.map((problem) => problem.slug));
     const TOPIC_BY_PROBLEM = new Map(PRACTICE_PROBLEMS.map((problem) => [problem.slug, problem.topicId]));
     const dom = {
-      themeToggle: document.getElementById("themeToggle"),
       headerStreak: document.getElementById("headerStreak"),
       headerStreakChip: document.getElementById("headerStreakChip"),
+      fireCard: document.getElementById("fireCard"),
+      campfire: document.getElementById("campfire"),
+      lightFireBtn: document.getElementById("lightFireBtn"),
+      undoFireBtn: document.getElementById("undoFireBtn"),
+      backToMap: document.getElementById("backToMap"),
+      pathProgress: document.getElementById("pathProgress"),
+      journeyMap: document.getElementById("journeyMap"),
+      stageSheet: document.getElementById("stageSheet"),
+      mapStagesDone: document.getElementById("mapStagesDone"),
+      mapPracticeDone: document.getElementById("mapPracticeDone"),
+      mapAchDone: document.getElementById("mapAchDone"),
       overallCount: document.getElementById("overallCount"),
       overallPercent: document.getElementById("overallPercent"),
       overallBar: document.getElementById("overallBar"),
@@ -2668,13 +3310,10 @@
       streakDays: document.getElementById("streakDays"),
       streakLabel: document.getElementById("streakLabel"),
       streakCalendar: document.getElementById("streakCalendar"),
-      roadmapList: document.getElementById("roadmapList"),
-      stageNav: document.getElementById("stageNav"),
       checklistList: document.getElementById("checklistList"),
       checklistCount: document.getElementById("checklistCount"),
       checklistBar: document.getElementById("checklistBar"),
       checklistMeter: document.getElementById("checklistMeter"),
-      tabbar: document.querySelector(".tabbar"),
       practiceList: document.getElementById("practiceList"),
       practiceCount: document.getElementById("practiceCount"),
       suggestBtn: document.getElementById("suggestBtn"),
@@ -2728,6 +3367,14 @@
     let currentSuggestion = null;
     let lcRequestId = 0;
     let lcBusy = false;
+    let sheetStage = null;
+    let fireMenuOpen = false;
+    let justCompletedStage = null;
+    let mapNeedsScroll = true;
+    let mapGeo = null;
+    let lastMapPos = 0;
+    let mapWalkToken = 0;
+    const reducedMotion = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
 
     // ---------- Утилиты ----------
     function taskKey(stageId, index) {
@@ -2794,7 +3441,7 @@
 
     function toastAchievements(list) {
       if (!list || !list.length) return;
-      const shown = list.slice(0, 2).map((item) => item.icon + " " + item.title).join(", ");
+      const shown = list.slice(0, 2).map((item) => item.title).join(", ");
       const extra = list.length > 2 ? " и ещё " + (list.length - 2) : "";
       showToast("Новая ачивка: " + shown + extra, "achievement");
     }
@@ -2808,6 +3455,8 @@
         checklist: {},
         practice: {},
         activity: {},
+        manualDays: {},
+        manualStack: [],
         achievements: {},
         leetcode: { username: "", total: 0, easy: 0, medium: 0, hard: 0, ranking: 0, syncedAt: "" },
         syncedOnce: false,
@@ -2849,6 +3498,16 @@
             normalized.activity[key] = Math.min(Math.floor(count), 10000);
           }
         });
+      }
+      if (raw.manualDays && typeof raw.manualDays === "object") {
+        Object.keys(raw.manualDays).forEach((key) => {
+          if (dayFromKey(key) && raw.manualDays[key] === true) normalized.manualDays[key] = true;
+        });
+      }
+      if (Array.isArray(raw.manualStack)) {
+        normalized.manualStack = raw.manualStack
+          .filter((key) => typeof key === "string" && dayFromKey(key) && normalized.manualDays[key])
+          .slice(-60);
       }
       if (raw.achievements && typeof raw.achievements === "object") {
         const known = new Set(ACHIEVEMENTS.map((item) => item.id));
@@ -2943,19 +3602,12 @@
     const themeMeta = document.querySelector('meta[name="theme-color"]');
 
     function resolvedTheme() {
-      if (state.theme === "light" || state.theme === "dark") return state.theme;
       return "dark";
     }
 
     function applyTheme() {
-      const theme = resolvedTheme();
-      document.documentElement.dataset.theme = theme;
-      if (themeMeta) themeMeta.setAttribute("content", theme === "dark" ? "#0d0b0c" : "#171416");
-      if (dom.themeToggle) {
-        const label = theme === "dark" ? "Включить светлую тему" : "Включить тёмную тему";
-        dom.themeToggle.setAttribute("aria-label", label);
-        dom.themeToggle.setAttribute("title", label);
-      }
+      document.documentElement.dataset.theme = "dark";
+      if (themeMeta) themeMeta.setAttribute("content", "#0d0b09");
     }
 
     // ---------- Статистика и серия ----------
@@ -3069,11 +3721,13 @@
         }
         dom.streakCalendar.innerHTML = cells.join("");
       }
+      renderFire();
     }
 
-    // ---------- Отрисовка: роадмап ----------
+    // ---------- Отрисовка: карта ----------
     function renderAll() {
-      renderRoadmap();
+      renderMap();
+      renderStageSheet();
       renderChecklist();
       renderPractice();
       renderAchievements();
@@ -3084,82 +3738,420 @@
       applyTheme();
     }
 
-    function renderRoadmap() {
-      if (dom.stageNav) {
-        dom.stageNav.innerHTML = ROADMAP.map((stage, index) => {
-          const total = stage.tasks.length;
-          const done = stage.tasks.reduce((count, _, taskIndex) =>
-            count + (state.tasks[taskKey(stage.id, taskIndex)] ? 1 : 0), 0);
-          const classes = ["stage-chip"];
-          if (openStages.has(stage.id)) classes.push("is-active");
-          if (total > 0 && done === total) classes.push("is-complete");
-          return `<button class="${classes.join(" ")}" type="button" data-jump-stage="${escapeHtml(stage.id)}"><span>${String(index + 1).padStart(2, "0")}</span><b>${escapeHtml(stage.title)}</b><em>${done}/${total}</em></button>`;
-        }).join("");
+    // Точки дороги: старт с костром, шесть остановок, финал.
+    const MAP_RAW = [
+      [200, 70], [350, 280], [50, 500], [350, 720],
+      [50, 940], [350, 1160], [200, 1370]
+    ];
+    const MAP_Y = 0.85;
+    const MAP_H = 1560 * MAP_Y;
+    const MAP_POINTS = MAP_RAW.map(([x, y]) => [x, y * MAP_Y]);
+    const MAP_MID = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    let MAP_D = "M" + MAP_POINTS[0][0] + " " + MAP_POINTS[0][1];
+    const firstMid = MAP_MID(MAP_POINTS[0], MAP_POINTS[1]);
+    MAP_D += " L" + firstMid[0] + " " + firstMid[1];
+    for (let i = 1; i < 6; i += 1) {
+      const mid = MAP_MID(MAP_POINTS[i], MAP_POINTS[i + 1]);
+      MAP_D += " Q" + MAP_POINTS[i][0] + " " + MAP_POINTS[i][1] + " " + mid[0] + " " + mid[1];
+    }
+    MAP_D += " L" + MAP_POINTS[6][0] + " " + MAP_POINTS[6][1];
+
+    const STAGE_ICONS = [
+      '<path d="M-24-10h46c0 7-6 11-14 11h-6v9h10v8h-34v-8h10v-9h-6c-8 0-12-4-6-11z"/><path d="M10-20l3-6M18-16l6-3M2-22v-7"/>',
+      '<circle cx="-18" cy="-16" r="4"/><circle cx="18" cy="-16" r="4"/><circle cx="0" cy="18" r="4"/><path d="M-18-12v10a6 6 0 0 0 6 6h18a6 6 0 0 0 6-6V-12M-18-12l18 26M18-12l-18 26"/>',
+      '<ellipse cx="0" cy="-14" rx="20" ry="7"/><path d="M-20-14v28a20 7 0 0 0 40 0v-28M-20 0a20 7 0 0 0 40 0"/>',
+      '<path d="M0 20C-20 8-20-12 0-20C20-12 20 8 0 20Z"/><path d="M0 20V-10M0 0l-8 6M0-6l8 6"/>',
+      '<path d="M-22-16h18v18h-18zM4-16h18v18H4zM-22 2h18v18h-18zM4 2h18v18H4z"/><path d="M-22 8h44"/>',
+      '<path d="M-20-6h40v28h-40zM-8-6v-8h16v8"/><path d="M-20 6h40M-12 0v6M12 0v6"/>'
+    ];
+
+    const MAP_TREES = [
+      [26, 110, 1], [374, 120, .9], [24, 230, .8], [376, 240, 1.1],
+      [28, 350, .9], [372, 360, 1], [24, 470, .8], [376, 480, .9],
+      [30, 590, 1], [370, 600, .8], [26, 710, .9], [374, 720, 1.1],
+      [24, 830, .8], [376, 840, 1], [30, 960, .9], [370, 970, .8],
+      [26, 1090, 1], [374, 1100, .9], [24, 1220, .8], [376, 1230, 1.1],
+      [28, 1350, .9], [372, 1360, 1], [26, 1480, .8], [374, 1490, .9]
+    ];
+
+    const MAP_STARS = [
+      [70, 54, .9], [112, 80, 1.2], [160, 48, .8], [250, 60, 1.1], [300, 92, .8],
+      [40, 160, .7], [350, 300, .9], [30, 520, .8], [360, 680, .9], [40, 800, .7],
+      [350, 900, .8], [30, 1040, .9], [360, 1180, .7], [40, 1320, .8],
+      [350, 1460, .9], [100, 120, .7], [280, 160, .8], [120, 340, .7],
+      [300, 520, .7], [90, 680, .8], [320, 820, .7], [100, 960, .8],
+      [300, 1080, .7], [80, 1240, .8], [320, 1380, .7], [150, 1500, .8],
+      [250, 1520, .7]
+    ];
+
+    function wrapText(text, max) {
+      const words = String(text || "").split(/\s+/).filter(Boolean);
+      const lines = [];
+      let current = "";
+      words.forEach((word) => {
+        if (!current) current = word;
+        else if ((current + " " + word).length <= max) current += " " + word;
+        else { lines.push(current); current = word; }
+      });
+      if (current) lines.push(current);
+      return lines;
+    }
+
+    function stageIconSvg(index) {
+      return `<svg viewBox="-32 -32 64 64" aria-hidden="true">${STAGE_ICONS[index % STAGE_ICONS.length]}</svg>`;
+    }
+
+    function fireLevel(streak) {
+      return streak <= 0 ? 0 : Math.min(5, Math.ceil(streak / 2));
+    }
+
+    function woodLevel(streak) {
+      return Math.max(1, Math.min(5, Math.ceil((streak + 1) / 2)));
+    }
+
+    function fireVisualSvg(streak, lit) {
+      const level = lit ? Math.max(1, fireLevel(streak)) : 0;
+      const wood = woodLevel(streak);
+      const flames = [];
+      for (let i = 0; i < level; i += 1) {
+        const offset = (i - (level - 1) / 2) * 8;
+        const scale = 1.05 + 0.12 * level - 0.09 * Math.abs(i - (level - 1) / 2);
+        flames.push(`<g transform="translate(${offset.toFixed(1)} 16) scale(${scale.toFixed(2)})"><path class="fire-flame" style="animation-delay:${(i * 0.16).toFixed(2)}s" d="M0 0C-9-9-5-18 0-30C5-18 9-9 0 0z"/></g>`);
+      }
+      const logs = [
+        '<path class="fire-log" d="M-38 32l76 18M38 32l-76 18"/>',
+        '<path class="fire-log" d="M-28 42l56 10"/>'
+      ];
+      if (wood > 1) logs.push('<path class="fire-log" d="M-42 40l84 6"/>');
+      if (wood > 2) logs.push('<path class="fire-log" d="M-24 26l48 24"/>');
+      if (wood > 3) logs.push('<path class="fire-log" d="M-34 46l68 4"/>');
+      if (wood > 4) logs.push('<path class="fire-log" d="M-16 24l32 26"/>');
+      const stones = '<circle class="fire-stone" cx="-34" cy="48" r="2.6"/><circle class="fire-stone" cx="-24" cy="52" r="2"/><circle class="fire-stone" cx="-12" cy="54" r="2.4"/><circle class="fire-stone" cx="2" cy="55" r="2"/><circle class="fire-stone" cx="16" cy="54" r="2.4"/><circle class="fire-stone" cx="28" cy="51" r="2"/><circle class="fire-stone" cx="37" cy="47" r="2.4"/>';
+      const embers = level
+        ? '<circle class="fire-ember" style="animation-delay:0s" cx="-12" cy="-16" r="1.7"/><circle class="fire-ember" style="animation-delay:.8s" cx="10" cy="-24" r="1.3"/><circle class="fire-ember" style="animation-delay:1.5s" cx="2" cy="-10" r="1.1"/>'
+        : '<circle cx="-10" cy="30" r="1.6" fill="var(--dim)"/><circle cx="8" cy="32" r="1.2" fill="var(--dim)"/>';
+      return `<svg viewBox="-60 -80 120 120" aria-hidden="true" data-lit="${lit ? 1 : 0}"><ellipse cx="0" cy="42" rx="34" ry="9" fill="var(--red-deep)" opacity=".28"/>${stones}${logs.join("")}${flames.join("")}${embers}</svg>`;
+    }
+
+    function mapCampfireInner(streak, lit) {
+      const wood = woodLevel(streak);
+      const level = lit ? Math.max(1, fireLevel(streak)) : 0;
+      const glow = lit ? `<circle class="camp-glow" cx="0" cy="2" r="${16 + level * 4}" fill="var(--fire)" opacity=".14"/>` : "";
+      let logs = '<path class="camp-log" d="M-18 8l36 7M18 8l-36 7"/>';
+      if (wood > 1) logs += '<path class="camp-log" d="M-22 10l44 3"/>';
+      if (wood > 2) logs += '<path class="camp-log" d="M-12 4l24 14"/>';
+      if (wood > 3) logs += '<path class="camp-log" d="M-24 12l48 1"/>';
+      let flames = "";
+      for (let i = 0; i < level; i += 1) {
+        const offset = (i - (level - 1) / 2) * 6;
+        const scale = 0.44 + 0.075 * level - 0.025 * Math.abs(i - (level - 1) / 2);
+        flames += `<g transform="translate(${offset.toFixed(1)} 6) scale(${scale.toFixed(2)})"><path class="camp-flame" style="animation-delay:${(i * 0.18).toFixed(2)}s" d="M0 0C-9-9-5-18 0-30C5-18 9-9 0 0z"/></g>`;
       }
 
-      dom.roadmapList.innerHTML = ROADMAP.map((stage, stageIndex) => {
-        const isOpen = openStages.has(stage.id);
-        const taskCount = stage.tasks.length;
-        const doneCount = stage.tasks.reduce((count, _, index) =>
-          count + (state.tasks[taskKey(stage.id, index)] ? 1 : 0), 0);
-        const percent = taskCount ? Math.round((doneCount / taskCount) * 100) : 0;
-        const complete = taskCount > 0 && doneCount === taskCount;
-        const tasks = stage.tasks.map((task, taskIndex) => {
-          const key = taskKey(stage.id, taskIndex);
-          const checked = Boolean(state.tasks[key]);
-          return `
-            <li>
-              <label class="task${checked ? " is-done" : ""}">
-                <input type="checkbox" data-task="${escapeHtml(key)}"${checked ? " checked" : ""}>
-                <span class="check-box" aria-hidden="true"></span>
-                <span class="task-body">
-                  <span class="task-text">${escapeHtml(task.title)}</span>
-                  ${task.detail ? `<span class="task-detail">${escapeHtml(task.detail)}</span>` : ""}
-                </span>
-              </label>
-            </li>`;
-        }).join("");
-        const tips = (stage.tips && stage.tips.length)
-          ? `<div class="stage-tips"><span class="stage-tips-label">Заметки этапа</span><ul>${stage.tips.map((tip) => `<li>${escapeHtml(tip)}</li>`).join("")}</ul></div>`
-          : "";
+      let menu = "";
+      if (fireMenuOpen) {
+        const canLight = !lit;
+        const canExtinguish = state.manualStack.length > 0;
+        menu = `<g class="camp-menu">
+          <rect class="camp-menu-plate" x="24" y="-26" width="104" height="58" rx="9"/>
+          <g class="camp-menu-row${canLight ? "" : " is-disabled"}" data-fire-light tabindex="0" role="button" aria-label="${canLight ? "Зажечь огонь" : "Огонь уже горит"}">
+            <rect class="camp-menu-action${canLight ? "" : " is-disabled"}" x="30" y="-19" width="92" height="20" rx="7"/>
+            <text class="camp-menu-text${canLight ? "" : " is-disabled"}" x="76" y="-5">${canLight ? "Зажечь" : "Горит"}</text>
+          </g>
+          <g class="camp-menu-row${canExtinguish ? "" : " is-disabled"}" data-fire-undo tabindex="0" role="button" aria-label="Отжечь огонь">
+            <rect class="camp-menu-action camp-menu-undo${canExtinguish ? "" : " is-disabled"}" x="30" y="6" width="92" height="20" rx="7"/>
+            <text class="camp-menu-text camp-menu-undo-text${canExtinguish ? "" : " is-disabled"}" x="76" y="20">Отжечь</text>
+          </g>
+        </g>`;
+      }
+      return `${glow}${logs}${flames}${menu}`;
+    }
 
-        return `
-          <article class="stage${isOpen ? " is-open" : ""}${complete ? " is-complete" : ""}" data-stage-id="${escapeHtml(stage.id)}">
-            <h2>
-              <button class="stage-toggle" type="button" aria-expanded="${isOpen}" aria-controls="stage-body-${escapeHtml(stage.id)}">
-                <span class="stage-index" aria-hidden="true">${stageIndex + 1}</span>
-                <span class="stage-heading">
-                  <span class="stage-title">${escapeHtml(stage.title)}</span>
-                </span>
-                <span class="stage-count" data-stage-count>${doneCount}/${taskCount}</span>
-                <span class="stage-chevron" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                </span>
-              </button>
-            </h2>
-            <div class="stage-panel" id="stage-body-${escapeHtml(stage.id)}"${isOpen ? "" : " hidden"}>
-              <div class="stage-progress-row">
-                <div class="meter" role="progressbar" aria-label="Прогресс этапа ${escapeHtml(stage.title)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}" data-stage-meter>
-                  <span data-stage-bar style="width:${percent}%"></span>
-                </div>
-                <span class="stage-progress-text" data-stage-progress>выполнено ${doneCount} из ${taskCount}</span>
-              </div>
-              <ul class="task-list">${tasks}</ul>
-              ${tips}
-              <div class="notes-block">
-                <div class="notes-head">
-                  <label for="notes-${escapeHtml(stage.id)}">Заметки</label>
-                  <span class="note-status" data-note-status="${escapeHtml(stage.id)}"></span>
-                </div>
-                <textarea id="notes-${escapeHtml(stage.id)}" data-notes="${escapeHtml(stage.id)}" rows="3" placeholder="Ссылки, вопросы, что повторить…"></textarea>
-              </div>
-            </div>
-          </article>`;
+    function renderFire() {
+      const streak = currentStreak();
+      const litToday = Boolean(state.activity[dayKey()]);
+      const mapFire = dom.journeyMap ? dom.journeyMap.querySelector("[data-fire]") : null;
+      if (mapFire) {
+        const inner = mapFire.querySelector("g");
+        if (inner) inner.innerHTML = mapCampfireInner(streak, litToday);
+        mapFire.setAttribute("aria-label", "Костёр: серия " + streak + (litToday ? ", горит" : ", не горит") + (litToday ? "" : ". Нажми, чтобы зажечь"));
+      }
+    }
+
+    function lightFire() {
+      const key = dayKey();
+      if (state.activity[key]) {
+        showToast("Огонь уже горит сегодня.");
+        return;
+      }
+      state.manualDays[key] = true;
+      state.manualStack.push(key);
+      bumpActivity();
+      markChanged();
+      renderStreak();
+      const mapFire = dom.journeyMap ? dom.journeyMap.querySelector("[data-fire]") : null;
+      if (mapFire) {
+        mapFire.classList.remove("is-lighting");
+        void mapFire.getBoundingClientRect();
+        mapFire.classList.add("is-lighting");
+        window.setTimeout(() => mapFire.classList.remove("is-lighting"), 1200);
+      }
+      showToast("Огонь зажжён.");
+    }
+
+    function undoFire() {
+      const key = state.manualStack.pop();
+      if (!key || !state.manualDays[key]) {
+        showToast("Нечего отменять.");
+        return;
+      }
+      delete state.manualDays[key];
+      if (state.activity[key]) {
+        state.activity[key] -= 1;
+        if (state.activity[key] <= 0) delete state.activity[key];
+      }
+      markChanged();
+      renderStreak();
+      showToast("Последнее ручное зажатие отменено.");
+    }
+
+    function mapStaticSvg() {
+      const trees = MAP_TREES.map(([x, y, s]) => `<path class="map-deco-dim" transform="translate(${x} ${y * MAP_Y}) scale(${s})" d="M0-18l-8 14h16zM0-8l-11 16h22zM0 8v6"/>`).join("");
+      const stars = MAP_STARS.map(([x, y, r]) => `<circle class="map-star" cx="${x}" cy="${y * MAP_Y}" r="${r}"/>`).join("");
+      return `
+        <defs>
+          <pattern id="mapDots" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="1.1" cy="1.1" r="1" fill="var(--line)" opacity=".55"/>
+          </pattern>
+        </defs>
+        <rect width="400" height="${MAP_H}" fill="var(--map-bg)"/>
+        <rect width="400" height="${MAP_H}" fill="url(#mapDots)" opacity=".5"/>
+        <g class="map-java-mark" transform="translate(74 ${196 * MAP_Y}) scale(2.1)">
+          <path d="M-24-10h46c0 7-6 11-14 11h-6v9h10v8h-34v-8h10v-9h-6c-8 0-12-4-6-11z"/>
+          <path class="steam" d="M10-20l3-6M18-16l6-3M2-22v-7"/>
+        </g>
+        ${trees}${stars}
+        <path class="map-deco-dim" d="M0 ${MAP_H - 46}c64-26 128-26 192 0s128 26 208 0"/>
+        <path class="map-deco-dim" d="M0 ${MAP_H - 22}c74-18 138-18 202 0s118 18 198 0"/>
+        <path id="mapRoad" class="map-road" d="${MAP_D}"/>
+        <path class="map-road-dark" d="${MAP_D}"/>
+        <path id="mapProgress" class="map-progress" d="${MAP_D}" stroke-dasharray="0 9999"/>
+        <path class="map-road-dash" d="${MAP_D}"/>
+        <g id="mapDynamic"></g>`;
+    }
+
+    function buildMapGeo(road) {
+      const length = road.getTotalLength();
+      const points = MAP_POINTS.slice(1).map((target) => {
+        let best = 0;
+        let bestD = Infinity;
+        for (let l = 0; l <= length; l += 2) {
+          const point = road.getPointAtLength(l);
+          const d = (point.x - target[0]) ** 2 + (point.y - target[1]) ** 2;
+          if (d < bestD) { bestD = d; best = l; }
+        }
+        return road.getPointAtLength(best);
+      });
+      return { length, points };
+    }
+
+    function mapDynamicSvg(stats) {
+      const current = firstIncompleteStage();
+      const stages = ROADMAP.map((stage, index) => {
+        const total = stage.tasks.length;
+        const done = stage.tasks.reduce((count, _, taskIndex) =>
+          count + (state.tasks[taskKey(stage.id, taskIndex)] ? 1 : 0), 0);
+        const complete = total > 0 && done === total;
+        const isCurrent = Boolean(current && current.id === stage.id);
+        const cls = complete ? "is-done" : (isCurrent ? "is-current" : "is-future");
+        const justCompleted = justCompletedStage === stage.id;
+        const point = (mapGeo && mapGeo.points[index]) || { x: 200, y: 220 + index * 180 };
+        const side = point.x > 200 ? -1 : 1;
+        const lx = point.x + side * 104;
+        const lines = wrapText(stage.title, stage.id === "stage5" ? 15 : 18).slice(0, 3);
+        const plateH = 70 + lines.length * 16;
+        const icon = STAGE_ICONS[index % STAGE_ICONS.length];
+        const nodeInner = complete
+          ? '<path class="map-node-check" d="M-4 0l3 3 5-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'
+          : `<text class="map-node-num" y="4">${index + 1}</text>`;
+        return `<g class="map-stage ${cls}${justCompleted ? " is-just-completed" : ""}" data-stage-open="${escapeHtml(stage.id)}" tabindex="0" role="button" aria-label="${escapeHtml(stage.title)}: ${done} из ${total}">
+          <path class="map-deco-line" d="M${point.x} ${point.y} L${lx - side * 84} ${point.y}"/>
+          <rect class="map-plate" x="${lx - 84}" y="${point.y - 52}" width="168" height="${plateH}" rx="10"/>
+          <g class="map-icon" transform="translate(${lx} ${point.y - 26}) scale(.72)">${icon}</g>
+          <text class="map-title" x="${lx}" y="${point.y + 2}">${lines.map((line, i) => `<tspan x="${lx}" dy="${i ? 16 : 0}">${escapeHtml(line)}</tspan>`).join("")}</text>
+          <text class="map-count" x="${lx}" y="${point.y + 6 + lines.length * 16}">${complete ? "пройдено" : done + " из " + total}</text>
+          ${isCurrent ? `<circle class="map-current-ring" cx="${point.x}" cy="${point.y}" r="18"/>` : ""}
+          <g transform="translate(${point.x} ${point.y})">
+            <circle class="map-node" r="11"/>
+            ${nodeInner}
+          </g>
+        </g>`;
       }).join("");
 
-      dom.roadmapList.querySelectorAll("textarea[data-notes]").forEach((area) => {
-        area.value = state.notes[area.dataset.notes] || "";
-      });
+      const buildingData = [
+        { x: 64, y: 600, title: "Тренажёрка", sub: "Практика", view: "practice", icon: '<path d="M-24-8v16M-16-12v24M16-12v24M24-8v16M-16 0h32"/><path d="M-26 14v-8M26 14v-8"/>' },
+        { x: 336, y: 820, title: "Зал славы", sub: "Ачивки", view: "achievements", icon: '<path d="M-26 14l26-38 26 38zM0-24v34M0-24h16v10H0"/><path class="bldg-gold" d="M0-24h16v10H0z"/>' },
+        { x: 64, y: 1040, title: "Библиотека", sub: "Минимум", view: "checklist", icon: '<path d="M-26 14v-22l26-16 26 16v22M-12 14V0h24v14M-6 4h12M-6 8h12"/><path class="bldg-moss" d="M-12 0h24v14h-24z" opacity=".28"/>' },
+        { x: 336, y: 1476, title: "Дом", sub: "Ещё", view: "settings", icon: '<path d="M-28 14v-22l28-18 28 18v22M-10 14V2h20v12M-4 2h8M16-28v10"/><rect class="bldg-accent" x="-4" y="4" width="8" height="8" rx="1"/>' }
+      ];
+
+      const buildings = buildingData.map((building) => {
+        const by = building.y * MAP_Y;
+        return `<g class="map-building" data-view="${building.view}" tabindex="0" role="button" aria-label="${building.title} — ${building.sub}">
+        <g transform="translate(${building.x} ${by})"><g class="bldg-line">${building.icon}</g></g>
+        <rect class="bldg-plate" x="${building.x - 62}" y="${by + 24}" width="124" height="38" rx="9"/>
+        <text class="bldg-title" x="${building.x}" y="${by + 40}">${building.title}</text>
+        <text class="bldg-sub" x="${building.x}" y="${by + 53}">${building.sub}</text>
+      </g>`;
+      }).join("");
+
+      const litToday = Boolean(state.activity[dayKey()]);
+      return `<g class="map-campfire" data-fire tabindex="0" role="button" aria-label="Костёр. Нажми, чтобы открыть действия.">
+          <g transform="translate(${MAP_POINTS[0][0]} ${MAP_POINTS[0][1]})">${mapCampfireInner(stats.streak, litToday)}</g>
+        </g>
+        ${stages}
+        ${buildings}
+        <g id="mapWalker" class="map-walker" transform="translate(200 70)">
+          <g transform="scale(1.35) translate(0 -4)">
+            <g class="walker-body">
+              <circle class="walker-head" cy="-17" r="3.6"/>
+              <path class="walker-line" d="M0-13v11M-5 7l5-9 5 9"/>
+              <path class="walker-line" d="M0-10l8 3"/>
+              <circle class="walker-lantern" cx="9" cy="-3" r="2.7"/>
+              <circle class="walker-glow" cx="9" cy="-3" r="4.6"/>
+            </g>
+          </g>
+        </g>`;
+    }
+
+    function updateMapWalk(stats, animate) {
+      if (!dom.journeyMap) return;
+      const road = dom.journeyMap.querySelector("#mapRoad");
+      const progress = dom.journeyMap.querySelector("#mapProgress");
+      const walker = dom.journeyMap.querySelector("#mapWalker");
+      if (!road || !progress || !walker) return;
+      const ratio = TOTAL_TASKS ? Math.max(0, Math.min(1, stats.tasks / TOTAL_TASKS)) : 0;
+      const target = road.getTotalLength() * ratio;
+      const from = lastMapPos;
+      lastMapPos = target;
+      const apply = (position) => {
+        const point = road.getPointAtLength(Math.max(28, position));
+        walker.setAttribute("transform", "translate(" + point.x + " " + point.y + ")");
+        progress.setAttribute("stroke-dasharray", position + " 9999");
+      };
+      if (!animate || from === target || (reducedMotion && reducedMotion.matches)) {
+        apply(target);
+      } else {
+        const token = ++mapWalkToken;
+        const start = performance.now();
+        const duration = Math.min(1500, 500 + Math.abs(target - from) * 1.2);
+        const step = (now) => {
+          if (token !== mapWalkToken) return;
+          const k = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - k, 3);
+          apply(from + (target - from) * eased);
+          if (k < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      }
+      if (mapNeedsScroll && document.body.dataset.tab === "roadmap") {
+        mapNeedsScroll = false;
+        const point = road.getPointAtLength(target);
+        window.requestAnimationFrame(() => {
+          const rect = dom.journeyMap.getBoundingClientRect();
+          const scale = rect.width / 400;
+          const pageY = rect.top + window.scrollY + point.y * scale;
+          window.setTimeout(() => {
+            window.scrollTo({ top: Math.max(0, pageY - window.innerHeight * 0.58), behavior: "smooth" });
+          }, 80);
+        });
+      }
+    }
+
+    function renderMap(options) {
+      if (!dom.journeyMap) return;
+      const stats = computeStats();
+      dom.journeyMap.setAttribute("viewBox", "0 0 400 " + MAP_H);
+      dom.journeyMap.innerHTML = mapStaticSvg();
+      const road = dom.journeyMap.querySelector("#mapRoad");
+      if (!mapGeo && road) mapGeo = buildMapGeo(road);
+      const dynamic = dom.journeyMap.querySelector("#mapDynamic");
+      if (dynamic) dynamic.innerHTML = mapDynamicSvg(stats);
+      updateMapWalk(stats, !(options && options.animate === false));
+      if (dom.mapStagesDone) dom.mapStagesDone.textContent = String(stats.stages);
+      if (dom.mapPracticeDone) dom.mapPracticeDone.textContent = String(stats.practice);
+      if (dom.mapAchDone) dom.mapAchDone.textContent = String(Object.keys(state.achievements).length);
+    }
+
+    // ---------- Шторка этапа ----------
+    function openStageSheet(stageId) {
+      if (!findStage(stageId)) return;
+      sheetStage = stageId;
+      renderStageSheet();
+    }
+
+    function closeStageSheet() {
+      if (!sheetStage) return;
+      sheetStage = null;
+      if (dom.stageSheet) dom.stageSheet.innerHTML = "";
+      document.body.classList.remove("sheet-open");
+    }
+
+    function renderStageSheet() {
+      if (!dom.stageSheet) return;
+      if (!sheetStage) {
+        dom.stageSheet.innerHTML = "";
+        document.body.classList.remove("sheet-open");
+        return;
+      }
+      const stage = findStage(sheetStage);
+      if (!stage) { closeStageSheet(); return; }
+      const index = ROADMAP.indexOf(stage);
+      const total = stage.tasks.length;
+      const done = stage.tasks.reduce((count, _, taskIndex) =>
+        count + (state.tasks[taskKey(stage.id, taskIndex)] ? 1 : 0), 0);
+      const percent = total ? Math.round((done / total) * 100) : 0;
+      const scroller = dom.stageSheet.querySelector(".stage-sheet");
+      const scrollTop = scroller ? scroller.scrollTop : 0;
+      const tasks = stage.tasks.map((task, taskIndex) => {
+        const key = taskKey(stage.id, taskIndex);
+        const checked = Boolean(state.tasks[key]);
+        return `<li><label class="task${checked ? " is-done" : ""}">
+          <input type="checkbox" data-task="${escapeHtml(key)}"${checked ? " checked" : ""}>
+          <span class="check-box" aria-hidden="true"></span>
+          <span class="task-body"><span class="task-text">${escapeHtml(task.title)}</span>${task.detail ? `<span class="task-detail">${escapeHtml(task.detail)}</span>` : ""}</span>
+        </label></li>`;
+      }).join("");
+      const tips = (stage.tips && stage.tips.length)
+        ? `<div class="stage-tips"><span class="stage-tips-label">Заметки этапа</span><ul>${stage.tips.map((tip) => `<li>${escapeHtml(tip)}</li>`).join("")}</ul></div>`
+        : "";
+      dom.stageSheet.innerHTML = `<div class="sheet-scrim" data-close-sheet></div>
+        <section class="stage-sheet" role="dialog" aria-modal="true" aria-label="${escapeHtml(stage.title)}">
+          <div class="sheet-head">
+            <div class="sheet-icon" aria-hidden="true">${stageIconSvg(index)}</div>
+            <div style="flex:1;min-width:0">
+              <p class="eyebrow">Остановка ${String(index + 1).padStart(2, "0")}</p>
+              <h2>${escapeHtml(stage.title)}</h2>
+              <p class="sheet-sub">${done} из ${total} · ${percent}%</p>
+            </div>
+            <button class="sheet-close" type="button" data-close-sheet aria-label="Закрыть">×</button>
+          </div>
+          <div class="sheet-progress">
+            <div class="meter" role="progressbar" aria-label="Прогресс этапа ${escapeHtml(stage.title)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><span style="width:${percent}%"></span></div>
+            <span>${done}/${total}</span>
+          </div>
+          <ul class="task-list">${tasks}</ul>
+          ${tips}
+          <div class="notes-block">
+            <div class="notes-head"><label for="notes-${escapeHtml(stage.id)}">Заметки</label><span class="note-status" data-note-status="${escapeHtml(stage.id)}"></span></div>
+            <textarea id="notes-${escapeHtml(stage.id)}" data-notes="${escapeHtml(stage.id)}" rows="3" placeholder="Ссылки, вопросы, что повторить…"></textarea>
+          </div>
+        </section>`;
+      const area = dom.stageSheet.querySelector("textarea[data-notes]");
+      if (area) area.value = state.notes[stage.id] || "";
+      document.body.classList.add("sheet-open");
+      const nextScroller = dom.stageSheet.querySelector(".stage-sheet");
+      if (nextScroller && scrollTop) nextScroller.scrollTop = scrollTop;
     }
 
     function renderChecklist() {
@@ -3179,16 +4171,20 @@
 
     function updateOverview() {
       const stats = computeStats();
-      dom.overallCount.textContent = "выполнено " + stats.tasks + " из " + TOTAL_TASKS + " задач";
-      dom.overallPercent.textContent = stats.percent + "%";
-      dom.overallRing.style.setProperty("--pct", String(stats.percent));
-      dom.overallBar.style.width = stats.percent + "%";
-      dom.overallMeter.setAttribute("aria-valuenow", String(stats.percent));
-      dom.stagesDone.textContent = String(stats.stages);
-      dom.practiceStat.textContent = String(stats.practice);
+      if (dom.overallCount) dom.overallCount.textContent = "выполнено " + stats.tasks + " из " + TOTAL_TASKS + " задач";
+      if (dom.overallPercent) dom.overallPercent.textContent = stats.percent + "%";
+      if (dom.overallRing) dom.overallRing.style.setProperty("--pct", String(stats.percent));
+      if (dom.overallBar) dom.overallBar.style.width = stats.percent + "%";
+      if (dom.overallMeter) dom.overallMeter.setAttribute("aria-valuenow", String(stats.percent));
+      if (dom.stagesDone) dom.stagesDone.textContent = String(stats.stages);
+      if (dom.practiceStat) dom.practiceStat.textContent = String(stats.practice);
       if (dom.practiceUnit) dom.practiceUnit.textContent = plural(stats.practice, "задача", "задачи", "задач");
-      dom.achievementStat.textContent = String(Object.keys(state.achievements).length);
-      dom.practiceCount.textContent = stats.practice + " из " + TOTAL_PROBLEMS + " задач";
+      if (dom.achievementStat) dom.achievementStat.textContent = String(Object.keys(state.achievements).length);
+      if (dom.practiceCount) dom.practiceCount.textContent = stats.practice + " из " + TOTAL_PROBLEMS + " задач";
+      if (dom.mapStagesDone) dom.mapStagesDone.textContent = String(stats.stages);
+      if (dom.mapPracticeDone) dom.mapPracticeDone.textContent = String(stats.practice);
+      if (dom.mapAchDone) dom.mapAchDone.textContent = String(Object.keys(state.achievements).length);
+      if (dom.pathProgress) dom.pathProgress.setAttribute("aria-label", "Общий прогресс: " + stats.percent + "%. Показать человечка");
       renderStreak();
     }
 
@@ -3293,7 +4289,7 @@
       const done = PRACTICE_PROBLEMS.reduce((count, problem) =>
         count + (state.practice[problem.slug] ? 1 : 0), 0);
       dom.practiceCount.textContent = done + " из " + TOTAL_PROBLEMS + " задач";
-      dom.practiceStat.textContent = String(done);
+      if (dom.practiceStat) dom.practiceStat.textContent = String(done);
       if (dom.practiceUnit) dom.practiceUnit.textContent = plural(done, "задача", "задачи", "задач");
     }
 
@@ -3351,28 +4347,31 @@
       dom.achMeter.setAttribute("aria-valuenow", String(percent));
       if (dom.achievementStat) dom.achievementStat.textContent = String(unlockedCount);
 
+      const rotations = [-8, 5, -4, 7, -6, 3, -9, 6, -3, 8, -7, 4];
       dom.achievementGrid.innerHTML = ACHIEVEMENTS.map((item, index) => {
         const unlockedAt = state.achievements[item.id];
         const value = Math.min(metricValue(item.metric, stats), item.target);
-        const progress = item.target ? Math.min(100, Math.round((value / item.target) * 100)) : 0;
-        let foot = "";
-        if (unlockedAt) {
-          const date = new Date(unlockedAt);
-          const formatted = Number.isFinite(date.getTime())
-            ? date.toLocaleDateString("ru-RU", { day: "numeric", month: "short" })
-            : "";
-          foot = '<span class="achievement-date">' + escapeHtml(formatted) + "</span>";
-        } else {
-          foot = '<span class="achievement-progress">' + value + " / " + item.target + "</span>" +
-            '<div class="meter"><span style="width:' + progress + '%"></span></div>';
-        }
-        return `
-          <article class="achievement${unlockedAt ? " is-unlocked" : " is-locked"}">
-            <div class="achievement-icon" aria-hidden="true">${String(index + 1).padStart(2, "0")}</div>
-            <h3 class="achievement-title">${escapeHtml(item.title)}</h3>
-            <p class="achievement-desc">${escapeHtml(item.desc)}</p>
-            <div class="achievement-foot">${foot}</div>
-          </article>`;
+        const lines = wrapText(item.title, 12).slice(0, 3);
+        const startY = 53 - (lines.length - 1) * 5;
+        const rotation = rotations[index % rotations.length];
+        const foot = unlockedAt
+          ? '<span class="stamp-date">' + escapeHtml((() => {
+              const date = new Date(unlockedAt);
+              return Number.isFinite(date.getTime())
+                ? date.toLocaleDateString("ru-RU", { day: "numeric", month: "short" })
+                : "";
+            })()) + "</span>"
+          : '<span class="stamp-progress">' + value + " / " + item.target + "</span>";
+        return `<li class="passport-stamp ${unlockedAt ? "is-on" : "is-locked"}" style="--rot:${rotation}deg">
+          <svg viewBox="0 0 100 100" role="img" aria-label="${escapeHtml(item.title)}${unlockedAt ? "" : ", не открыт"}">
+            <circle class="stamp-ring" cx="50" cy="50" r="45"/>
+            <circle class="stamp-ring-2" cx="50" cy="50" r="37"/>
+            <text class="stamp-text" x="50" y="${startY}">${lines.map((line, lineIndex) => `<tspan x="50" dy="${lineIndex ? 11 : 0}">${escapeHtml(line)}</tspan>`).join("")}</text>
+            <text class="stamp-num" x="50" y="82">${String(index + 1).padStart(2, "0")}</text>
+          </svg>
+          <p>${escapeHtml(item.desc)}</p>
+          ${foot}
+        </li>`;
       }).join("");
     }
 
@@ -3570,9 +4569,9 @@
     }
 
     function setNoteStatus(stageId, text, saved) {
-      const status = dom.roadmapList.querySelector(
-        '[data-note-status="' + cssEscape(stageId) + '"]'
-      );
+      const status = dom.stageSheet
+        ? dom.stageSheet.querySelector('[data-note-status="' + cssEscape(stageId) + '"]')
+        : null;
       if (!status) return;
       status.textContent = text;
       status.classList.toggle("is-saved", Boolean(saved));
@@ -3624,18 +4623,58 @@
     function handleTaskChange(input) {
       const key = input.dataset.task;
       if (!key) return;
+      const stageId = key.split(":")[0];
+      const stage = findStage(stageId);
+      const total = stage ? stage.tasks.length : 0;
+      const countDone = () => stage ? stage.tasks.reduce((count, _, index) =>
+        count + (state.tasks[taskKey(stage.id, index)] ? 1 : 0), 0) : 0;
+      const beforeDone = countDone();
       if (input.checked) {
         state.tasks[key] = true;
         bumpActivity();
       } else {
         delete state.tasks[key];
       }
+      const afterDone = countDone();
+      if (total && afterDone === total && beforeDone < total) justCompletedStage = stageId;
       const item = input.closest(".task");
-      if (item) item.classList.toggle("is-done", input.checked);
-      const stageId = key.split(":")[0];
-      updateStageUI(stageId);
-      updateOverview();
+      if (item) {
+        item.classList.toggle("is-done", input.checked);
+        if (input.checked) {
+          item.classList.add("just-checked");
+          window.setTimeout(() => item.classList.remove("just-checked"), 500);
+        }
+      }
       markChanged();
+      renderMap({ animate: true });
+      updateSheetProgress(stageId);
+      if (justCompletedStage === stageId) {
+        window.setTimeout(() => {
+          if (justCompletedStage === stageId) justCompletedStage = null;
+        }, 950);
+      }
+    }
+
+    function updateSheetProgress(stageId) {
+      if (sheetStage !== stageId || !dom.stageSheet) return;
+      const stage = findStage(stageId);
+      if (!stage) return;
+      const total = stage.tasks.length;
+      const done = stage.tasks.reduce((count, _, index) =>
+        count + (state.tasks[taskKey(stage.id, index)] ? 1 : 0), 0);
+      const percent = total ? Math.round((done / total) * 100) : 0;
+      const sheet = dom.stageSheet.querySelector(".stage-sheet");
+      if (!sheet) return;
+      const sub = sheet.querySelector(".sheet-sub");
+      if (sub) sub.textContent = done + " из " + total + " · " + percent + "%";
+      const meter = sheet.querySelector(".sheet-progress .meter");
+      if (meter) {
+        meter.setAttribute("aria-valuenow", String(percent));
+        const bar = meter.querySelector("span");
+        if (bar) bar.style.width = percent + "%";
+      }
+      const count = sheet.querySelector(".sheet-progress > span");
+      if (count) count.textContent = done + "/" + total;
     }
 
     function handleChecklistChange(input) {
@@ -3694,17 +4733,21 @@
     function switchTab(name, withHash) {
       name = TAB_ALIASES[name] || name;
       if (!TAB_NAMES.includes(name)) name = "roadmap";
+      const previous = activeTab;
+      const mapPanel = document.getElementById("panel-roadmap");
+      const mapWasHidden = mapPanel ? mapPanel.hidden : false;
+      if (name !== activeTab) closeStageSheet();
       activeTab = name;
-      document.querySelectorAll('[role="tab"]').forEach((tab) => {
-        const selected = tab.dataset.tab === name;
-        tab.setAttribute("aria-selected", String(selected));
-        tab.tabIndex = selected ? 0 : -1;
-      });
       document.querySelectorAll('[role="tabpanel"]').forEach((panel) => {
         panel.hidden = panel.id !== "panel-" + name;
       });
       document.body.dataset.tab = name;
-      if (window.matchMedia("(max-width: 720px)").matches && window.scrollY > 0) {
+      if (dom.backToMap) dom.backToMap.hidden = name === "roadmap";
+      if (name === "roadmap") {
+        if (previous !== "roadmap") mapNeedsScroll = true;
+        if (mapWasHidden || previous !== "roadmap") renderMap({ animate: false });
+      }
+      if (window.matchMedia("(max-width: 720px)").matches && window.scrollY > 0 && name !== "roadmap") {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
       if (withHash !== false) {
@@ -4091,27 +5134,68 @@
 
     // ---------- События ----------
     function bindEvents() {
-      dom.stageNav.addEventListener("click", (event) => {
-        const chip = event.target.closest("[data-jump-stage]");
-        if (!chip) return;
-        const stageId = chip.dataset.jumpStage;
-        openStages = new Set([stageId]);
-        renderRoadmap();
-        const article = dom.roadmapList.querySelector('[data-stage-id="' + stageId + '"]');
-        if (article) article.scrollIntoView({ behavior: "smooth", block: "start" });
+      dom.journeyMap.addEventListener("click", (event) => {
+        const light = event.target.closest("[data-fire-light]");
+        if (light) {
+          event.stopPropagation();
+          if (!state.activity[dayKey()]) lightFire();
+          else showToast("Огонь уже горит сегодня.");
+          fireMenuOpen = false;
+          renderFire();
+          return;
+        }
+        const extinguish = event.target.closest("[data-fire-undo]");
+        if (extinguish) {
+          event.stopPropagation();
+          undoFire();
+          fireMenuOpen = false;
+          renderFire();
+          return;
+        }
+        const fire = event.target.closest("[data-fire]");
+        if (fire) {
+          fireMenuOpen = !fireMenuOpen;
+          renderFire();
+          return;
+        }
+        if (fireMenuOpen) {
+          fireMenuOpen = false;
+          renderFire();
+        }
+        const stage = event.target.closest("[data-stage-open]");
+        if (stage) { openStageSheet(stage.dataset.stageOpen); return; }
+        const building = event.target.closest("[data-view]");
+        if (building) { switchTab(building.dataset.view); return; }
       });
 
-      dom.roadmapList.addEventListener("click", (event) => {
-        const toggle = event.target.closest(".stage-toggle");
-        if (toggle) toggleStage(toggle);
+      dom.journeyMap.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        const target = event.target.closest("[data-stage-open],[data-view],[data-fire],[data-fire-light],[data-fire-undo]");
+        if (!target) return;
+        event.preventDefault();
+        target.dispatchEvent(new MouseEvent("click", { bubbles: true }));
       });
 
-      dom.roadmapList.addEventListener("change", (event) => {
+      dom.stageSheet.addEventListener("click", (event) => {
+        if (event.target.closest("[data-close-sheet]")) closeStageSheet();
+      });
+
+      dom.stageSheet.addEventListener("change", (event) => {
         if (event.target.matches("input[data-task]")) handleTaskChange(event.target);
       });
 
-      dom.roadmapList.addEventListener("input", (event) => {
+      dom.stageSheet.addEventListener("input", (event) => {
         if (event.target.matches("textarea[data-notes]")) handleNoteInput(event.target);
+      });
+
+      dom.backToMap.addEventListener("click", () => switchTab("roadmap"));
+      dom.pathProgress.addEventListener("click", () => {
+        mapNeedsScroll = true;
+        renderMap({ animate: false });
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && sheetStage) closeStageSheet();
       });
 
       dom.practiceList.addEventListener("click", (event) => {
@@ -4150,32 +5234,6 @@
 
       dom.checklistList.addEventListener("change", (event) => {
         if (event.target.matches("input[data-check]")) handleChecklistChange(event.target);
-      });
-
-      dom.themeToggle.addEventListener("click", () => {
-        state.theme = resolvedTheme() === "dark" ? "light" : "dark";
-        applyTheme();
-        markChanged();
-      });
-
-      dom.tabbar.addEventListener("click", (event) => {
-        const tab = event.target.closest("[data-tab]");
-        if (tab) switchTab(tab.dataset.tab);
-      });
-
-      dom.tabbar.addEventListener("keydown", (event) => {
-        const tabs = Array.from(dom.tabbar.querySelectorAll('[role="tab"]'));
-        const current = tabs.indexOf(document.activeElement);
-        if (current < 0) return;
-        let next = current;
-        if (event.key === "ArrowRight") next = (current + 1) % tabs.length;
-        else if (event.key === "ArrowLeft") next = (current - 1 + tabs.length) % tabs.length;
-        else if (event.key === "Home") next = 0;
-        else if (event.key === "End") next = tabs.length - 1;
-        else return;
-        event.preventDefault();
-        switchTab(tabs[next].dataset.tab);
-        tabs[next].focus();
       });
 
       dom.connectBtn.addEventListener("click", connectSync);

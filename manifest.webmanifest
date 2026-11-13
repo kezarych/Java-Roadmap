@@ -7,8 +7,8 @@
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "theme_color": "#171416",
-  "background_color": "#f3efe9",
+  "theme_color": "#0d0b09",
+  "background_color": "#0d0b09",
   "categories": [
     "education",
     "productivity"
