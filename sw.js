@@ -1,8 +1,9 @@
 // Service worker: офлайн-кэш приложения
-const CACHE_NAME = "go-roadmap-v5";
+const CACHE_NAME = "java-roadmap-v2";
 const CORE_ASSETS = [
   "./",
   "./index.html",
+  "./roadmap.json",
   "./manifest.webmanifest",
   "./icon-192.png",
   "./icon-512.png"
@@ -47,6 +48,22 @@ self.addEventListener("fetch", (event) => {
           return response;
         })
         .catch(() => caches.match("./index.html"))
+    );
+    return;
+  }
+
+  // Роадмап всегда проверяем по сети, чтобы сайт и приложение получали свежий план.
+  if (url.pathname.endsWith("/roadmap.json")) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response && response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(request))
     );
     return;
   }

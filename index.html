@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#5566e8">
-  <meta name="description" content="Уютный трекер роадмапа по Go: этапы, практика LeetCode по темам, ачивки, заметки, чек-лист и синхронизация через GitHub Gist.">
+  <meta name="theme-color" content="#171416">
+  <meta name="description" content="Трекер роадмапа Java Backend: этапы, практика LeetCode, ачивки, заметки, чек-лист и синхронизация через GitHub Gist.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Go Roadmap">
-  <meta name="application-name" content="Go Roadmap">
-  <title>Трекер роадмапа Go</title>
+  <meta name="apple-mobile-web-app-title" content="Java Roadmap">
+  <meta name="application-name" content="Java Roadmap">
+  <title>Java Roadmap — путь до стажировки</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./icon-192.png" type="image/png">
   <link rel="apple-touch-icon" href="./icon-192.png">
@@ -22,708 +22,1662 @@
         var saved = JSON.parse(localStorage.getItem('go-roadmap-v1') || 'null');
         if (saved && (saved.theme === 'light' || saved.theme === 'dark')) theme = saved.theme;
       } catch (e) {}
-      if (!theme) {
-        theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
+      if (!theme) theme = 'dark';
       document.documentElement.dataset.theme = theme;
     })();
   </script>
   <style>
     :root {
       color-scheme: light;
-      --bg: #f5f6fc;
-      --bg-glow: #e4e9ff;
-      --bg-glow-2: #dcf8f0;
-      --bg-glow-3: #fdeade;
+      --paper: #f3f2f0;
+      --paper-2: #faf9f7;
       --surface: #ffffff;
-      --surface-2: #f7f8fd;
-      --surface-3: #eef1f9;
-      --text: #232838;
-      --text-soft: #4e566b;
-      --muted: #8b93a8;
-      --border: #e7eaf4;
-      --border-strong: #d5dbea;
-      --accent: #6474f0;
-      --accent-deep: #4f5ed6;
-      --accent-ink: #4553c5;
-      --accent-soft: #eef0ff;
-      --mint: #1fa982;
-      --mint-soft: #e2f8f0;
-      --warm: #f2994a;
-      --warm-deep: #d87f31;
-      --warm-soft: #fdf0e2;
-      --warm-border: #f5e1c9;
-      --gold: #d9a22e;
-      --gold-soft: #fcf3da;
-      --success: #1f9d73;
-      --success-soft: #e1f7ee;
-      --danger: #dd5a5a;
-      --danger-soft: #fdecec;
-      --easy: #1f9d73;
-      --medium: #b8861b;
-      --hard: #dd5a5a;
-      --shadow: 0 18px 40px rgba(44, 56, 110, .10);
-      --shadow-sm: 0 4px 14px rgba(44, 56, 110, .05);
-      --header-bg: rgba(245, 246, 252, .78);
-      --focus: rgba(100, 116, 240, .32);
-      --radius: 24px;
-      --radius-sm: 16px;
+      --surface-2: #f4f3f1;
+      --surface-3: #e8e6e3;
+      --ink: #090909;
+      --on-ink: #ffffff;
+      --text: #0e0e0f;
+      --text-soft: #444448;
+      --muted: #7a7a80;
+      --line: #dedddb;
+      --line-strong: #bcbbb8;
+      --red: #e01f1f;
+      --red-deep: #b31414;
+      --red-bright: #ff3b3b;
+      --red-soft: #ffe6e6;
+      --red-panel: #fff1f0;
+      --sand: #9c9c9c;
+      --green: #2f7a4e;
+      --amber: #a86a1a;
+      --danger: #d21c1c;
+      --shadow: 0 2px 0 rgba(0, 0, 0, .03), 0 22px 44px -28px rgba(0, 0, 0, .38);
+      --shadow-sm: 0 2px 0 rgba(0, 0, 0, .03), 0 10px 22px -16px rgba(0, 0, 0, .28);
+      --radius: 22px;
+      --radius-sm: 14px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-display: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, "Times New Roman", serif;
+      --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     }
+
     :root[data-theme="dark"] {
       color-scheme: dark;
-      --bg: #0d1120;
-      --bg-glow: #1b2450;
-      --bg-glow-2: #0f2c2a;
-      --bg-glow-3: #33251a;
-      --surface: #171c2d;
-      --surface-2: #1d2336;
-      --surface-3: #252c42;
-      --text: #eaeefb;
-      --text-soft: #b9c2d8;
-      --muted: #8b95ad;
-      --border: #273049;
-      --border-strong: #38425d;
-      --accent: #8f9dff;
-      --accent-deep: #727ff0;
-      --accent-ink: #b3bdff;
-      --accent-soft: #202748;
-      --mint: #5cd7ab;
-      --mint-soft: #123229;
-      --warm: #f6b06a;
-      --warm-deep: #e69a52;
-      --warm-soft: #33261a;
-      --warm-border: #46341f;
-      --gold: #e7bf6a;
-      --gold-soft: #322a17;
-      --success: #5cd7ab;
-      --success-soft: #123229;
-      --danger: #ff9b9b;
-      --danger-soft: #3a2224;
-      --easy: #5cd7ab;
-      --medium: #e7bf6a;
-      --hard: #ff9b9b;
-      --shadow: 0 20px 46px rgba(0, 0, 0, .42);
-      --shadow-sm: 0 4px 16px rgba(0, 0, 0, .26);
-      --header-bg: rgba(13, 17, 32, .76);
-      --focus: rgba(143, 157, 255, .38);
+      --paper: #050505;
+      --paper-2: #080808;
+      --surface: #0b0b0b;
+      --surface-2: #111111;
+      --surface-3: #1a1a1a;
+      --ink: #000000;
+      --on-ink: #ffffff;
+      --text: #f5f4f2;
+      --text-soft: #c4c3c0;
+      --muted: #8c8b89;
+      --line: #232323;
+      --line-strong: #3a3a3a;
+      --red: #ff2e2e;
+      --red-deep: #c41414;
+      --red-bright: #ff4a4a;
+      --red-soft: #2a0d0d;
+      --red-panel: #170707;
+      --sand: #a8a8a8;
+      --green: #4fae7a;
+      --amber: #d79a3a;
+      --danger: #ff4a4a;
+      --shadow: 0 2px 0 rgba(0, 0, 0, .5), 0 16px 30px -24px rgba(0, 0, 0, 1);
+      --shadow-sm: 0 2px 0 rgba(0, 0, 0, .45), 0 8px 18px -16px rgba(0, 0, 0, .95);
     }
+
     * { box-sizing: border-box; }
-    html { min-height: 100%; scroll-behavior: smooth; }
+
+    @media (min-width: 900px) {
+      body { zoom: 1.15; }
+    }
+
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
     body {
-      min-height: 100vh;
-      min-height: 100dvh;
       margin: 0;
-      overflow-x: hidden;
-      background-color: var(--bg);
+      min-height: 100vh;
+      background-color: var(--paper);
       background-image:
-        radial-gradient(820px 460px at 88% -12%, var(--bg-glow), transparent 64%),
-        radial-gradient(680px 420px at -8% 4%, var(--bg-glow-2), transparent 62%),
-        radial-gradient(760px 520px at 55% 108%, var(--bg-glow-3), transparent 68%);
-      background-attachment: fixed;
+        linear-gradient(to right, rgba(0, 0, 0, .035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, .035) 1px, transparent 1px);
+      background-size: 72px 72px;
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.55;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
-    button, input, textarea { font: inherit; }
-    button { -webkit-tap-highlight-color: transparent; }
-    button, label, a { touch-action: manipulation; }
-    a { color: var(--accent-ink); }
-    img, svg { max-width: 100%; }
-    p, h1, h2, h3 { margin: 0; }
-    [hidden] { display: none !important; }
-    ::selection { background: var(--accent); color: #fff; }
-    .sr-only {
-      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-      overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; border: 0;
-    }
-    .skip-link {
-      position: fixed; top: 8px; left: 8px; z-index: 100; transform: translateY(-160%);
-      min-height: 44px; padding: 10px 16px; border-radius: 10px; background: var(--text); color: var(--bg);
-      font-weight: 700; text-decoration: none;
-    }
-    .skip-link:focus { transform: none; }
-    .shell { width: min(1060px, calc(100% - 32px)); margin-inline: auto; }
-    .topbar {
-      position: sticky; top: 0; z-index: 40;
-      border-bottom: 1px solid transparent;
-      background: var(--header-bg);
-      -webkit-backdrop-filter: blur(18px);
-      backdrop-filter: blur(18px);
-    }
-    .topbar-inner {
-      display: flex; align-items: center; justify-content: space-between; gap: 14px;
-      min-height: 74px; padding-top: calc(12px + env(safe-area-inset-top)); padding-bottom: 12px;
-    }
-    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
-    .brand-mark {
-      flex: none; display: grid; place-items: center; width: 46px; height: 46px;
-      border-radius: 15px; color: #fff;
-      background: linear-gradient(145deg, #8b99ff, #5b6ae6 78%);
-      box-shadow: 0 8px 18px rgba(91, 106, 230, .28), inset 0 1px 0 rgba(255, 255, 255, .34);
-      font-size: 17px; font-weight: 800; letter-spacing: -.03em;
-    }
-    .brand-copy { min-width: 0; }
-    .brand h1 {
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-      font-size: 17px; font-weight: 750; line-height: 1.25; letter-spacing: -.02em;
-    }
-    .brand p { margin-top: 2px; color: var(--muted); font-size: 12px; }
-    .top-actions { display: flex; align-items: center; gap: 8px; flex: none; }
-    .sync-chip {
-      display: inline-flex; align-items: center; gap: 8px; max-width: 220px; min-height: 36px;
-      padding: 6px 12px; border: 1px solid var(--border); border-radius: 999px;
-      background: var(--surface); color: var(--text-soft); font-size: 12px; font-weight: 600;
-      box-shadow: var(--shadow-sm);
-    }
-    .sync-chip span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .sync-dot { width: 8px; height: 8px; flex: none; border-radius: 50%; background: var(--muted); }
-    [data-sync="synced"] .sync-dot { background: var(--success); }
-    [data-sync="syncing"] .sync-dot { background: var(--accent); animation: pulse 1.2s ease-in-out infinite; }
-    [data-sync="error"] .sync-dot { background: var(--danger); }
-    @keyframes pulse { 50% { opacity: .35; transform: scale(.8); } }
-    .streak-chip {
-      display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 5px 12px;
-      border: 1px solid var(--border); border-radius: 999px; background: var(--surface);
-      color: var(--text-soft); font-size: 12px; font-weight: 700;
-      font-variant-numeric: tabular-nums; box-shadow: var(--shadow-sm);
-    }
-    .streak-chip .flame { font-size: 14px; line-height: 1; }
-    .streak-chip.is-hot { border-color: var(--warm-border); background: var(--warm-soft); color: var(--warm-deep); }
-    .icon-btn {
-      display: grid; place-items: center; width: 46px; height: 46px; padding: 0;
-      border: 1px solid var(--border); border-radius: 14px; background: var(--surface);
-      color: var(--text-soft); cursor: pointer; box-shadow: var(--shadow-sm);
-      transition: border-color .2s ease, color .2s ease, transform .2s ease, background .2s ease;
-    }
-    .icon-btn:hover { border-color: var(--accent); color: var(--accent-ink); background: var(--accent-soft); }
-    .icon-btn:active { transform: scale(.96); }
-    .icon-btn svg { width: 21px; height: 21px; }
-    :root[data-theme="light"] .icon-sun, :root[data-theme="dark"] .icon-moon { display: none; }
-    .app-main { padding: 20px 0 28px; }
 
-    /* ── Дашборд ───────────────────────────────────────────── */
+    :root[data-theme="dark"] body {
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, .028) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, .028) 1px, transparent 1px);
+    }
+
+    ::selection { background: var(--red); color: var(--on-ink); }
+
+    h1, h2, h3, p { margin: 0; }
+
+    button, input, textarea { font: inherit; color: inherit; }
+
+    button { cursor: pointer; }
+
+    a { color: var(--red); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+
+    :focus-visible {
+      outline: 2px solid var(--red);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    [hidden] { display: none !important; }
+
+    .shell {
+      width: min(1120px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 12px;
+      top: -60px;
+      z-index: 100;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: var(--ink);
+      color: var(--on-ink);
+      font-size: 12px;
+      text-decoration: none;
+      transition: top .18s ease;
+    }
+    .skip-link:focus { top: 12px; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .noscript {
+      margin: 20px auto;
+      width: min(560px, calc(100% - 40px));
+      padding: 14px 16px;
+      border: 1px solid var(--red);
+      border-radius: 10px;
+      background: var(--red-soft);
+      color: var(--red-deep);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    /* ---------- Шапка ---------- */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--ink);
+      color: var(--on-ink);
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+    .topbar::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 168px;
+      height: 2px;
+      background: var(--red);
+      pointer-events: none;
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 64px;
+      padding-block: 10px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      flex: none;
+      border-radius: 11px;
+      background: var(--red);
+      color: var(--on-ink);
+      font-family: var(--font-display);
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .16);
+    }
+
+    .brand-copy { min-width: 0; }
+    .brand-copy h1 {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: .01em;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .top-actions { display: flex; align-items: center; gap: 8px; flex: none; }
+
+    .sync-chip,
+    .streak-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 32px;
+      padding: 0 11px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .045);
+      color: rgba(247, 239, 232, .8);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .sync-dot {
+      width: 7px;
+      height: 7px;
+      flex: none;
+      border-radius: 50%;
+      background: var(--sand);
+      box-shadow: 0 0 0 3px rgba(176, 138, 99, .14);
+    }
+    :root[data-sync="synced"] .sync-dot { background: var(--green); box-shadow: 0 0 0 3px rgba(78, 108, 88, .18); }
+    :root[data-sync="syncing"] .sync-dot { background: var(--sand); animation: pulse 1.2s ease-in-out infinite; }
+    :root[data-sync="error"] .sync-dot { background: var(--danger); box-shadow: 0 0 0 3px rgba(161, 48, 48, .18); }
+
+    .streak-chip .flame {
+      width: 7px;
+      height: 7px;
+      flex: none;
+      border-radius: 50%;
+      background: var(--red-bright);
+      box-shadow: 0 0 0 3px rgba(182, 74, 70, .16);
+    }
+    .streak-chip strong { font-weight: 700; color: var(--on-ink); }
+
+    .icon-btn {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, .045);
+      color: var(--on-ink);
+      transition: background .18s ease, border-color .18s ease;
+    }
+    .icon-btn:hover { background: rgba(255, 255, 255, .1); border-color: rgba(255, 255, 255, .28); }
+    .icon-btn svg { width: 17px; height: 17px; }
+    .icon-sun { display: none; }
+    :root[data-theme="dark"] .icon-sun { display: block; }
+    :root[data-theme="dark"] .icon-moon { display: none; }
+
+    /* ---------- Основной контент ---------- */
+    .app-main { padding-block: 22px 10px; }
+
     .dashboard {
-      display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, .72fr);
-      gap: 16px; align-items: stretch;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(260px, .85fr);
+      gap: 16px;
     }
+
     .welcome-card {
-      position: relative; overflow: hidden; min-width: 0; padding: 28px;
-      display: flex; align-items: center; justify-content: space-between; gap: 26px;
-      border: 1px solid var(--border); border-radius: 26px;
-      background:
-        radial-gradient(430px 250px at 100% 0%, var(--accent-soft), transparent 70%),
-        radial-gradient(380px 230px at 0% 100%, var(--mint-soft), transparent 72%),
-        var(--surface);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      padding: 30px 30px 30px 32px;
+      border: 1px solid var(--line);
+      border-left: 6px solid var(--red);
+      border-radius: 26px;
+      background: var(--surface);
       box-shadow: var(--shadow);
-      animation: rise .45s ease both;
+      overflow: hidden;
+      animation: rise .5s cubic-bezier(.2, .7, .2, 1) both;
     }
-    .welcome-card::after {
-      content: ""; position: absolute; right: -46px; top: -46px; width: 210px; height: 210px;
-      border: 1px dashed rgba(100, 116, 240, .18); border-radius: 50%; pointer-events: none;
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 11px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: .04em;
     }
-    .welcome-card > * { position: relative; z-index: 1; }
-    .welcome-copy { min-width: 0; }
+    .hero-meta span + span::before {
+      content: "/";
+      margin-right: 8px;
+      color: var(--red);
+    }
+
+    .welcome-copy { position: relative; z-index: 1; min-width: 0; }
+
     .eyebrow {
-      display: inline-flex; align-items: center; gap: 7px;
-      color: var(--muted); font-size: 11px; font-weight: 750; letter-spacing: .09em;
+      color: var(--red);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: .16em;
       text-transform: uppercase;
     }
     .eyebrow::before {
-      content: ""; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent); opacity: .7;
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: 7px;
+      background: var(--red);
+      border-radius: 1px;
+      vertical-align: 1px;
     }
+
     .welcome-title {
-      margin-top: 8px; font-size: clamp(22px, 3vw, 30px); font-weight: 780;
-      line-height: 1.2; letter-spacing: -.03em;
+      margin-top: 7px;
+      font-family: var(--font-display);
+      font-size: clamp(30px, 4.2vw, 44px);
+      font-weight: 600;
+      letter-spacing: -.025em;
+      line-height: 1.08;
+      text-wrap: balance;
     }
-    .welcome-sub { margin-top: 7px; color: var(--text-soft); font-size: 13.5px; }
-    .welcome-progress { margin-top: 22px; max-width: 430px; }
+
+    .welcome-sub {
+      margin-top: 8px;
+      max-width: 46ch;
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .welcome-progress { margin-top: 20px; max-width: 420px; }
+
     .progress-label {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      margin-bottom: 8px; color: var(--muted); font-size: 11.5px; font-weight: 650;
-      letter-spacing: .02em;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
     }
+
+    .meter {
+      position: relative;
+      height: 7px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--surface-3);
+    }
+    .meter > span {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: var(--red);
+      transition: width .38s ease;
+    }
+
     .progress-ring {
-      --pct: 0; position: relative; flex: none; display: grid; place-items: center;
-      width: 116px; aspect-ratio: 1; border-radius: 50%;
-      background: conic-gradient(var(--accent) calc(var(--pct) * 1%), var(--surface-3) 0);
-      box-shadow: 0 12px 26px rgba(76, 90, 200, .16);
+      --pct: 0;
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 104px;
+      height: 104px;
+      flex: none;
+      border-radius: 50%;
+      background: conic-gradient(var(--red) calc(var(--pct) * 1%), var(--surface-3) 0);
+      z-index: 1;
+      animation: breathe 7s ease-in-out infinite;
     }
     .progress-ring::before {
-      content: ""; position: absolute; inset: 11px; border-radius: 50%;
+      content: "";
+      position: absolute;
+      inset: 9px;
+      border-radius: 50%;
       background: var(--surface);
     }
     .progress-ring span {
-      position: relative; z-index: 1;
-      font-size: 23px; font-weight: 800; letter-spacing: -.03em; color: var(--accent-ink);
+      position: relative;
+      font-family: var(--font-display);
+      font-size: 23px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -.02em;
     }
-    .meter {
-      overflow: hidden; width: 100%; height: 9px; border-radius: 999px; background: var(--surface-3);
-    }
-    .meter > span {
-      display: block; width: 0; height: 100%; border-radius: inherit;
-      background: linear-gradient(90deg, var(--accent), #9ba8ff);
-      transition: width .45s ease;
-    }
+
     .streak-card {
-      position: relative; overflow: hidden; display: flex; flex-direction: column; min-width: 0; padding: 22px;
-      border: 1px solid var(--warm-border); border-radius: 26px;
-      background: linear-gradient(158deg, var(--warm-soft), var(--surface) 64%);
-      box-shadow: var(--shadow-sm);
-      animation: rise .45s ease both;
-      animation-delay: .05s;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 26px;
+      background: var(--red-deep);
+      color: var(--on-ink);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      animation: rise .5s .08s cubic-bezier(.2, .7, .2, 1) both;
     }
-    .streak-top { position: relative; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .streak-card > * { position: relative; z-index: 1; }
+    .streak-card .eyebrow { color: rgba(247, 239, 232, .68); }
+
+    .streak-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+
+    .streak-number {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .streak-number strong {
+      font-family: var(--font-display);
+      font-size: 46px;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -.03em;
+    }
+    .streak-number span {
+      color: rgba(247, 239, 232, .66);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
     .streak-flame {
-      display: grid; place-items: center; width: 44px; height: 44px; flex: none;
-      border-radius: 14px; background: var(--surface); font-size: 21px;
-      box-shadow: var(--shadow-sm);
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 10px;
+      color: #efd2b4;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1;
     }
-    .streak-number { position: relative; z-index: 1; display: flex; align-items: baseline; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
-    .streak-number strong { color: var(--warm-deep); font-size: 42px; font-weight: 800; line-height: 1; letter-spacing: -.04em; }
-    .streak-number span { color: var(--text-soft); font-size: 13px; font-weight: 600; }
+
     .streak-days {
-      position: relative; z-index: 1; display: grid; grid-template-columns: repeat(14, minmax(0, 1fr));
-      gap: 4px; width: 100%; margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(14, minmax(0, 1fr));
+      gap: 4px;
+      margin-top: 2px;
     }
     .streak-day {
-      aspect-ratio: 1; border-radius: 6px; background: var(--surface-3);
-      border: 1px solid transparent; transition: background .2s ease;
+      height: 20px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, .13);
+      transition: background .18s ease, border-color .18s ease;
     }
-    .streak-day.is-active { background: linear-gradient(160deg, #ffc287, var(--warm)); }
-    .streak-day.is-today { border-color: var(--warm); }
-    .streak-hint { position: relative; z-index: 1; margin-top: auto; padding-top: 14px; color: var(--muted); font-size: 11.5px; line-height: 1.5; }
+    .streak-day.is-partial { background: rgba(240, 215, 196, .5); }
+    .streak-day.is-active { background: #f0d7c4; animation: pop .35s cubic-bezier(.2, .8, .2, 1) both; }
+    .streak-day.is-today { border-color: #f0d7c4; }
 
-    .stat-row {
-      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px; margin-top: 16px;
+    .streak-hint {
+      color: rgba(247, 239, 232, .64);
+      font-size: 11.5px;
+      line-height: 1.5;
     }
-    .stat-tile {
-      display: flex; align-items: center; gap: 12px; min-width: 0; padding: 14px 16px;
-      border: 1px solid var(--border); border-radius: 18px; background: var(--surface);
+
+    /* ---------- Статистика ---------- */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      margin-top: 16px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--surface);
       box-shadow: var(--shadow-sm);
-      animation: rise .45s ease both;
+    }
+
+    .stat-tile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 18px;
+      border-right: 1px solid var(--line);
+      animation: rise .45s cubic-bezier(.2, .7, .2, 1) both;
     }
     .stat-tile:nth-child(2) { animation-delay: .05s; }
     .stat-tile:nth-child(3) { animation-delay: .1s; }
+    .stat-tile:last-child { border-right: 0; }
+
     .stat-icon {
-      display: grid; place-items: center; flex: none; width: 42px; height: 42px;
-      border-radius: 13px; font-size: 20px;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      flex: none;
+      border-radius: 10px;
+      background: var(--red-soft);
+      color: var(--red);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .04em;
     }
-    .stat-icon-indigo { background: var(--accent-soft); }
-    .stat-icon-mint { background: var(--mint-soft); }
-    .stat-icon-gold { background: var(--gold-soft); }
-    .stat-body { min-width: 0; }
-    .stat-value { display: flex; align-items: baseline; gap: 5px; line-height: 1.1; }
-    .stat-value strong { font-size: 21px; font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-    .stat-value span { color: var(--muted); font-size: 11.5px; font-weight: 600; }
-    .stat-label { margin-top: 3px; color: var(--muted); font-size: 11.5px; line-height: 1.3; }
+    .stat-icon-mint { background: var(--surface-2); color: var(--text-soft); }
+    .stat-icon-gold { background: var(--surface-3); color: var(--text-soft); }
 
-    .tip-banner {
-      display: flex; align-items: flex-start; gap: 13px; margin-top: 16px; padding: 15px 18px;
-      border: 1px solid var(--border); border-radius: 18px;
-      background: linear-gradient(100deg, var(--accent-soft), var(--surface) 62%);
-      animation: rise .45s ease both; animation-delay: .12s;
+    .stat-value {
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--muted);
     }
-    .tip-icon {
-      display: grid; place-items: center; flex: none; width: 40px; height: 40px;
-      border-radius: 13px; background: var(--surface); font-size: 19px; box-shadow: var(--shadow-sm);
+    .stat-value strong {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -.02em;
     }
-    .tip-badge {
-      display: inline-block; padding: 3px 9px; border-radius: 999px;
-      background: var(--surface); color: var(--accent-ink); font-size: 10px; font-weight: 750;
-      letter-spacing: .06em; text-transform: uppercase; box-shadow: var(--shadow-sm);
+    .stat-value span { font-family: var(--font-mono); font-size: 9.5px; }
+    .stat-label {
+      margin-top: 1px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .02em;
     }
-    .tip-banner p { margin-top: 6px; color: var(--text-soft); font-size: 12.5px; line-height: 1.5; }
-    @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
 
-    /* ── Навигация ─────────────────────────────────────────── */
+    /* ---------- Бегущая строка ---------- */
+    .ticker {
+      margin-top: 14px;
+      overflow: hidden;
+      border-radius: 12px;
+      background: var(--ink);
+      color: var(--on-ink);
+    }
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: ticker 34s linear infinite;
+    }
+    .ticker span {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      padding: 9px 16px;
+      color: rgba(255, 255, 255, .68);
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .ticker span::after {
+      content: "";
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--red-bright);
+    }
+
+    /* ---------- Табы ---------- */
     .tabbar {
-      display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px;
-      margin: 22px 0 26px; padding: 5px;
-      border: 1px solid var(--border); border-radius: 999px; background: var(--surface-2);
-      box-shadow: inset 0 1px 2px rgba(44, 56, 110, .04);
-    }
-    .tab {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      min-width: 0; min-height: 44px; padding: 7px 10px;
-      border: 0; border-radius: 999px; background: transparent; color: var(--muted);
-      font-size: 13px; font-weight: 650; cursor: pointer;
-      transition: background .2s ease, color .2s ease, box-shadow .2s ease, transform .15s ease;
-    }
-    .tab svg { width: 18px; height: 18px; flex: none; }
-    .tab:hover { color: var(--text-soft); background: var(--surface-3); }
-    .tab:active { transform: scale(.98); }
-    .tab[aria-selected="true"] {
-      background: var(--surface); color: var(--accent-ink);
-      box-shadow: 0 3px 10px rgba(44, 56, 110, .14);
-    }
-    .tab[aria-selected="true"]:hover { background: var(--surface); color: var(--accent-ink); }
-    :root[data-theme="dark"] .tabbar { background: var(--surface); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .02); }
-    :root[data-theme="dark"] .tab:hover { background: var(--surface-2); }
-    :root[data-theme="dark"] .tab[aria-selected="true"],
-    :root[data-theme="dark"] .tab[aria-selected="true"]:hover {
-      background: rgba(143, 157, 255, .18); color: #cdd5ff;
-      box-shadow: inset 0 0 0 1px rgba(143, 157, 255, .34);
-    }
-    .tab:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
-    body:not([data-tab="roadmap"]) .dashboard,
-    body:not([data-tab="roadmap"]) .stat-row,
-    body:not([data-tab="roadmap"]) .tip-banner { display: none; }
-    .tab .tab-dot { display: none; }
-    .panel { min-width: 0; animation: panel-in .3s ease both; }
-    @keyframes panel-in { from { opacity: .3; transform: translateY(6px); } }
-    .panel-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
-    .panel-head h2 {
-      margin-top: 4px; font-size: clamp(24px, 3.6vw, 33px);
-      font-weight: 780; line-height: 1.16; letter-spacing: -.03em;
-    }
-    .panel-head p { margin-top: 7px; color: var(--text-soft); font-size: 13.5px; max-width: 640px; }
-
-    /* ── Этапы и темы ──────────────────────────────────────── */
-    .stage-list, .topic-list { display: grid; gap: 10px; }
-    .stage, .topic {
-      overflow: hidden; min-width: 0;
-      border: 1px solid var(--border); border-radius: 20px; background: var(--surface);
+      position: sticky;
+      top: 76px;
+      z-index: 30;
+      display: flex;
+      gap: 4px;
+      margin-top: 16px;
+      padding: 5px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
       box-shadow: var(--shadow-sm);
-      transition: border-color .2s ease, box-shadow .25s ease, transform .2s ease;
+      overflow-x: auto;
+      scrollbar-width: none;
+      transition: box-shadow .2s ease;
     }
-    .stage:hover, .topic:hover { border-color: var(--border-strong); box-shadow: var(--shadow); }
-    .stage.is-open, .topic.is-open { border-color: var(--border-strong); box-shadow: var(--shadow); }
-    .stage-toggle, .topic-toggle {
-      display: grid; grid-template-columns: 46px minmax(0, 1fr) auto 24px;
-      align-items: center; gap: 14px; width: 100%; min-height: 78px; padding: 15px 20px;
-      border: 0; background: transparent; color: inherit; text-align: left; cursor: pointer;
-      transition: background .2s ease;
-    }
-    .stage-toggle:hover, .topic-toggle:hover { background: var(--surface-2); }
-    .stage-toggle:focus-visible, .topic-toggle:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
-    .stage-index {
-      display: grid; place-items: center; width: 46px; height: 46px;
-      border-radius: 14px; background: var(--accent-soft); color: var(--accent-ink);
-      font-size: 17px; font-weight: 800;
-    }
-    .stage.is-complete .stage-index { background: var(--mint-soft); color: var(--mint); }
-    .topic-emoji {
-      display: grid; place-items: center; width: 46px; height: 46px;
-      border-radius: 14px; background: var(--surface-2); font-size: 21px;
-    }
-    .stage-heading, .topic-heading { min-width: 0; }
-    .stage-title, .topic-title { display: block; font-size: 16px; font-weight: 720; letter-spacing: -.015em; overflow-wrap: anywhere; }
-    .stage-weeks, .topic-weeks { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.45; }
-    .stage-count, .topic-count {
-      padding: 6px 11px; border: 1px solid var(--border); border-radius: 999px;
-      background: var(--surface-2); color: var(--text-soft); font-size: 12px; font-weight: 650;
-      font-variant-numeric: tabular-nums; white-space: nowrap;
-    }
-    .stage-chevron, .topic-chevron { display: grid; place-items: center; color: var(--muted); transition: transform .25s ease; }
-    .stage-chevron svg, .topic-chevron svg { width: 20px; height: 20px; }
-    .stage.is-open .stage-chevron, .topic.is-open .topic-chevron { transform: rotate(180deg); }
-    .stage-panel, .topic-panel { padding: 0 20px 18px; }
-    .stage-progress-row { display: flex; align-items: center; gap: 12px; padding: 0 4px 14px; }
-    .stage-progress-row .meter { flex: 1; height: 7px; }
-    .stage-progress-text { flex: none; color: var(--muted); font-size: 11.5px; white-space: nowrap; }
-    .task-list, .min-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
-    .task, .problem {
-      position: relative; display: flex; align-items: center; gap: 12px;
-      min-height: 54px; padding: 10px; border-radius: 13px; cursor: pointer;
-      transition: background .18s ease;
-    }
-    .task { align-items: flex-start; }
-    .task:hover, .problem:hover { background: var(--surface-2); }
-    .task input, .problem input {
-      position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
-      overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%);
-      white-space: nowrap; border: 0;
-    }
-    .check-box {
-      flex: none; display: grid; place-items: center; width: 28px; height: 28px; margin-top: 1px;
-      border: 2px solid var(--border-strong); border-radius: 50%; background: var(--surface);
-      transition: background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
-    }
-    .check-box::after {
-      content: ""; width: 12px; height: 6px; margin-top: -2px;
-      border-left: 2px solid #fff; border-bottom: 2px solid #fff;
-      transform: rotate(-45deg) scale(.25); opacity: 0; transition: transform .18s ease, opacity .18s ease;
-    }
-    .task input:checked + .check-box, .problem input:checked + .check-box {
-      border-color: transparent;
-      background: linear-gradient(140deg, #8b99ff, var(--accent));
-      box-shadow: 0 4px 10px rgba(100, 116, 240, .32);
-    }
-    .task input:checked + .check-box::after, .problem input:checked + .check-box::after { transform: rotate(-45deg) scale(1); opacity: 1; }
-    .task input:focus-visible + .check-box, .problem input:focus-visible + .check-box { box-shadow: 0 0 0 4px var(--focus); }
-    :root[data-theme="dark"] .task input:checked + .check-box,
-    :root[data-theme="dark"] .problem input:checked + .check-box {
-      background: linear-gradient(140deg, #9aa8ff, var(--accent-deep));
-    }
-    .task-text { min-width: 0; padding-top: 2px; font-size: 14.5px; line-height: 1.55; overflow-wrap: anywhere; }
-    .task.is-done .task-text, .problem.is-done .problem-title { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
-    .task.is-done .check-box, .problem.is-done .check-box { animation: check-pop .22s ease; }
-    @keyframes check-pop { 50% { transform: scale(.88); } }
-    .problem-label {
-      display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1;
-      padding: 5px 0; cursor: pointer;
-    }
-    .problem-title { min-width: 0; font-size: 14.5px; font-weight: 600; line-height: 1.45; overflow-wrap: anywhere; }
-    .problem-open {
-      flex: none; display: grid; place-items: center; width: 38px; height: 38px; margin-left: auto;
-      border-radius: 11px; color: var(--muted); text-decoration: none;
+    .tabbar:hover { box-shadow: var(--shadow); }
+    .tabbar::-webkit-scrollbar { display: none; }
+
+    .tab {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      flex: 0 0 auto;
+      min-height: 36px;
+      padding: 7px 14px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-soft);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
       transition: background .18s ease, color .18s ease;
     }
-    .problem-open:hover { background: var(--accent-soft); color: var(--accent-ink); }
-    .problem-open svg { width: 16px; height: 16px; }
-    .level {
-      flex: none; padding: 3px 9px; border-radius: 999px;
-      font-size: 10.5px; font-weight: 750; letter-spacing: .02em;
-    }
-    .level-easy { background: var(--success-soft); color: var(--easy); }
-    .level-medium { background: var(--gold-soft); color: var(--medium); }
-    .level-hard { background: var(--danger-soft); color: var(--hard); }
-    .notes-block { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
-    .notes-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
-    .notes-head label { color: var(--text-soft); font-size: 12px; font-weight: 700; }
-    .note-status { color: var(--muted); font-size: 11px; transition: color .2s ease; }
-    .note-status.is-saved { color: var(--success); }
-    textarea {
-      width: 100%; min-height: 98px; padding: 12px 14px; resize: vertical;
-      border: 1px solid var(--border); border-radius: 14px;
-      background: var(--surface-2); color: var(--text);
-      font-size: 16px; line-height: 1.55;
-      transition: border-color .2s ease, background .2s ease;
-    }
-    textarea::placeholder { color: var(--muted); opacity: .8; }
-    textarea:focus { outline: 3px solid var(--focus); outline-offset: 1px; border-color: var(--accent); background: var(--surface); }
+    .tab svg { width: 15px; height: 15px; }
+    .tab:hover { background: var(--surface-2); color: var(--text); }
+    .tab[aria-selected="true"] { background: var(--ink); color: var(--on-ink); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08); }
+    .tab[aria-selected="true"]:hover { background: var(--ink); color: var(--on-ink); }
 
-    /* ── Карточки и разделы ────────────────────────────────── */
-    .checklist-card, .card {
-      min-width: 0; padding: 22px;
-      border: 1px solid var(--border); border-radius: 22px; background: var(--surface);
+    /* ---------- Панели ---------- */
+    .panel { margin-top: 20px; }
+    .panel:focus { outline: none; }
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+    .panel-head h2 {
+      margin-top: 4px;
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3.4vw, 34px);
+      font-weight: 600;
+      letter-spacing: -.02em;
+      line-height: 1.12;
+    }
+    .panel-head p {
+      max-width: 64ch;
+      margin-top: 7px;
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    body:not([data-tab="roadmap"]) .dashboard,
+    body:not([data-tab="roadmap"]) .stat-row,
+    body:not([data-tab="roadmap"]) .ticker { display: none; }
+
+    .panel { animation: panel-in .28s ease both; }
+    @keyframes panel-in {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .35; }
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.025); }
+    }
+    @keyframes pop {
+      from { opacity: .2; transform: scale(.72); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* ---------- Этапы ---------- */
+    .stage-nav {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 13px;
+      padding-bottom: 3px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .stage-nav::-webkit-scrollbar { display: none; }
+    @media (min-width: 900px) {
+      .stage-nav { flex-wrap: wrap; overflow: visible; }
+    }
+    .stage-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      flex: 0 0 auto;
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--text-soft);
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease;
+    }
+    .stage-chip span {
+      color: var(--red);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .04em;
+    }
+    .stage-chip b { font-weight: 600; }
+    .stage-chip em {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      font-style: normal;
+    }
+    .stage-chip:hover { border-color: var(--red); color: var(--text); transform: translateY(-1px); }
+    .stage-chip.is-active { background: var(--red); border-color: var(--red); color: #fff; }
+    .stage-chip.is-active span,
+    .stage-chip.is-active em { color: rgba(255, 255, 255, .8); }
+    .stage-chip.is-complete:not(.is-active) { border-color: var(--red); }
+
+    .stage-list { display: grid; gap: 9px; }
+
+    .stage {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+      animation: rise .5s cubic-bezier(.2, .7, .2, 1) both;
+    }
+    .stage:nth-child(2) { animation-delay: .04s; }
+    .stage:nth-child(3) { animation-delay: .08s; }
+    .stage:nth-child(4) { animation-delay: .12s; }
+    .stage:nth-child(5) { animation-delay: .16s; }
+    .stage:nth-child(6) { animation-delay: .2s; }
+    .stage:hover { border-color: var(--line-strong); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .stage.is-open {
+      border-color: var(--line-strong);
+      box-shadow: inset 3px 0 0 var(--red), var(--shadow);
+    }
+    .stage.is-complete .stage-index { background: var(--ink); color: var(--on-ink); }
+
+    .stage h2, .topic h2 { margin: 0; }
+
+    .stage-toggle,
+    .topic-toggle {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      width: 100%;
+      padding: 15px 17px;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      color: inherit;
+    }
+
+    .stage-index,
+    .topic-code {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      flex: none;
+      border-radius: 50%;
+      background: var(--red-soft);
+      color: var(--red);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      transition: background .18s ease, color .18s ease;
+    }
+
+    .stage-heading,
+    .topic-heading { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+
+    .stage-title,
+    .topic-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      line-height: 1.25;
+    }
+
+    .topic-weeks {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      line-height: 1.45;
+    }
+    .topic-weeks { text-transform: none; letter-spacing: .015em; font-family: var(--font-sans); font-size: 11.5px; }
+
+    .stage-count,
+    .topic-count {
+      flex: none;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: .03em;
+    }
+
+    .stage-chevron,
+    .topic-chevron {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      flex: none;
+      color: var(--muted);
+      transition: transform .2s ease, color .2s ease;
+    }
+    .stage-chevron svg,
+    .topic-chevron svg { width: 16px; height: 16px; }
+    .is-open > h2 .stage-chevron,
+    .is-open > h2 .topic-chevron { transform: rotate(180deg); color: var(--red); }
+
+    .stage-panel,
+    .topic-panel {
+      padding: 0 17px 17px;
+      border-top: 1px dashed var(--line);
+      animation: panel-in .24s ease both;
+    }
+
+    .stage-progress-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-block: 13px 10px;
+    }
+    .stage-progress-row .meter { flex: 1; }
+    .stage-progress-text {
+      flex: none;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: .03em;
+    }
+
+    .task-list { display: grid; gap: 1px; margin: 0; padding: 0; list-style: none; }
+
+    .task {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 8px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background .16s ease, padding-left .16s ease;
+    }
+    .task:hover { padding-left: 12px; }
+    .task:hover { background: var(--surface-2); }
+    .task input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+
+    .check-box {
+      position: relative;
+      width: 19px;
+      height: 19px;
+      flex: none;
+      margin-top: 1px;
+      border: 1.5px solid var(--line-strong);
+      border-radius: 6px;
+      background: var(--surface);
+      transition: background .16s ease, border-color .16s ease;
+    }
+    .task input:checked + .check-box,
+    .problem-label input:checked + .check-box {
+      background: var(--red);
+      border-color: var(--red);
+    }
+    .task input:checked + .check-box::after,
+    .problem-label input:checked + .check-box::after {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 1.5px;
+      width: 5px;
+      height: 9px;
+      border: solid var(--on-ink);
+      border-width: 0 2px 2px 0;
+      transform: rotate(42deg);
+    }
+    .task input:focus-visible + .check-box,
+    .problem-label input:focus-visible + .check-box {
+      outline: 2px solid var(--red);
+      outline-offset: 2px;
+    }
+
+    .task-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .task-text { color: var(--text); font-size: 13.5px; line-height: 1.45; }
+    .task-detail { color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .task.is-done .task-text { color: var(--muted); }
+    .task.is-done .task-detail { opacity: .62; }
+
+    .stage-tips {
+      margin-top: 14px;
+      padding: 13px 15px;
+      border-left: 3px solid var(--red);
+      border-radius: 0 10px 10px 0;
+      background: var(--surface-2);
+    }
+    .stage-tips-label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--red);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .stage-tips ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
+    .stage-tips li { color: var(--text-soft); font-size: 12px; line-height: 1.5; }
+    .stage-tips li::before { content: "— "; color: var(--red); }
+
+    .notes-block {
+      margin-top: 14px;
+      padding-top: 13px;
+      border-top: 1px solid var(--line);
+    }
+    .notes-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .notes-head label {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .note-status {
+      color: var(--green);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .04em;
+    }
+    textarea {
+      width: 100%;
+      min-height: 76px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper-2);
+      color: var(--text);
+      font-size: 12.5px;
+      line-height: 1.5;
+      resize: vertical;
+      transition: border-color .18s ease, background .18s ease;
+    }
+    textarea::placeholder { color: var(--muted); }
+    textarea:focus { outline: none; border-color: var(--red); background: var(--surface); }
+
+    /* ---------- Практика ---------- */
+    .practice-top {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, .85fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .card {
+      padding: 21px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
       box-shadow: var(--shadow-sm);
     }
-    .checklist-card { padding-bottom: 10px; }
-    .checklist-summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 13px; }
-    .checklist-summary strong { font-size: 15px; font-weight: 700; }
-    .checklist-summary span { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
-    .checklist-card .meter { margin-bottom: 6px; }
-    .min-item { border-top: 1px solid var(--border); }
-    .min-item:first-child { border-top: 0; }
-    .min-item .task-text { font-size: 14.5px; }
-    .resources-block { margin-top: 30px; }
-    .resources-block h2 { font-size: 22px; font-weight: 750; letter-spacing: -.02em; }
-    .resources-block > p { margin-top: 4px; color: var(--text-soft); font-size: 13px; }
-    .resource-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
-    .resource-card {
-      display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 18px;
-      border: 1px solid var(--border); border-radius: 18px; background: var(--surface);
-      box-shadow: var(--shadow-sm); color: inherit; text-decoration: none;
-      transition: transform .22s ease, border-color .2s ease, box-shadow .22s ease;
+    .card h2 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -.015em;
+      line-height: 1.2;
     }
-    .resource-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: var(--shadow); }
-    .resource-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
-    .resource-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    .resource-host { color: var(--accent-ink); font-size: 10.5px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
-    .resource-card h3 { font-size: 15.5px; font-weight: 700; letter-spacing: -.015em; }
-    .resource-card p { color: var(--text-soft); font-size: 12.5px; line-height: 1.5; }
-    .external-icon { flex: none; color: var(--muted); }
-    .external-icon svg { display: block; width: 16px; height: 16px; }
-    .practice-top { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 16px; align-items: start; margin-bottom: 22px; }
-    .card h2 { margin-bottom: 4px; font-size: 20px; font-weight: 750; letter-spacing: -.02em; }
-    .card > .eyebrow { margin-bottom: 4px; }
-    .card-desc { margin: 6px 0 15px; color: var(--text-soft); font-size: 13px; line-height: 1.55; }
-    .lc-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .card-desc { margin-top: 7px; color: var(--text-soft); font-size: 12.5px; line-height: 1.55; }
+
+    .lc-head, .suggest-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
     .lc-badge {
-      flex: none; margin-top: 3px; padding: 4px 10px; border-radius: 999px;
-      background: var(--mint-soft); color: var(--mint); font-size: 10px; font-weight: 750;
-      letter-spacing: .04em; text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--red-soft);
+      color: var(--red);
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
     }
-    .field { display: grid; gap: 7px; margin-bottom: 14px; }
-    .field label { color: var(--text-soft); font-size: 12px; font-weight: 700; }
+
+    .field { display: grid; gap: 5px; margin-top: 12px; }
+    .field label {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
     .field input {
-      width: 100%; min-height: 48px; padding: 10px 14px;
-      border: 1px solid var(--border); border-radius: 13px;
-      background: var(--surface-2); color: var(--text); font-size: 16px;
-      transition: border-color .2s ease, background .2s ease;
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper-2);
+      color: var(--text);
+      font-size: 13.5px;
+      transition: border-color .18s ease, background .18s ease;
     }
-    .field input:focus { outline: 3px solid var(--focus); outline-offset: 1px; border-color: var(--accent); background: var(--surface); }
-    .field input.is-invalid { border-color: var(--danger); }
-    .field-hint { color: var(--muted); font-size: 11.5px; line-height: 1.5; }
-    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .field input::placeholder { color: var(--muted); }
+    .field input:focus { outline: none; border-color: var(--red); background: var(--surface); }
+    .field input.is-invalid { border-color: var(--danger); background: var(--red-soft); }
+    .field-hint { color: var(--muted); font-size: 11px; line-height: 1.5; }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      min-height: 46px; padding: 10px 18px;
-      border: 1px solid transparent; border-radius: 13px;
-      font-size: 13px; font-weight: 680; line-height: 1.2; text-decoration: none;
-      cursor: pointer;
-      transition: transform .15s ease, background .2s ease, border-color .2s ease, opacity .2s ease, box-shadow .2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 36px;
+      padding: 8px 14px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.2;
+      text-decoration: none;
+      transition: background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease;
     }
-    .btn:active { transform: scale(.98); }
-    .btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
-    .btn:disabled { opacity: .55; cursor: wait; transform: none; }
-    .btn svg { width: 17px; height: 17px; flex: none; }
-    .btn-primary { background: linear-gradient(145deg, #7b8bfa, var(--accent)); color: #fff; box-shadow: 0 6px 16px rgba(100, 116, 240, .28); }
-    .btn-primary:hover { background: linear-gradient(145deg, #6b7bf2, var(--accent-deep)); }
-    :root[data-theme="dark"] .btn-primary { color: #10142a; }
-    .btn-warm { background: linear-gradient(145deg, #f7ac67, var(--warm)); color: #3a2208; box-shadow: 0 6px 16px rgba(242, 153, 74, .28); }
-    .btn-warm:hover { background: linear-gradient(145deg, #f09a4b, var(--warm-deep)); color: #2b1a08; }
-    .btn-secondary { border-color: var(--border); background: var(--surface); color: var(--text-soft); }
-    .btn-secondary:hover { border-color: var(--border-strong); background: var(--surface-2); color: var(--text); }
-    .btn-danger { border-color: transparent; background: var(--danger-soft); color: var(--danger); }
-    .btn-danger:hover { border-color: var(--danger); }
-    .btn-quiet { border-color: transparent; background: transparent; color: var(--text-soft); }
-    .btn-quiet:hover { background: var(--surface-2); color: var(--text); }
-    .lc-stats { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
-    .lc-total { display: flex; align-items: baseline; gap: 8px; }
-    .lc-total strong { color: var(--accent-ink); font-size: 36px; font-weight: 800; line-height: 1; letter-spacing: -.03em; }
-    .lc-total span { color: var(--text-soft); font-size: 12px; }
-    .lc-breakdown { display: grid; gap: 8px; margin-top: 12px; }
-    .lc-row { display: grid; grid-template-columns: 58px minmax(0, 1fr) 38px; align-items: center; gap: 9px; }
-    .lc-row .meter { height: 7px; }
-    .lc-row b { font-size: 12px; font-variant-numeric: tabular-nums; text-align: right; }
-    .lc-row .level { background: transparent; padding: 0; font-size: 11px; }
-    .lc-meta { margin-top: 10px; color: var(--muted); font-size: 11.5px; }
-    .suggest-card { display: flex; flex-direction: column; background: linear-gradient(170deg, var(--surface) 58%, var(--warm-soft)); }
-    .suggest-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .btn:active { transform: translateY(1px); }
+    .btn svg { width: 15px; height: 15px; }
+    .btn-primary { background: var(--red); border-color: var(--red); color: var(--on-ink); }
+    .btn-primary:hover { background: var(--red-deep); border-color: var(--red-deep); }
+    .btn-secondary { background: transparent; border-color: var(--line-strong); color: var(--text); }
+    .btn-secondary:hover { border-color: var(--red); color: var(--red); }
+    .btn-warm { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+    .btn-warm:hover { background: var(--red); border-color: var(--red); }
+    .btn-quiet { background: transparent; border-color: transparent; color: var(--muted); }
+    .btn-quiet:hover { color: var(--text); background: var(--surface-2); }
+    .btn-danger { background: transparent; border-color: var(--red); color: var(--red); }
+    .btn-danger:hover { background: var(--red); color: var(--on-ink); }
+
+    .sync-detail { margin-top: 10px; color: var(--text-soft); font-size: 12px; line-height: 1.5; }
+    .sync-meta { margin-top: 4px; color: var(--muted); font-family: var(--font-mono); font-size: 9.5px; }
+
+    .lc-stats {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+      padding-top: 15px;
+      border-top: 1px dashed var(--line);
+    }
+    .lc-total { display: flex; align-items: baseline; gap: 9px; }
+    .lc-total strong {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -.03em;
+      color: var(--red);
+    }
+    .lc-total span {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .lc-breakdown { display: grid; gap: 7px; }
+    .lc-row { display: grid; grid-template-columns: 58px minmax(0, 1fr) 28px; align-items: center; gap: 9px; }
+    .lc-row b { color: var(--text-soft); font-family: var(--font-mono); font-size: 10px; font-weight: 600; text-align: right; }
+    .lc-row .meter { height: 6px; }
+    .lc-row:nth-child(1) .meter > span { background: var(--green); }
+    .lc-row:nth-child(2) .meter > span { background: var(--amber); }
+    .lc-row:nth-child(3) .meter > span { background: var(--red); }
+
+    .level {
+      display: inline-block;
+      padding: 2px 7px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+    .level-easy { background: rgba(78, 108, 88, .12); border-color: rgba(78, 108, 88, .22); color: var(--green); }
+    .level-medium { background: rgba(162, 118, 58, .13); border-color: rgba(162, 118, 58, .24); color: var(--amber); }
+    .level-hard { background: var(--red-soft); border-color: rgba(156, 61, 61, .25); color: var(--red); }
+
+    .suggest-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      border-top: 3px solid var(--red);
+      background: var(--ink);
+      border-color: #2b2325;
+      color: var(--on-ink);
+      overflow: hidden;
+    }
+    .suggest-card::after {
+      content: "";
+      position: absolute;
+      right: -42px;
+      bottom: -58px;
+      width: 160px;
+      height: 160px;
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .suggest-card .eyebrow { color: #d99a76; }
+    .suggest-card h2 { color: var(--on-ink); }
+    .suggest-card .card-desc { color: rgba(247, 239, 232, .62); }
     .suggest-emoji {
-      display: grid; place-items: center; width: 42px; height: 42px; flex: none;
-      border-radius: 13px; background: var(--warm-soft); font-size: 20px;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      flex: none;
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 10px;
+      color: #d99a76;
+      font-family: var(--font-mono);
+      font-size: 14px;
     }
-    .suggest-card .btn-warm { width: 100%; }
-    .suggest-result { margin-top: 14px; padding: 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); }
-    .suggest-empty { color: var(--muted); font-size: 12.5px; line-height: 1.5; }
-    .suggest-topic { color: var(--muted); font-size: 10.5px; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
-    .suggest-name { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 5px; font-size: 15px; font-weight: 700; letter-spacing: -.01em; }
-    .suggest-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 11px; }
-    .suggest-actions .btn { min-height: 40px; padding: 8px 12px; font-size: 12px; }
-    .practice-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 12px; }
-    .practice-head h2 { font-size: 22px; font-weight: 750; letter-spacing: -.02em; }
-    .practice-head span { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
-    .topic-panel .meter { margin: 0 4px 12px; height: 7px; }
-    .topic-note { margin: 0 4px 12px; color: var(--muted); font-size: 12px; line-height: 1.5; }
-    .achievement-summary { margin-bottom: 16px; }
-    .achievement-summary-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 11px; }
-    .achievement-summary-top strong { font-size: 22px; font-weight: 780; letter-spacing: -.02em; }
-    .achievement-summary-top span { margin-left: 7px; color: var(--text-soft); font-size: 13px; }
+    .suggest-card .btn-warm { margin-top: 14px; background: var(--red); border-color: var(--red); color: var(--on-ink); }
+    .suggest-card .btn-warm:hover { background: var(--red-bright); border-color: var(--red-bright); }
+    .suggest-result {
+      margin-top: 14px;
+      padding: 13px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .055);
+    }
+    .suggest-empty { color: rgba(247, 239, 232, .62); font-size: 12px; line-height: 1.5; }
+    .suggest-topic {
+      color: #d99a76;
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .suggest-name {
+      margin-top: 4px;
+      color: var(--on-ink);
+      font-family: var(--font-display);
+      font-size: 17px;
+      line-height: 1.35;
+    }
+    .suggest-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+    .suggest-card .btn-secondary { border-color: rgba(255, 255, 255, .24); color: var(--on-ink); }
+    .suggest-card .btn-secondary:hover { background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .4); color: var(--on-ink); }
+    .suggest-card .btn-primary { background: var(--on-ink); border-color: var(--on-ink); color: var(--ink); }
+    .suggest-card .btn-primary:hover { background: #f0d7c4; border-color: #f0d7c4; }
+    .achievement-date {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: .03em;
+    }
+
+    .practice-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .practice-head h2 {
+      font-family: var(--font-display);
+      font-size: 23px;
+      font-weight: 600;
+      letter-spacing: -.015em;
+    }
+    .practice-head span {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: .04em;
+    }
+
+    .topic-list { display: grid; gap: 8px; }
+
+    .topic {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+    .topic:hover { border-color: var(--line-strong); transform: translateY(-1px); box-shadow: var(--shadow); }
+    .topic.is-open { border-color: var(--line-strong); box-shadow: inset 3px 0 0 var(--red), var(--shadow-sm); }
+    .topic-toggle { padding: 12px 15px; }
+    .topic-title { font-size: 16.5px; }
+    .topic-panel { padding: 0 15px 15px; }
+    .topic-panel .meter { margin-block: 11px 8px; }
+
+    .problem {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto 28px;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 7px;
+      border-radius: 9px;
+      transition: background .16s ease;
+    }
+    .problem:hover { background: var(--surface-2); }
+    .problem-label {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      cursor: pointer;
+    }
+    .problem-label input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .problem-num {
+      flex: none;
+      min-width: 30px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      text-align: right;
+    }
+    .problem-title { color: var(--text); font-size: 13px; line-height: 1.4; }
+    .problem.is-done .problem-title { color: var(--muted); }
+    .problem-open {
+      display: grid;
+      place-items: center;
+      width: 27px;
+      height: 27px;
+      border-radius: 8px;
+      color: var(--muted);
+      transition: background .16s ease, color .16s ease;
+    }
+    .problem-open svg { width: 14px; height: 14px; }
+    .problem-open:hover { background: var(--red-soft); color: var(--red); }
+
+    /* ---------- Ачивки ---------- */
+    .panel-dark {
+      padding: 26px;
+      border: 1px solid #2b2326;
+      border-top: 3px solid var(--red);
+      border-radius: 26px;
+      background: var(--ink);
+      color: var(--on-ink);
+      box-shadow: var(--shadow);
+    }
+    .panel-dark .panel-head h2 { color: var(--on-ink); }
+    .panel-dark .panel-head p { color: rgba(247, 239, 232, .64); }
+    .panel-dark .eyebrow { color: #d99a76; }
+    .panel-dark .card {
+      background: rgba(255, 255, 255, .045);
+      border-color: rgba(255, 255, 255, .12);
+      box-shadow: none;
+    }
+    .panel-dark .achievement-summary { color: var(--on-ink); }
+    .panel-dark .achievement-summary-top strong { color: var(--on-ink); }
+    .panel-dark .achievement-summary-top span { color: rgba(247, 239, 232, .58); }
+    .panel-dark .meter { background: rgba(255, 255, 255, .12); }
+    .panel-dark .meter > span { background: #d99a76; }
+
+    .achievement-summary { margin-bottom: 14px; }
+    .achievement-summary-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 11px;
+    }
+    .achievement-summary-top strong {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -.015em;
+    }
+    .achievement-summary-top span {
+      margin-left: 7px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
     .achievement-medal {
-      display: grid; place-items: center; width: 44px; height: 44px; border-radius: 13px;
-      background: var(--gold-soft); font-size: 21px;
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: 11px;
+      color: #d99a76;
+      font-family: var(--font-mono);
+      font-size: 12px;
     }
-    .achievement-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+
+    .achievement-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+      gap: 10px;
+    }
     .achievement {
-      min-width: 0; padding: 17px; border: 1px solid var(--border); border-radius: 18px;
-      background: var(--surface); box-shadow: var(--shadow-sm);
-      transition: transform .22s ease, border-color .2s ease, box-shadow .22s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-height: 150px;
+      padding: 15px;
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .035);
+      color: var(--on-ink);
+      transition: border-color .18s ease, background .18s ease;
     }
-    .achievement:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-    .achievement.is-unlocked { border-color: var(--gold); background: linear-gradient(165deg, var(--gold-soft), var(--surface) 64%); }
+    .achievement.is-unlocked {
+      border-color: rgba(217, 154, 118, .45);
+      background: rgba(156, 61, 61, .13);
+    }
+    .achievement.is-locked { opacity: .62; }
     .achievement-icon {
-      display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px;
-      background: var(--surface-2); font-size: 20px; filter: grayscale(1); opacity: .55;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 2px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, .04);
+      color: #d99a76;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .03em;
     }
-    .achievement.is-unlocked .achievement-icon { background: var(--gold-soft); filter: none; opacity: 1; }
-    .achievement-title { margin-top: 10px; font-size: 14.5px; font-weight: 720; letter-spacing: -.01em; }
-    .achievement-desc { margin-top: 4px; color: var(--text-soft); font-size: 12px; line-height: 1.5; }
-    .achievement-foot { margin-top: 10px; }
-    .achievement-progress { color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
-    .achievement .meter { height: 5px; margin-top: 6px; }
-    .achievement-date { display: inline-flex; align-items: center; gap: 5px; color: var(--gold); font-size: 11px; font-weight: 700; }
-    .achievement.is-locked { opacity: .8; }
-    .settings-grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); gap: 16px; align-items: start; }
-    .settings-column { display: grid; gap: 16px; min-width: 0; }
-    .sync-status-line { display: flex; align-items: center; gap: 9px; margin-top: 16px; }
-    .sync-status-line strong { font-size: 13px; font-weight: 700; }
-    .sync-detail { margin-top: 6px; color: var(--muted); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
-    .sync-meta { margin-top: 3px; color: var(--muted); font-size: 11px; }
-    .sync-note { margin-top: 14px; padding: 12px 13px; border-radius: 14px; background: var(--surface-2); color: var(--text-soft); font-size: 11.5px; line-height: 1.55; }
-    .data-actions { display: grid; gap: 8px; }
-    .data-actions .btn { width: 100%; justify-content: flex-start; }
-    .danger-zone { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
-    .info-list { display: grid; gap: 10px; margin: 14px 0 0; padding: 0; list-style: none; }
-    .info-list li { display: flex; gap: 9px; color: var(--text-soft); font-size: 12px; line-height: 1.5; }
-    .info-list li::before { content: "•"; color: var(--accent); font-weight: 900; }
-    .footer { padding: 10px 0 30px; color: var(--muted); text-align: center; font-size: 11.5px; }
+    .achievement-title {
+      font-family: var(--font-display);
+      font-size: 15.5px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .achievement-desc {
+      color: rgba(247, 239, 232, .6);
+      font-size: 11.5px;
+      line-height: 1.5;
+    }
+    .achievement-foot {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: auto;
+      padding-top: 6px;
+    }
+    .achievement-progress {
+      color: rgba(247, 239, 232, .55);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .04em;
+    }
+    .panel-dark .achievement-date { color: #d99a76; }
+
+    /* ---------- Чек-лист ---------- */
+    .checklist-card {
+      padding: 22px 22px 22px 24px;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--red);
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+    }
+    .checklist-summary {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .checklist-summary strong {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 600;
+    }
+    .checklist-summary span {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: .04em;
+    }
+    .min-list { display: grid; gap: 1px; margin: 13px 0 0; padding: 0; list-style: none; }
+
+    /* ---------- Ссылки ---------- */
+    .resources-block { margin-top: 26px; }
+    .resources-block h2 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -.015em;
+    }
+    .resources-block > p { margin-top: 5px; color: var(--text-soft); font-size: 12.5px; }
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 11px;
+      margin-top: 13px;
+    }
+    .resource-card {
+      display: block;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--text);
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .resource-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--red);
+      box-shadow: var(--shadow);
+    }
+    .resource-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .resource-host {
+      color: var(--red);
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .external-icon { display: grid; place-items: center; width: 16px; height: 16px; color: var(--muted); }
+    .external-icon svg { width: 13px; height: 13px; }
+    .resource-card h3 {
+      margin-top: 8px;
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .resource-card p { margin-top: 4px; color: var(--text-soft); font-size: 11.5px; line-height: 1.5; }
+
+    /* ---------- Настройки ---------- */
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      align-items: start;
+    }
+    .settings-column { display: grid; gap: 16px; }
+    .sync-status-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      color: var(--text-soft);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .sync-status-line strong { font-weight: 600; }
+    .sync-note {
+      margin-top: 12px;
+      padding: 11px 13px;
+      border-left: 2px solid var(--line-strong);
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.55;
+    }
+    .data-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .danger-zone { margin-top: 18px; padding-top: 15px; border-top: 1px solid var(--line); }
+    .info-list { display: grid; gap: 7px; margin: 12px 0 0; padding: 0; list-style: none; }
+    .info-list li {
+      position: relative;
+      padding-left: 15px;
+      color: var(--text-soft);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .info-list li::before { content: "—"; position: absolute; left: 0; color: var(--red); }
+
+    /* ---------- Подвал и уведомления ---------- */
+    .footer {
+      position: relative;
+      margin-top: 30px;
+      padding: 16px 0 34px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: .04em;
+      text-align: center;
+    }
+    .footer::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      width: 64px;
+      height: 2px;
+      background: var(--red);
+      transform: translateX(-50%);
+    }
+
     .toast {
-      position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom)); z-index: 80;
-      max-width: min(440px, calc(100% - 32px)); padding: 13px 17px; border: 1px solid var(--border);
-      border-radius: 15px; background: var(--surface); color: var(--text); box-shadow: var(--shadow);
-      font-size: 13px; font-weight: 650; text-align: center; opacity: 0; visibility: hidden;
-      transform: translate(-50%, 12px); transition: opacity .22s ease, transform .22s ease, visibility .22s ease;
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      z-index: 90;
+      max-width: min(440px, calc(100% - 32px));
+      padding: 11px 16px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 11px;
+      background: var(--ink);
+      color: var(--on-ink);
+      box-shadow: 0 18px 40px -18px rgba(0, 0, 0, .6);
+      font-size: 12.5px;
+      line-height: 1.4;
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(-50%, 8px);
+      transition: opacity .22s ease, transform .22s ease, visibility .22s ease;
+      pointer-events: none;
     }
     .toast.is-visible { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
-    .toast[data-tone="error"] { border-color: var(--danger); color: var(--danger); }
-    .toast[data-tone="achievement"] { border-color: var(--gold); background: var(--gold-soft); color: var(--text); }
-    .noscript { padding: 14px; background: var(--danger-soft); color: var(--danger); text-align: center; font-weight: 700; }
+    .toast[data-tone="error"] { background: var(--red-deep); border-color: rgba(255, 255, 255, .14); }
+    .toast[data-tone="achievement"] { background: #292124; border-color: rgba(217, 154, 118, .45); }
 
+    /* ---------- Адаптив ---------- */
     @media (max-width: 900px) {
-      .dashboard { grid-template-columns: minmax(0, 1fr); }
-      .streak-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(190px, .8fr); column-gap: 20px; align-items: start; }
-      .streak-top { grid-column: 1; }
-      .streak-days { grid-column: 2; grid-row: 1 / span 2; margin-top: 4px; }
-      .streak-hint { grid-column: 1 / -1; margin-top: 14px; }
-      .settings-grid { grid-template-columns: minmax(0, 1fr); }
-      .practice-top { grid-template-columns: minmax(0, 1fr); }
-      .achievement-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .dashboard { grid-template-columns: 1fr; }
+      .streak-card { display: grid; grid-template-columns: 1fr auto; align-items: center; }
+      .streak-days { grid-column: 1 / -1; }
+      .streak-hint { grid-column: 1 / -1; }
+      .practice-top { grid-template-columns: 1fr; }
+      .resource-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .settings-grid { grid-template-columns: 1fr; }
     }
+
     @media (max-width: 720px) {
-      .shell { width: calc(100% - 24px); }
-      .topbar-inner { min-height: 66px; }
+      body { padding-bottom: 84px; }
+      .shell { width: calc(100% - 28px); }
+      .topbar-inner { min-height: 58px; }
+      .brand-mark { width: 36px; height: 36px; font-size: 21px; }
+      .brand-copy h1 { font-size: 17px; }
       .sync-chip { display: none; }
-      .app-main { padding-top: 14px; padding-bottom: 104px; }
+      .streak-chip { min-height: 30px; padding: 0 9px; }
+
+      .app-main { padding-top: 14px; }
+      .welcome-card {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        padding: 18px 16px 18px 18px;
+        border-left-width: 5px;
+        border-radius: 20px;
+      }
+      .welcome-copy { min-width: 0; }
+      .welcome-title { font-size: 25px; overflow-wrap: break-word; }
+      .welcome-sub { font-size: 12.5px; }
+      .hero-meta { font-size: 8.5px; }
+      .progress-ring { width: 74px; height: 74px; }
+      .progress-ring::before { inset: 8px; }
+      .progress-ring span { font-size: 19px; }
+
+      .stat-row { grid-template-columns: 1fr; }
+      .stat-tile { border-right: 0; border-bottom: 1px solid var(--line); padding: 12px 14px; }
+      .stat-tile:last-child { border-bottom: 0; }
+
       .tabbar {
-        position: fixed; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); left: 10px;
-        z-index: 50; margin: 0; padding: 6px; gap: 4px;
-        border-radius: 22px; background: var(--surface); box-shadow: 0 16px 40px rgba(22, 30, 66, .20);
+        position: fixed;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        top: auto;
+        margin: 0;
+        padding: 5px;
+        border-radius: 14px;
+        background: var(--surface);
+        box-shadow: 0 18px 44px -14px rgba(0, 0, 0, .4);
       }
-      .tab { flex-direction: column; gap: 3px; min-height: 54px; padding: 4px 2px; font-size: 10px; border-radius: 16px; }
-      .tab svg { width: 20px; height: 20px; }
-      .welcome-card, .streak-card { border-radius: 22px; }
-      .welcome-card { padding: 22px; gap: 18px; }
-      .progress-ring { width: 96px; }
-      .progress-ring span { font-size: 20px; }
-      .tip-banner { padding: 14px 16px; }
-      .stage-toggle, .topic-toggle {
-        grid-template-columns: 42px minmax(0, 1fr) 20px; gap: 12px; min-height: 72px; padding: 13px 15px;
+      .tabbar .tab {
+        flex: 1 1 0;
+        flex-direction: column;
+        gap: 3px;
+        min-height: 46px;
+        padding: 6px 2px;
+        font-size: 9px;
+        letter-spacing: .01em;
       }
-      .stage-index, .topic-emoji { width: 42px; height: 42px; border-radius: 13px; }
+      .tabbar .tab svg { width: 17px; height: 17px; }
+
+      .panel-head h2 { font-size: 27px; }
+      .panel-dark { padding: 17px; border-radius: 18px; }
+      .achievement-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+      .achievement { min-height: 138px; padding: 13px; }
+
+      .stage-toggle, .topic-toggle { padding: 13px 13px; gap: 10px; }
+      .stage-panel, .topic-panel { padding-inline: 13px; }
+      .stage-title { font-size: 16.5px; }
+      .task { padding: 8px 5px; }
+      .task-text { font-size: 13px; }
+      .task-detail { font-size: 11.5px; }
       .stage-count, .topic-count { display: none; }
-      .stage-panel, .topic-panel { padding: 0 15px 15px; }
-      .resource-grid { grid-template-columns: minmax(0, 1fr); }
-      .toast { bottom: calc(88px + env(safe-area-inset-bottom)); }
-      .problem { padding-inline: 6px; }
+      .resource-grid { grid-template-columns: 1fr; }
+      .card { padding: 17px; }
+      .footer { padding-bottom: 20px; }
     }
-    @media (max-width: 560px) {
-      .stat-row { gap: 8px; }
-      .stat-tile { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px; border-radius: 16px; }
-      .stat-icon { width: 36px; height: 36px; border-radius: 11px; font-size: 18px; }
-      .stat-value strong { font-size: 19px; }
-      .stat-value span { font-size: 10.5px; }
-      .stat-label { font-size: 10.5px; }
+
+    @media (max-width: 420px) {
+      .top-actions { gap: 5px; }
+      .streak-chip { padding: 0 7px; font-size: 9px; }
+      .icon-btn { width: 31px; height: 31px; }
+      .problem { grid-template-columns: minmax(0, 1fr) 26px; }
+      .problem .level { display: none; }
     }
-    @media (max-width: 460px) {
-      .brand p { display: none; }
-      .brand h1 { font-size: 15.5px; }
-      .brand-mark { width: 42px; height: 42px; border-radius: 13px; }
-      .welcome-card { padding: 20px; flex-wrap: wrap; }
-      .welcome-title { font-size: 21px; }
-      .welcome-progress { margin-top: 18px; max-width: none; }
-      .progress-ring { width: 88px; }
-      .progress-ring span { font-size: 18px; }
-      .panel-head { display: block; }
-      .panel-head h2 { font-size: 26px; }
-      .card { padding: 18px; }
-      .task { padding-inline: 6px; }
-      .achievement-grid { grid-template-columns: minmax(0, 1fr); }
-      .streak-card { display: flex; align-items: stretch; }
-      .streak-days { margin-top: 16px; }
-      .tip-banner { border-radius: 16px; }
-    }
+
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
-</style>
+
+  </style>
 </head>
 <body data-tab="roadmap">
   <script>
@@ -740,10 +1694,9 @@
   <header class="topbar">
     <div class="shell topbar-inner">
       <div class="brand">
-        <div class="brand-mark" aria-hidden="true">Go</div>
+        <div class="brand-mark" aria-hidden="true">J</div>
         <div class="brand-copy">
-          <h1>Трекер роадмапа Go</h1>
-          <p>Уютный путь до стажировки</p>
+          <h1>Java Roadmap</h1>
         </div>
       </div>
       <div class="top-actions">
@@ -752,7 +1705,7 @@
           <span data-sync-text>Локально</span>
         </span>
         <span class="streak-chip" id="headerStreakChip" title="Серия занятий">
-          <span class="flame" aria-hidden="true">🔥</span>
+          <span class="flame" aria-hidden="true"></span>
           <span id="headerStreak">0</span>
         </span>
         <button class="icon-btn" type="button" id="themeToggle" aria-label="Включить тёмную тему" title="Сменить тему">
@@ -767,9 +1720,9 @@
     <section class="dashboard" aria-label="Общий прогресс">
       <div class="welcome-card">
         <div class="welcome-copy">
-          <p class="eyebrow" id="greeting">Добрый день</p>
-          <p class="welcome-title" id="overallCount">выполнено 0 из 0 задач</p>
-          <p class="welcome-sub" id="heroSub">Спокойный темп важнее рывков.</p>
+          <p class="eyebrow">Java Backend</p>
+          <h2 class="welcome-title">Путь до стажировки</h2>
+          <p class="hero-meta"><span id="overallCount">выполнено 0 из 0 задач</span></p>
           <div class="welcome-progress">
             <p class="progress-label"><span>Общий прогресс</span></p>
             <div class="meter" role="progressbar" aria-label="Общий прогресс" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="overallMeter">
@@ -788,7 +1741,7 @@
             <p class="eyebrow" id="streakTitle">Серия занятий</p>
             <p class="streak-number"><strong id="streakDays">0</strong><span id="streakLabel">дней подряд</span></p>
           </div>
-          <span class="streak-flame" aria-hidden="true">🔥</span>
+          <span class="streak-flame" aria-hidden="true">14</span>
         </div>
         <div class="streak-days" id="streakCalendar" role="img" aria-label="Активность за последние 14 дней"></div>
         <p class="streak-hint">Отметьте любую задачу — день засчитается.</p>
@@ -797,21 +1750,21 @@
 
     <section class="stat-row" aria-label="Кратко о прогрессе">
       <article class="stat-tile">
-        <span class="stat-icon stat-icon-indigo" aria-hidden="true">🧭</span>
+        <span class="stat-icon stat-icon-indigo" aria-hidden="true">01</span>
         <div class="stat-body">
-          <p class="stat-value"><strong id="stagesDone">0</strong><span>из 8</span></p>
+          <p class="stat-value"><strong id="stagesDone">0</strong><span>из 6</span></p>
           <p class="stat-label">этапов закрыто</p>
         </div>
       </article>
       <article class="stat-tile">
-        <span class="stat-icon stat-icon-mint" aria-hidden="true">🧩</span>
+        <span class="stat-icon stat-icon-mint" aria-hidden="true">02</span>
         <div class="stat-body">
           <p class="stat-value"><strong id="practiceStat">0</strong><span id="practiceUnit">задач</span></p>
           <p class="stat-label">практики решено</p>
         </div>
       </article>
       <article class="stat-tile">
-        <span class="stat-icon stat-icon-gold" aria-hidden="true">🏅</span>
+        <span class="stat-icon stat-icon-gold" aria-hidden="true">03</span>
         <div class="stat-body">
           <p class="stat-value"><strong id="achievementStat">0</strong><span>из 22</span></p>
           <p class="stat-label">ачивок открыто</p>
@@ -819,13 +1772,12 @@
       </article>
     </section>
 
-    <aside class="tip-banner" aria-label="Совет дня">
-      <span class="tip-icon" aria-hidden="true">💡</span>
-      <div class="tip-copy">
-        <span class="tip-badge">Совет дня</span>
-        <p id="dailyTip"></p>
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>Java Core</span><span>Collections</span><span>Stream API</span><span>Spring Boot</span><span>PostgreSQL</span><span>Docker</span><span>GitHub Actions</span><span>LeetCode</span><span>English</span><span>Belarus</span>
+        <span>Java Core</span><span>Collections</span><span>Stream API</span><span>Spring Boot</span><span>PostgreSQL</span><span>Docker</span><span>GitHub Actions</span><span>LeetCode</span><span>English</span><span>Belarus</span>
       </div>
-    </aside>
+    </div>
 
     <div class="tabbar" role="tablist" aria-label="Разделы приложения">
       <button class="tab" type="button" role="tab" id="tab-roadmap" aria-controls="panel-roadmap" aria-selected="true" tabindex="0" data-tab="roadmap">
@@ -853,46 +1805,47 @@
     <section class="panel" id="panel-roadmap" role="tabpanel" aria-labelledby="tab-roadmap" tabindex="0">
       <div class="panel-head">
         <div>
-          <p class="eyebrow">8 этапов</p>
+          <p class="eyebrow">6 этапов</p>
           <h2>Роадмап</h2>
-          <p>Отмечайте пройденные темы, раскрывайте этапы и записывайте заметки. Всё сохраняется автоматически.</p>
+          <p>Шесть этапов от Java Core до откликов на стажировку. Отмечайте темы, раскрывайте этапы и записывайте заметки — всё сохраняется автоматически.</p>
         </div>
       </div>
+      <div class="stage-nav" id="stageNav" aria-label="Быстрый переход по этапам"></div>
       <div class="stage-list" id="roadmapList"></div>
 
       <section class="resources-block" aria-labelledby="resourcesTitle">
         <h2 id="resourcesTitle">Полезные ссылки</h2>
         <p>Проверенные материалы, чтобы закрывать темы без лишнего шума.</p>
-        <div class="resource-grid">
-          <a class="resource-card" href="https://go.dev/tour/" target="_blank" rel="noopener noreferrer">
-            <span class="resource-top"><span class="resource-host">go.dev</span><span class="external-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></span></span>
-            <h3>Tour of Go</h3>
-            <p>Интерактивное знакомство с синтаксисом, типами, методами и конкурентностью.</p>
+                <div class="resource-grid">
+          <a class="resource-card" href="https://dev.java/learn/" target="_blank" rel="noopener noreferrer">
+            <span class="resource-top"><span class="resource-host">dev.java</span><span class="external-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></span></span>
+            <h3>Java Learning</h3>
+            <p>Официальные уроки по современному Java: язык, коллекции, потоки и новые возможности.</p>
           </a>
-          <a class="resource-card" href="https://go.dev/doc/effective_go" target="_blank" rel="noopener noreferrer">
-            <span class="resource-top"><span class="resource-host">go.dev</span><span class="external-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></span></span>
-            <h3>Effective Go</h3>
-            <p>Идиоматичный Go: как писать понятный и правильный код на языке.</p>
+          <a class="resource-card" href="https://docs.spring.io/spring-boot/" target="_blank" rel="noopener noreferrer">
+            <span class="resource-top"><span class="resource-host">docs.spring.io</span><span class="external-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></span></span>
+            <h3>Spring Boot</h3>
+            <p>Документация Spring Boot 3 — основной источник по авто-конфигурации, JPA и Security.</p>
           </a>
-          <a class="resource-card" href="https://gobyexample.com/" target="_blank" rel="noopener noreferrer">
-            <span class="resource-top"><span class="resource-host">gobyexample.com</span><span class="external-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></span></span>
-            <h3>Go by Example</h3>
-            <p>Короткие рабочие примеры на каждую тему — удобно повторять перед практикой.</p>
+          <a class="resource-card" href="https://spring.io/guides" target="_blank" rel="noopener noreferrer">
+            <span class="resource-top"><span class="resource-host">spring.io</span><span class="external-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></span></span>
+            <h3>Spring Guides</h3>
+            <p>Короткие пошаговые гайды: REST, доступ к данным, безопасность и тесты.</p>
           </a>
-          <a class="resource-card" href="https://go.dev/blog/" target="_blank" rel="noopener noreferrer">
-            <span class="resource-top"><span class="resource-host">go.dev</span><span class="external-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></span></span>
-            <h3>Go Blog</h3>
-            <p>Официальный блог о возможностях языка, инструментах и подходах.</p>
+          <a class="resource-card" href="https://www.baeldung.com/" target="_blank" rel="noopener noreferrer">
+            <span class="resource-top"><span class="resource-host">baeldung.com</span><span class="external-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></span></span>
+            <h3>Baeldung</h3>
+            <p>Практические статьи по Java и Spring. Удобно закрывать конкретные вопросы.</p>
           </a>
-          <a class="resource-card" href="https://pkg.go.dev/" target="_blank" rel="noopener noreferrer">
-            <span class="resource-top"><span class="resource-host">pkg.go.dev</span><span class="external-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></span></span>
-            <h3>pkg.go.dev</h3>
-            <p>Документация стандартной библиотеки и сторонних пакетов с примерами.</p>
+          <a class="resource-card" href="https://www.postgresql.org/docs/" target="_blank" rel="noopener noreferrer">
+            <span class="resource-top"><span class="resource-host">postgresql.org</span><span class="external-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></span></span>
+            <h3>PostgreSQL Docs</h3>
+            <p>Официальная документация: SQL, индексы, транзакции и планировщик запросов.</p>
           </a>
-          <a class="resource-card" href="https://go.dev/doc/faq" target="_blank" rel="noopener noreferrer">
-            <span class="resource-top"><span class="resource-host">go.dev</span><span class="external-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></span></span>
-            <h3>Go FAQ</h3>
-            <p>Ответы на частые вопросы о языке — хорошая шпаргалка перед интервью.</p>
+          <a class="resource-card" href="https://leetcode.com/studyplan/top-interview-150/" target="_blank" rel="noopener noreferrer">
+            <span class="resource-top"><span class="resource-host">leetcode.com</span><span class="external-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></span></span>
+            <h3>Top Interview 150</h3>
+            <p>Подборка задач, с которой удобно идти параллельно роадмапу и практике.</p>
           </a>
         </div>
       </section>
@@ -903,7 +1856,7 @@
         <div>
           <p class="eyebrow">LeetCode по темам</p>
           <h2>Практика</h2>
-          <p>Задачи разложены по темам Go-роадмапа. Отмечайте решённые и получайте случайную задачу, когда не знаете, с чего начать.</p>
+          <p>Задачи разложены по темам Java-роадмапа. Отмечайте решённые и получайте случайную задачу, когда не знаете, с чего начать.</p>
         </div>
       </div>
 
@@ -944,7 +1897,7 @@
               <p class="eyebrow">Подсказка</p>
               <h2>Дай мне задачу</h2>
             </div>
-            <span class="suggest-emoji" aria-hidden="true">🎲</span>
+            <span class="suggest-emoji" aria-hidden="true">?</span>
           </div>
           <p class="card-desc">Случайная нерешённая задача из практики — с темой и уровнем сложности.</p>
           <button class="btn btn-warm" type="button" id="suggestBtn">
@@ -964,7 +1917,7 @@
       <div class="topic-list" id="practiceList"></div>
     </section>
 
-    <section class="panel" id="panel-achievements" role="tabpanel" aria-labelledby="tab-achievements" tabindex="0" hidden>
+    <section class="panel panel-dark" id="panel-achievements" role="tabpanel" aria-labelledby="tab-achievements" tabindex="0" hidden>
       <div class="panel-head">
         <div>
           <p class="eyebrow">Маленькие победы</p>
@@ -975,7 +1928,7 @@
       <div class="card achievement-summary">
         <div class="achievement-summary-top">
           <div><strong id="achCount">0 из 0</strong><span>открыто</span></div>
-          <span class="achievement-medal" aria-hidden="true">🏅</span>
+          <span class="achievement-medal" aria-hidden="true">22</span>
         </div>
         <div class="meter" role="progressbar" aria-label="Прогресс ачивок" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="achMeter">
           <span id="achBar"></span>
@@ -1079,298 +2032,525 @@
     </section>
   </main>
 
-  <footer class="shell footer">Трекер роадмапа Go · данные не покидают ваши устройства без вашего Gist</footer>
+  <footer class="shell footer">Java Roadmap · данные не покидают ваши устройства без вашего Gist</footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script>
     "use strict";
 
     // ---------- Данные: роадмап ----------
-    const ROADMAP = [
+    let ROADMAP = [
       {
-        id: "prep",
-        title: "Подготовка",
-        weeks: "1 неделя",
-        tasks: [
-          "Командная строка: навигация, файлы, переменные окружения",
-          "Git: init, commit, branch, merge, push, pull request",
-          "Как работает HTTP: метод, URL, статус-код, заголовки, JSON",
-          "Базовый SQL: SELECT, WHERE, JOIN, INSERT, UPDATE, GROUP BY"
-        ]
+            "id": "stage1",
+            "title": "Java Core и коллекции",
+            "subtitle": "То, о чём спрашивают на каждом собеседовании",
+            "accent": "#5B5B66",
+            "tips": [
+                  "Коллекции учи в связке: сначала устройство, потом сложность операций, потом задачи на LeetCode.",
+                  "Не заучивай сигнатуры — понимай, какую проблему решает каждая структура."
+            ],
+            "tasks": [
+                  {
+                        "title": "Исключения",
+                        "detail": "Checked и unchecked, try-catch-finally, try-with-resources. Понимай, когда исключение лучше пробросить, а когда обработать."
+                  },
+                  {
+                        "title": "ООП и generics",
+                        "detail": "Интерфейсы, абстрактные классы, композиция вместо наследования, bounded type parameters. Без generics не читаются сигнатуры коллекций."
+                  },
+                  {
+                        "title": "Java 17/21",
+                        "detail": "Records, sealed classes, pattern matching, var, switch expressions, text blocks. На собеседованиях всё чаще спрашивают именно современный Java."
+                  },
+                  {
+                        "title": "ArrayList и LinkedList",
+                        "detail": "ArrayList внутри массив: быстрый доступ, медленная вставка в середину. LinkedList — двусвязный список. Знай, почему на практике почти всегда берут ArrayList."
+                  },
+                  {
+                        "title": "HashMap и HashSet",
+                        "detail": "Бакеты, коллизии, load factor, put и get. HashMap — самая частая тема на Java-интервью."
+                  },
+                  {
+                        "title": "TreeMap, TreeSet, ArrayDeque, PriorityQueue",
+                        "detail": "Красно-чёрное дерево и O(log n); стек и очередь; куча и задачи top K. Выучи таблицу сложности операций."
+                  },
+                  {
+                        "title": "Lambda, Stream и Optional",
+                        "detail": "filter/map/collect, groupingBy, flatMap, ленивые операции. Optional — для возвращаемых значений, не для полей."
+                  },
+                  {
+                        "title": "equals и hashCode",
+                        "detail": "Контракт equals/hashCode и что ломается в HashMap, если его нарушить. Разберись, почему нельзя менять поля, участвующие в hashCode."
+                  },
+                  {
+                        "title": "Iterator и ConcurrentModificationException",
+                        "detail": "Откуда берётся при удалении из коллекции в цикле и как правильно использовать iterator.remove или removeIf."
+                  },
+                  {
+                        "title": "Свои MyArrayList, MyLinkedList, MyHashMap",
+                        "detail": "Написать с нуля без ИИ: add, get, remove, расширение массива, цепочки в бакетах. Это лучшая проверка понимания."
+                  },
+                  {
+                        "title": "Память и Garbage Collector",
+                        "detail": "Stack и heap, сильные/мягкие/слабые ссылки, поколения, stop-the-world. На уровне понимания, без тюнинга JVM."
+                  },
+                  {
+                        "title": "Многопоточность",
+                        "detail": "Thread, Runnable, synchronized, volatile, ExecutorService, CompletableFuture, deadlock и race condition. В 2026 всё чаще спрашивают виртуальные потоки."
+                  },
+                  {
+                        "title": "Проверка этапа",
+                        "detail": "Объясняешь вслух разницу ArrayList и LinkedList, устройство HashMap и зачем hashCode; пишешь stream и Optional без подсказок."
+                  }
+            ]
       },
       {
-        id: "basics",
-        title: "Основы Go",
-        weeks: "2–3 недели",
-        tasks: [
-          "Установка Go, команды go run, go build, go test, go fmt, go vet",
-          "Переменные, константы, базовые типы",
-          "Условия, циклы, switch",
-          "Функции, множественные возвращаемые значения, замыкания",
-          "Массивы, слайсы, map",
-          "Структуры, методы, указатели",
-          "Модули и пакеты: go mod init, импорты"
-        ]
+            "id": "stage2",
+            "title": "Алгоритмы на LeetCode",
+            "subtitle": "Шаблоны, которые повторяются в задачах",
+            "accent": "#A33D3D",
+            "tips": [
+                  "20 минут думаешь сам, потом смотришь идею, а не код, и пишешь решение руками.",
+                  "На следующий день реши ту же задачу с нуля из головы — это важнее количества.",
+                  "Регулярность лучше рывков: важно решать задачи постоянно, а не раз в месяц.",
+                  "Hard на стажировку почти не нужен. Сначала уверенные Easy и типовые Medium."
+            ],
+            "tasks": [
+                  {
+                        "title": "Сложность и Big-O",
+                        "detail": "O(1), O(log n), O(n), O(n log n), O(n²). Умей назвать сложность своего решения по времени и памяти."
+                  },
+                  {
+                        "title": "Массивы и строки",
+                        "detail": "Индексы, in-place, префиксные суммы, String и StringBuilder, Unicode."
+                  },
+                  {
+                        "title": "Два указателя и скользящее окно",
+                        "detail": "Экономия памяти там, где хочется вложенных циклов. Следи за границами окна."
+                  },
+                  {
+                        "title": "HashMap и HashSet",
+                        "detail": "Подсчёты, группировки, поиск пары и проверка дублей."
+                  },
+                  {
+                        "title": "Связные списки",
+                        "detail": "Разворот, слияние, два бегуна, фиктивный узел."
+                  },
+                  {
+                        "title": "Стек и очередь",
+                        "detail": "Скобки, монотонный стек, очередь на двух стеках."
+                  },
+                  {
+                        "title": "Бинарный поиск",
+                        "detail": "Логарифм вместо перебора и аккуратные границы. Отдельно потренируй поиск по ответу."
+                  },
+                  {
+                        "title": "Рекурсия и деревья",
+                        "detail": "DFS, BFS, обходы, высота, инверсия, бинарное дерево поиска."
+                  },
+                  {
+                        "title": "Сортировки",
+                        "detail": "Сложность основных сортировок, стабильность, когда хватает Arrays.sort."
+                  },
+                  {
+                        "title": "Проверка этапа",
+                        "detail": "Решаешь любую Easy из списка за 20–25 минут без подсказок; из памяти пишешь разворот списка и Two Sum через HashMap."
+                  }
+            ]
       },
       {
-        id: "idiomatic",
-        title: "Идиоматичный Go",
-        weeks: "2–3 недели",
-        tasks: [
-          "Интерфейсы и неявная реализация",
-          "Обработка ошибок: error, fmt.Errorf с %w, errors.Is и errors.As",
-          "defer, panic, recover",
-          "Тесты: *_test.go, табличные тесты",
-          "Стандартная библиотека: strings, strconv, sort, time, os, io, encoding/json",
-          "Дженерики"
-        ]
+            "id": "stage3",
+            "title": "SQL и PostgreSQL",
+            "subtitle": "Без этого бэкенд не бэкенд",
+            "accent": "#8A6A4F",
+            "tips": [
+                  "SQL учи руками в реальной базе, а не только по видео.",
+                  "На собеседовании ценят умение объяснить план запроса, а не заученный синтаксис."
+            ],
+            "tasks": [
+                  {
+                        "title": "Установи PostgreSQL",
+                        "detail": "Поставь PostgreSQL и работай через DBeaver или psql. Сразу заведи учебную базу и таблицы."
+                  },
+                  {
+                        "title": "SELECT, WHERE и ORDER BY",
+                        "detail": "Фильтры, сортировка, LIMIT/OFFSET, NULL и трёхзначная логика."
+                  },
+                  {
+                        "title": "GROUP BY и HAVING",
+                        "detail": "WHERE фильтрует строки до группировки, HAVING — группы после. Разница спрашивается почти всегда."
+                  },
+                  {
+                        "title": "JOIN",
+                        "detail": "INNER, LEFT, RIGHT, FULL. Особенно LEFT JOIN и перенос фильтра по правой таблице в ON."
+                  },
+                  {
+                        "title": "Подзапросы и EXISTS",
+                        "detail": "IN, EXISTS, коррелированные подзапросы, агрегаты COUNT/SUM/AVG/MIN/MAX."
+                  },
+                  {
+                        "title": "Индексы и EXPLAIN",
+                        "detail": "B-tree, составные индексы, когда индекс помогает и когда нет. Читай план запроса через EXPLAIN."
+                  },
+                  {
+                        "title": "Транзакции и ACID",
+                        "detail": "BEGIN/COMMIT/ROLLBACK, уровни изоляции, первичные и внешние ключи, deadlock."
+                  },
+                  {
+                        "title": "Нормализация, типы и ограничения",
+                        "detail": "Первые три нормальные формы, типы данных, NOT NULL, UNIQUE, CHECK, ON DELETE. Это база проектирования схемы."
+                  },
+                  {
+                        "title": "Оконные функции",
+                        "detail": "ROW_NUMBER, RANK, SUM OVER, разделы и сортировка. Часто встречается в аналитических задачах и на работе."
+                  },
+                  {
+                        "title": "Практика",
+                        "detail": "sql-ex.ru, SQLBolt, LeetCode SQL Easy/Medium. Реши 10 задач на JOIN и GROUP BY без подсказок."
+                  },
+                  {
+                        "title": "Проверка этапа",
+                        "detail": "Объясняешь WHERE vs HAVING, INNER vs LEFT JOIN; пишешь запрос с группировкой и подзапросом без шпаргалки."
+                  }
+            ]
       },
       {
-        id: "concurrency",
-        title: "Конкурентность",
-        weeks: "2 недели",
-        tasks: [
-          "Горутины",
-          "Каналы, close, range по каналу",
-          "select, таймауты",
-          "sync.WaitGroup, sync.Mutex, sync.Once",
-          "context",
-          "Утечки горутин, гонки данных, флаг go run -race",
-          "Паттерны: worker pool, fan-in / fan-out, pipeline"
-        ]
+            "id": "stage4",
+            "title": "Spring Boot, JPA и Проект №1",
+            "subtitle": "Главный проект для резюме",
+            "accent": "#A33D3D",
+            "tips": [
+                  "Один законченный проект с тестами и README сильнее пяти брошенных.",
+                  "Если застрял на JPA — нарисуй схему таблиц и связи на бумаге, половина ошибок исчезнет."
+            ],
+            "tasks": [
+                  {
+                        "title": "Spring Boot 3 и Jakarta",
+                        "detail": "Starters, auto-configuration, application.yml, профили, embedded Tomcat. Spring Boot 3 использует jakarta.* вместо javax.* — не путай примеры из старых статей."
+                  },
+                  {
+                        "title": "Maven или Gradle",
+                        "detail": "Зависимости, lifecycle, плагины, BOM. Выбери один инструмент и не смешивай в одном проекте."
+                  },
+                  {
+                        "title": "Сущности, связи и репозитории",
+                        "detail": "JPA/Hibernate: OneToMany, ManyToOne, ManyToMany, lazy/eager, cascade, orphanRemoval. Это твоё слабое место — не пропускай."
+                  },
+                  {
+                        "title": "REST-контроллеры и DTO",
+                        "detail": "@RestController, @RequestBody, @PathVariable, ResponseEntity. Не отдавай сущности наружу — делай DTO."
+                  },
+                  {
+                        "title": "Валидация и обработка ошибок",
+                        "detail": "@Valid, @ControllerAdvice, ProblemDetail, коды ответов. Ошибки должны быть понятными, а не стектрейсом в JSON."
+                  },
+                  {
+                        "title": "Транзакции и проблема N+1",
+                        "detail": "@Transactional, границы транзакции, fetch join, EntityGraph, batch size. Умей показать N+1 и починить его."
+                  },
+                  {
+                        "title": "Пагинация, сортировка и проекции",
+                        "detail": "Pageable, Slice, сортировка по whitelisted полям, DTO-проекции. Не отдавай всю таблицу в JSON."
+                  },
+                  {
+                        "title": "Spring Security и JWT",
+                        "detail": "SecurityFilterChain, BCrypt, JWT, роли, 401/403, защита эндпоинтов. Регистрация и логин должны работать end-to-end."
+                  },
+                  {
+                        "title": "Тесты",
+                        "detail": "JUnit 5, Mockito, @WebMvcTest, @SpringBootTest, Testcontainers для PostgreSQL. Тесты — часть проекта, а не бонус."
+                  },
+                  {
+                        "title": "Миграции Flyway",
+                        "detail": "V1__init.sql, версионирование схемы, запрет ручных правок прод-базы. Схема должна подниматься с нуля одной командой."
+                  },
+                  {
+                        "title": "Логирование, профили и Actuator",
+                        "detail": "SLF4J/Logback, dev/prod профили, health и metrics. Не логируй пароли и токены."
+                  },
+                  {
+                        "title": "Swagger/OpenAPI",
+                        "detail": "springdoc-openapi: описание API, схемы запросов и ответов. Это делает проект удобным для проверки."
+                  },
+                  {
+                        "title": "Собери Проект №1",
+                        "detail": "REST API на PostgreSQL с JWT, валидацией, тестами и README. Предметная область: задачи, трекер привычек или учёт чего-либо. Пишешь сам."
+                  },
+                  {
+                        "title": "Проверка этапа",
+                        "detail": "С нуля, без ИИ, пишешь CRUD (сущность, репозиторий, сервис, контроллер); объясняешь N+1 и транзакции; проект запускается по README."
+                  }
+            ]
       },
       {
-        id: "backend",
-        title: "Бэкенд на Go",
-        weeks: "3–4 недели",
-        tasks: [
-          "net/http: сервер, маршрутизация, middleware",
-          "REST API: CRUD, валидация, коды ответов",
-          "PostgreSQL через database/sql или pgx, миграции, индексы",
-          "Конфигурация через переменные окружения, log/slog",
-          "Graceful shutdown",
-          "Docker и docker-compose",
-          "Фреймворки (chi, Gin, Echo)"
-        ]
+            "id": "stage5",
+            "title": "Инженерный минимум",
+            "subtitle": "Docker, CI, деплой и английский",
+            "accent": "#5B5B66",
+            "tips": [
+                  "Фронт не обязателен на старте. Если 20 целевых вакансий требуют Angular или React — тогда добавь его после Проекта №1.",
+                  "Не учи Kubernetes и Kafka до первой работы. Docker и базовый CI уже дают преимущество."
+            ],
+            "tasks": [
+                  {
+                        "title": "Docker и Docker Compose",
+                        "detail": "Dockerfile для Spring Boot, multi-stage build, Compose с PostgreSQL. Проект должен подниматься одной командой."
+                  },
+                  {
+                        "title": "GitHub Actions",
+                        "detail": "Сборка и тесты на каждый push, кэш зависимостей, зелёный CI. Это базовый инженерный навык."
+                  },
+                  {
+                        "title": "Testcontainers",
+                        "detail": "Интеграционные тесты с настоящим PostgreSQL в контейнере. Мок-тесты не ловят проблемы миграций и SQL."
+                  },
+                  {
+                        "title": "Задеплой Проект №1",
+                        "detail": "VPS, Render или Railway. Переменные окружения, HTTPS, базовый Nginx reverse proxy. Ссылка должна открываться у любого."
+                  },
+                  {
+                        "title": "Английский",
+                        "detail": "Документация Spring и Baeldung каждый день; регулярно объясняй свой проект вслух по-английски. Для Беларуси и удалёнки это обязательный навык."
+                  },
+                  {
+                        "title": "Проверка этапа",
+                        "detail": "Чужой человек запускает проект командой docker compose up по README; CI зелёный; ссылка на деплой открывается."
+                  }
+            ]
       },
       {
-        id: "projects",
-        title: "Pet-проекты",
-        weeks: "3–4 недели",
-        tasks: [
-          "CLI-утилита",
-          "REST API с БД, тестами и Docker",
-          "Конкурентный инструмент",
-          "README у каждого проекта"
-        ]
-      },
-      {
-        id: "interview",
-        title: "Подготовка к собеседованию",
-        weeks: "2 недели",
-        tasks: [
-          "Слайс и массив, map, значение и указатель",
-          "Горутины и каналы, context, утечки горутин",
-          "Свои проекты: объяснить архитектуру",
-          "40–60 задач Easy и Medium на LeetCode",
-          "Вопросы по HTTP, REST, БД, Git",
-          "Практика объяснения вслух"
-        ]
-      },
-      {
-        id: "internship",
-        title: "Поиск стажировки",
-        weeks: "постоянно",
-        tasks: [
-          "Резюме на 1 страницу",
-          "GitHub с закреплёнными репозиториями",
-          "5–10 откликов в неделю",
-          "Рассказ о себе (1–2 мин) и о проектах (2–3 мин)"
-        ]
+            "id": "stage6",
+            "title": "Поиск стажировки в Беларуси",
+            "subtitle": "Отклики, собеседования, оффер",
+            "accent": "#8A4A44",
+            "tips": [
+                  "Рынок Беларуси любит Java + Spring + SQL + Docker. Фронт — плюс, но не вместо бэкенда.",
+                  "Что пока не учить: микросервисы, Kafka, Kubernetes, AWS, GraphQL — после первой работы."
+            ],
+            "tasks": [
+                  {
+                        "title": "Проверь готовность",
+                        "detail": "Проект №1 задеплоен, README и Docker в порядке, Easy-задачи решаются, резюме готово."
+                  },
+                  {
+                        "title": "Собери карту рынка",
+                        "detail": "EPAM, Andersen, Exadel, Itransition, S&P Global, SoftTeco, Wargaming и другие компании с офисами в Минске. Проверь их карьерные страницы и программы стажировок."
+                  },
+                  {
+                        "title": "Резюме, GitHub и LinkedIn",
+                        "detail": "Резюме на одну страницу под Java Backend: стек, два проекта, ссылки на GitHub и демо, уровень английского."
+                  },
+                  {
+                        "title": "Мониторь вакансии",
+                        "detail": "dev.by, rabota.by, LinkedIn, Telegram-каналы с Java-вакансиями и карьерные страницы компаний. Не ограничивайся одним сайтом."
+                  },
+                  {
+                        "title": "Отклики партиями",
+                        "detail": "10–15 откликов за партию, после каждой партии разбирай отказы и тестовые задания."
+                  },
+                  {
+                        "title": "Подготовь ответы",
+                        "detail": "Java Core и коллекции, HashMap изнутри, Spring IoC/DI, жизненный цикл бина, транзакции, SQL, Git."
+                  },
+                  {
+                        "title": "Mock-интервью",
+                        "detail": "С другом или на диктофон. Рассказ о себе 1–2 минуты, о проекте 2–3 минуты, ответы на вопросы без запинки."
+                  },
+                  {
+                        "title": "50–100 откликов",
+                        "detail": "Первый опыт нужен в любом виде: стажировка, junior, удалёнка, аутсорс. Не жди идеальной вакансии."
+                  },
+                  {
+                        "title": "Проверка этапа",
+                        "detail": "Собеседования идут, и после каждого ты добавляешь слабые темы в заметки и закрываешь их."
+                  }
+            ]
       }
-    ];
+];
 
     // ---------- Данные: минимум к собеседованию ----------
     const CHECKLIST_MIN = [
-      "Синтаксис Go",
-      "Слайсы и map",
-      "Ошибки: %w, errors.Is и errors.As",
-      "Горутины, каналы, select, sync, context",
-      "Табличные тесты",
-      "HTTP-сервер на net/http",
-      "SQL с JOIN, INSERT, UPDATE, понятие индекса",
+      "Java Core: ООП, generics, исключения",
+      "Коллекции: ArrayList, HashMap, TreeMap, ArrayDeque",
+      "Stream API и Optional",
+      "Многопоточность: Thread, synchronized, ExecutorService",
+      "Java 17/21: records, sealed, pattern matching",
+      "SQL: JOIN, GROUP BY, индексы, транзакции",
+      "Spring Boot: REST, DI, JPA, транзакции",
+      "Spring Security: JWT, BCrypt, роли",
+      "JUnit 5, Mockito, интеграционные тесты",
       "Git: ветки, merge, pull request",
-      "Docker: образ и запуск с базой",
+      "Docker: Dockerfile и compose с PostgreSQL",
       "2+ проекта на GitHub с README",
-      "40+ задач на алгоритмы"
+      "50+ задач Easy/Medium на LeetCode"
     ];
 
     // ---------- Данные: практика по темам ----------
     const PRACTICE = [
       {
-        id: "arrays", emoji: "🧺", title: "Массивы и слайсы", note: "База для всего: индексы, срезы, префиксные суммы.",
+        id: "arrays", code: "ARR", title: "Массивы и ArrayList", note: "Индексы, in-place, префиксные суммы. ArrayList — рабочая лошадка.",
         problems: [
-          ["two-sum", "Two Sum", "Easy"],
-          ["best-time-to-buy-and-sell-stock", "Best Time to Buy and Sell Stock", "Easy"],
-          ["contains-duplicate", "Contains Duplicate", "Easy"],
-          ["move-zeroes", "Move Zeroes", "Easy"],
-          ["maximum-subarray", "Maximum Subarray", "Medium"],
-          ["product-of-array-except-self", "Product of Array Except Self", "Medium"],
-          ["merge-intervals", "Merge Intervals", "Medium"]
+          ["two-sum", "Two Sum", "Easy", 1],
+          ["best-time-to-buy-and-sell-stock", "Best Time to Buy and Sell Stock", "Easy", 121],
+          ["contains-duplicate", "Contains Duplicate", "Easy", 217],
+          ["move-zeroes", "Move Zeroes", "Easy", 283],
+          ["maximum-subarray", "Maximum Subarray", "Medium", 53],
+          ["product-of-array-except-self", "Product of Array Except Self", "Medium", 238],
+          ["merge-intervals", "Merge Intervals", "Medium", 56]
         ]
       },
       {
-        id: "strings", emoji: "🔤", title: "Строки", note: "Байты и руны, Unicode и аккуратная обработка текста.",
+        id: "strings", code: "STR", title: "Строки", note: "String, StringBuilder, Unicode и аккуратная обработка текста.",
         problems: [
-          ["valid-palindrome", "Valid Palindrome", "Easy"],
-          ["valid-anagram", "Valid Anagram", "Easy"],
-          ["longest-common-prefix", "Longest Common Prefix", "Easy"],
-          ["group-anagrams", "Group Anagrams", "Medium"],
-          ["longest-substring-without-repeating-characters", "Longest Substring Without Repeating Characters", "Medium"],
-          ["string-to-integer-atoi", "String to Integer (atoi)", "Medium"],
-          ["reverse-words-in-a-string", "Reverse Words in a String", "Medium"]
+          ["valid-palindrome", "Valid Palindrome", "Easy", 125],
+          ["valid-anagram", "Valid Anagram", "Easy", 242],
+          ["longest-common-prefix", "Longest Common Prefix", "Easy", 14],
+          ["group-anagrams", "Group Anagrams", "Medium", 49],
+          ["longest-substring-without-repeating-characters", "Longest Substring Without Repeating Characters", "Medium", 3],
+          ["string-to-integer-atoi", "String to Integer (atoi)", "Medium", 8],
+          ["reverse-words-in-a-string", "Reverse Words in a String", "Medium", 151]
         ]
       },
       {
-        id: "maps", emoji: "🗺", title: "Хеш-таблицы", note: "map в Go: подсчёты, группировки и кэши.",
+        id: "maps", code: "MAP", title: "Хеш-таблицы", note: "HashMap и HashSet: подсчёты, группировки и кэши.",
         problems: [
-          ["ransom-note", "Ransom Note", "Easy"],
-          ["isomorphic-strings", "Isomorphic Strings", "Easy"],
-          ["word-pattern", "Word Pattern", "Easy"],
-          ["top-k-frequent-elements", "Top K Frequent Elements", "Medium"],
-          ["subarray-sum-equals-k", "Subarray Sum Equals K", "Medium"],
-          ["lru-cache", "LRU Cache", "Medium"]
+          ["ransom-note", "Ransom Note", "Easy", 383],
+          ["isomorphic-strings", "Isomorphic Strings", "Easy", 205],
+          ["word-pattern", "Word Pattern", "Easy", 290],
+          ["top-k-frequent-elements", "Top K Frequent Elements", "Medium", 347],
+          ["subarray-sum-equals-k", "Subarray Sum Equals K", "Medium", 560],
+          ["lru-cache", "LRU Cache", "Medium", 146]
         ]
       },
       {
-        id: "two-pointers", emoji: "👉", title: "Два указателя", note: "Экономия памяти там, где хочется вложенных циклов.",
+        id: "two-pointers", code: "2P", title: "Два указателя", note: "Экономия памяти там, где хочется вложенных циклов.",
         problems: [
-          ["remove-duplicates-from-sorted-array", "Remove Duplicates from Sorted Array", "Easy"],
-          ["two-sum-ii-input-array-is-sorted", "Two Sum II - Input Array Is Sorted", "Medium"],
-          ["container-with-most-water", "Container With Most Water", "Medium"],
-          ["3sum", "3Sum", "Medium"],
-          ["sort-colors", "Sort Colors", "Medium"],
-          ["trapping-rain-water", "Trapping Rain Water", "Hard"]
+          ["remove-duplicates-from-sorted-array", "Remove Duplicates from Sorted Array", "Easy", 26],
+          ["two-sum-ii-input-array-is-sorted", "Two Sum II - Input Array Is Sorted", "Medium", 167],
+          ["container-with-most-water", "Container With Most Water", "Medium", 11],
+          ["3sum", "3Sum", "Medium", 15],
+          ["sort-colors", "Sort Colors", "Medium", 75],
+          ["trapping-rain-water", "Trapping Rain Water", "Hard", 42]
         ]
       },
       {
-        id: "sliding-window", emoji: "🪟", title: "Скользящее окно", note: "Подстроки и подмассивы без перебора всех вариантов.",
+        id: "sliding-window", code: "WIN", title: "Скользящее окно", note: "Подстроки и подмассивы без перебора всех вариантов.",
         problems: [
-          ["maximum-average-subarray-i", "Maximum Average Subarray I", "Easy"],
-          ["longest-repeating-character-replacement", "Longest Repeating Character Replacement", "Medium"],
-          ["permutation-in-string", "Permutation in String", "Medium"],
-          ["minimum-window-substring", "Minimum Window Substring", "Hard"],
-          ["sliding-window-maximum", "Sliding Window Maximum", "Hard"]
+          ["maximum-average-subarray-i", "Maximum Average Subarray I", "Easy", 643],
+          ["longest-repeating-character-replacement", "Longest Repeating Character Replacement", "Medium", 424],
+          ["permutation-in-string", "Permutation in String", "Medium", 567],
+          ["minimum-window-substring", "Minimum Window Substring", "Hard", 76],
+          ["sliding-window-maximum", "Sliding Window Maximum", "Hard", 239]
         ]
       },
       {
-        id: "binary-search", emoji: "🔍", title: "Бинарный поиск", note: "Логарифм вместо перебора — и аккуратные границы.",
+        id: "binary-search", code: "BS", title: "Бинарный поиск", note: "Логарифм вместо перебора — и аккуратные границы.",
         problems: [
-          ["binary-search", "Binary Search", "Easy"],
-          ["search-insert-position", "Search Insert Position", "Easy"],
-          ["search-in-rotated-sorted-array", "Search in Rotated Sorted Array", "Medium"],
-          ["find-minimum-in-rotated-sorted-array", "Find Minimum in Rotated Sorted Array", "Medium"],
-          ["koko-eating-bananas", "Koko Eating Bananas", "Medium"],
-          ["median-of-two-sorted-arrays", "Median of Two Sorted Arrays", "Hard"]
+          ["binary-search", "Binary Search", "Easy", 704],
+          ["search-insert-position", "Search Insert Position", "Easy", 35],
+          ["search-in-rotated-sorted-array", "Search in Rotated Sorted Array", "Medium", 33],
+          ["find-minimum-in-rotated-sorted-array", "Find Minimum in Rotated Sorted Array", "Medium", 153],
+          ["koko-eating-bananas", "Koko Eating Bananas", "Medium", 875],
+          ["median-of-two-sorted-arrays", "Median of Two Sorted Arrays", "Hard", 4]
         ]
       },
       {
-        id: "linked-list", emoji: "🔗", title: "Связные списки", note: "Указатели, фиктивный узел и два бегуна.",
+        id: "linked-list", code: "LL", title: "Связные списки", note: "Указатели, фиктивный узел и два бегуна.",
         problems: [
-          ["reverse-linked-list", "Reverse Linked List", "Easy"],
-          ["merge-two-sorted-lists", "Merge Two Sorted Lists", "Easy"],
-          ["linked-list-cycle", "Linked List Cycle", "Easy"],
-          ["remove-nth-node-from-end-of-list", "Remove Nth Node From End of List", "Medium"],
-          ["reorder-list", "Reorder List", "Medium"],
-          ["add-two-numbers", "Add Two Numbers", "Medium"],
-          ["merge-k-sorted-lists", "Merge k Sorted Lists", "Hard"]
+          ["reverse-linked-list", "Reverse Linked List", "Easy", 206],
+          ["merge-two-sorted-lists", "Merge Two Sorted Lists", "Easy", 21],
+          ["linked-list-cycle", "Linked List Cycle", "Easy", 141],
+          ["remove-nth-node-from-end-of-list", "Remove Nth Node From End of List", "Medium", 19],
+          ["reorder-list", "Reorder List", "Medium", 143],
+          ["add-two-numbers", "Add Two Numbers", "Medium", 2],
+          ["merge-k-sorted-lists", "Merge k Sorted Lists", "Hard", 23]
         ]
       },
       {
-        id: "stack-queue", emoji: "🥞", title: "Стек и очередь", note: "Скобки, монотонные стеки и вычисление выражений.",
+        id: "stack-queue", code: "STK", title: "Стек и очередь", note: "Скобки, монотонные стеки и вычисление выражений.",
         problems: [
-          ["valid-parentheses", "Valid Parentheses", "Easy"],
-          ["implement-queue-using-stacks", "Implement Queue using Stacks", "Easy"],
-          ["min-stack", "Min Stack", "Medium"],
-          ["daily-temperatures", "Daily Temperatures", "Medium"],
-          ["evaluate-reverse-polish-notation", "Evaluate Reverse Polish Notation", "Medium"],
-          ["largest-rectangle-in-histogram", "Largest Rectangle in Histogram", "Hard"]
+          ["valid-parentheses", "Valid Parentheses", "Easy", 20],
+          ["implement-queue-using-stacks", "Implement Queue using Stacks", "Easy", 232],
+          ["min-stack", "Min Stack", "Medium", 155],
+          ["daily-temperatures", "Daily Temperatures", "Medium", 739],
+          ["evaluate-reverse-polish-notation", "Evaluate Reverse Polish Notation", "Medium", 150],
+          ["largest-rectangle-in-histogram", "Largest Rectangle in Histogram", "Hard", 84]
         ]
       },
       {
-        id: "trees", emoji: "🌳", title: "Деревья", note: "Обходы, рекурсия и бинарные деревья поиска.",
+        id: "trees", code: "TRE", title: "Деревья", note: "Обходы, рекурсия и бинарные деревья поиска.",
         problems: [
-          ["maximum-depth-of-binary-tree", "Maximum Depth of Binary Tree", "Easy"],
-          ["invert-binary-tree", "Invert Binary Tree", "Easy"],
-          ["same-tree", "Same Tree", "Easy"],
-          ["binary-tree-level-order-traversal", "Binary Tree Level Order Traversal", "Medium"],
-          ["validate-binary-search-tree", "Validate Binary Search Tree", "Medium"],
-          ["kth-smallest-element-in-a-bst", "Kth Smallest Element in a BST", "Medium"],
-          ["lowest-common-ancestor-of-a-binary-tree", "Lowest Common Ancestor of a Binary Tree", "Medium"],
-          ["serialize-and-deserialize-binary-tree", "Serialize and Deserialize Binary Tree", "Hard"]
+          ["maximum-depth-of-binary-tree", "Maximum Depth of Binary Tree", "Easy", 104],
+          ["invert-binary-tree", "Invert Binary Tree", "Easy", 226],
+          ["same-tree", "Same Tree", "Easy", 100],
+          ["binary-tree-level-order-traversal", "Binary Tree Level Order Traversal", "Medium", 102],
+          ["validate-binary-search-tree", "Validate Binary Search Tree", "Medium", 98],
+          ["kth-smallest-element-in-a-bst", "Kth Smallest Element in a BST", "Medium", 230],
+          ["lowest-common-ancestor-of-a-binary-tree", "Lowest Common Ancestor of a Binary Tree", "Medium", 236],
+          ["serialize-and-deserialize-binary-tree", "Serialize and Deserialize Binary Tree", "Hard", 297]
         ]
       },
       {
-        id: "graphs", emoji: "🕸", title: "Графы", note: "BFS, DFS и топологическая сортировка.",
+        id: "graphs", code: "GRF", title: "Графы", note: "BFS, DFS и топологическая сортировка.",
         problems: [
-          ["number-of-islands", "Number of Islands", "Medium"],
-          ["clone-graph", "Clone Graph", "Medium"],
-          ["rotting-oranges", "Rotting Oranges", "Medium"],
-          ["course-schedule", "Course Schedule", "Medium"],
-          ["pacific-atlantic-water-flow", "Pacific Atlantic Water Flow", "Medium"],
-          ["word-ladder", "Word Ladder", "Hard"]
+          ["number-of-islands", "Number of Islands", "Medium", 200],
+          ["clone-graph", "Clone Graph", "Medium", 133],
+          ["rotting-oranges", "Rotting Oranges", "Medium", 994],
+          ["course-schedule", "Course Schedule", "Medium", 207],
+          ["pacific-atlantic-water-flow", "Pacific Atlantic Water Flow", "Medium", 417],
+          ["word-ladder", "Word Ladder", "Hard", 127]
         ]
       },
       {
-        id: "dp", emoji: "🧠", title: "Динамика", note: "Разбиение на подзадачи и мемоизация.",
+        id: "dp", code: "DP", title: "Динамика", note: "Разбиение на подзадачи и мемоизация.",
         problems: [
-          ["climbing-stairs", "Climbing Stairs", "Easy"],
-          ["house-robber", "House Robber", "Medium"],
-          ["coin-change", "Coin Change", "Medium"],
-          ["longest-increasing-subsequence", "Longest Increasing Subsequence", "Medium"],
-          ["longest-palindromic-substring", "Longest Palindromic Substring", "Medium"],
-          ["word-break", "Word Break", "Medium"],
-          ["edit-distance", "Edit Distance", "Hard"]
+          ["climbing-stairs", "Climbing Stairs", "Easy", 70],
+          ["house-robber", "House Robber", "Medium", 198],
+          ["coin-change", "Coin Change", "Medium", 322],
+          ["longest-increasing-subsequence", "Longest Increasing Subsequence", "Medium", 300],
+          ["longest-palindromic-substring", "Longest Palindromic Substring", "Medium", 5],
+          ["word-break", "Word Break", "Medium", 139],
+          ["edit-distance", "Edit Distance", "Hard", 72]
         ]
       },
       {
-        id: "backtracking", emoji: "🧩", title: "Перебор и бэктрекинг", note: "Дерево решений, откаты и отсечения.",
+        id: "backtracking", code: "BT", title: "Перебор и бэктрекинг", note: "Дерево решений, откаты и отсечения.",
         problems: [
-          ["subsets", "Subsets", "Medium"],
-          ["combination-sum", "Combination Sum", "Medium"],
-          ["permutations", "Permutations", "Medium"],
-          ["generate-parentheses", "Generate Parentheses", "Medium"],
-          ["word-search", "Word Search", "Medium"],
-          ["n-queens", "N-Queens", "Hard"]
+          ["subsets", "Subsets", "Medium", 78],
+          ["combination-sum", "Combination Sum", "Medium", 39],
+          ["permutations", "Permutations", "Medium", 46],
+          ["generate-parentheses", "Generate Parentheses", "Medium", 22],
+          ["word-search", "Word Search", "Medium", 79],
+          ["n-queens", "N-Queens", "Hard", 51]
         ]
       },
       {
-        id: "heap", emoji: "⛰", title: "Кучи и приоритеты", note: "container/heap и задачи «top K».",
+        id: "heap", code: "HEA", title: "Кучи и приоритеты", note: "PriorityQueue и задачи «top K».",
         problems: [
-          ["kth-largest-element-in-an-array", "Kth Largest Element in an Array", "Medium"],
-          ["k-closest-points-to-origin", "K Closest Points to Origin", "Medium"],
-          ["task-scheduler", "Task Scheduler", "Medium"],
-          ["find-median-from-data-stream", "Find Median from Data Stream", "Hard"]
+          ["kth-largest-element-in-an-array", "Kth Largest Element in an Array", "Medium", 215],
+          ["k-closest-points-to-origin", "K Closest Points to Origin", "Medium", 973],
+          ["task-scheduler", "Task Scheduler", "Medium", 621],
+          ["find-median-from-data-stream", "Find Median from Data Stream", "Hard", 295]
         ]
       },
       {
-        id: "sql", emoji: "🗄", title: "SQL", note: "Для бэкенда: JOIN, агрегаты и оконные функции.",
+        id: "sql", code: "SQL", title: "SQL", note: "Для бэкенда: JOIN, агрегаты и оконные функции.",
         problems: [
-          ["combine-two-tables", "Combine Two Tables", "Easy"],
-          ["employees-earning-more-than-their-managers", "Employees Earning More Than Their Managers", "Easy"],
-          ["duplicate-emails", "Duplicate Emails", "Easy"],
-          ["second-highest-salary", "Second Highest Salary", "Medium"],
-          ["department-top-three-salaries", "Department Top Three Salaries", "Hard"]
+          ["combine-two-tables", "Combine Two Tables", "Easy", 175],
+          ["employees-earning-more-than-their-managers", "Employees Earning More Than Their Managers", "Easy", 181],
+          ["duplicate-emails", "Duplicate Emails", "Easy", 182],
+          ["second-highest-salary", "Second Highest Salary", "Medium", 176],
+          ["department-top-three-salaries", "Department Top Three Salaries", "Hard", 185]
         ]
       },
       {
-        id: "concurrency", emoji: "⚙️", title: "Конкурентность", note: "LeetCode-задачи, которые можно решать на Go: каналы и мьютексы.",
+        id: "concurrency", code: "THR", title: "Многопоточность", note: "Потоки, synchronized, ExecutorService, CompletableFuture.",
         problems: [
-          ["print-in-order", "Print in Order", "Easy"],
-          ["print-foobar-alternately", "Print FooBar Alternately", "Medium"],
-          ["print-zero-even-odd", "Print Zero Even Odd", "Medium"],
-          ["building-h2o", "Building H2O", "Medium"],
-          ["the-dining-philosophers", "The Dining Philosophers", "Medium"],
-          ["web-crawler-multithreaded", "Web Crawler Multithreaded", "Medium"]
+          ["print-in-order", "Print in Order", "Easy", 1114],
+          ["print-foobar-alternately", "Print FooBar Alternately", "Medium", 1115],
+          ["print-zero-even-odd", "Print Zero Even Odd", "Medium", 1116],
+          ["building-h2o", "Building H2O", "Medium", 1117],
+          ["the-dining-philosophers", "The Dining Philosophers", "Medium", 1226],
+          ["web-crawler-multithreaded", "Web Crawler Multithreaded", "Medium", 1242]
         ]
       }
     ];
@@ -1388,14 +2568,14 @@
       { id: "half-way", icon: "🧭", title: "Экватор", desc: "Половина роадмапа пройдена", metric: "percent", target: 50 },
       { id: "first-stage", icon: "🧱", title: "Фундамент", desc: "Первый этап закрыт полностью", metric: "stages", target: 1 },
       { id: "three-stages", icon: "🏗", title: "Строитель", desc: "Три этапа закрыты полностью", metric: "stages", target: 3 },
-      { id: "all-stages", icon: "🏆", title: "Весь роадмап", desc: "Все 8 этапов закрыты", metric: "stages", target: 8 },
+      { id: "all-stages", icon: "🏆", title: "Весь роадмап", desc: "Все 6 этапов закрыты", metric: "stages", target: 6 },
       { id: "first-practice", icon: "🧩", title: "Первая практика", desc: "Решена первая задача из практики", metric: "practice", target: 1 },
       { id: "practice-10", icon: "🔟", title: "Десяток практики", desc: "10 задач практики отмечено", metric: "practice", target: 10 },
       { id: "practice-30", icon: "🧠", title: "Алгоритмист", desc: "30 задач практики отмечено", metric: "practice", target: 30 },
       { id: "practice-50", icon: "🚀", title: "Полсотни", desc: "50 задач практики отмечено", metric: "practice", target: 50 },
       { id: "hard-one", icon: "💎", title: "Хардкор", desc: "Первая задача уровня Hard", metric: "hard", target: 1 },
       { id: "sql-first", icon: "🗄", title: "Запросы", desc: "Первая SQL-задача решена", metric: "sql", target: 1 },
-      { id: "go-first", icon: "⚙️", title: "Горутины", desc: "Первая задача на конкурентность", metric: "concurrency", target: 1 },
+      { id: "threads-first", icon: "⚙️", title: "Потоки", desc: "Первая задача на многопоточность", metric: "concurrency", target: 1 },
       { id: "notes-3", icon: "✍️", title: "Мыслитель", desc: "Заметки в трёх этапах", metric: "notes", target: 3 },
       { id: "streak-3", icon: "🔥", title: "Три дня", desc: "Занимайтесь три дня подряд", metric: "streak", target: 3 },
       { id: "streak-7", icon: "⚡", title: "Неделя в ритме", desc: "Семь дней подряд", metric: "streak", target: 7 },
@@ -1405,22 +2585,6 @@
       { id: "lc-100", icon: "🌟", title: "100 на LeetCode", desc: "100 задач решено на LeetCode", metric: "solved", target: 100 },
       { id: "checklist", icon: "👑", title: "Минимум закрыт", desc: "Весь чек-лист к собеседованию", metric: "checklist", target: CHECKLIST_MIN.length },
       { id: "cloud", icon: "☁️", title: "В облаке", desc: "Первая успешная синхронизация", metric: "sync", target: 1 }
-    ];
-
-    const TIPS = [
-      "Сначала 25 минут кода, потом 5 минут отдыха — короткие подходы работают лучше марафонов.",
-      "Если задача не идёт 20 минут, посмотрите разбор и перепишите решение по памяти.",
-      "Пишите тесты до того, как чинить баг: так вы точно поймёте, что починили.",
-      "Один pet-проект с README впечатляет сильнее десяти незаконченных.",
-      "Проговаривайте решение вслух: интервьюер оценивает не только код, но и ход мысли.",
-      "Перед сном пролистайте конспект за день — пять минут закрепляют больше, чем час зубрёжки.",
-      "Начинайте день с самой неприятной задачи: дальше всё кажется проще.",
-      "Если застряли, объясните задачу вслух — половина вопросов снимается сама.",
-      "Коммитьте маленькими шагами: история Git — это тоже портфолио.",
-      "Раз в неделю перечитывайте старые решения — там прячутся лучшие идеи.",
-      "Не сравнивайте свой день 10 с чьим-то днём 300.",
-      "Горутины любят контекст: всегда думайте, кто и когда их остановит.",
-      "Слайс — это окно в массив. Помните про capacity, и половина сюрпризов исчезнет."
     ];
 
     // ---------- Константы ----------
@@ -1438,10 +2602,17 @@
       (user) => "https://leetcode-api-faisalshohag.vercel.app/" + encodeURIComponent(user)
     ];
 
-    const TOTAL_TASKS = ROADMAP.reduce((sum, stage) => sum + stage.tasks.length, 0);
-    const TASK_KEYS = new Set(
+    let TOTAL_TASKS = ROADMAP.reduce((sum, stage) => sum + stage.tasks.length, 0);
+    let TASK_KEYS = new Set(
       ROADMAP.flatMap((stage) => stage.tasks.map((_, index) => taskKey(stage.id, index)))
     );
+
+    function refreshRoadmapDerived() {
+      TOTAL_TASKS = ROADMAP.reduce((sum, stage) => sum + stage.tasks.length, 0);
+      TASK_KEYS = new Set(
+        ROADMAP.flatMap((stage) => stage.tasks.map((_, index) => taskKey(stage.id, index)))
+      );
+    }
     const PRACTICE_PROBLEMS = PRACTICE.flatMap((topic) =>
       topic.problems.map(([slug, title, level]) => ({ slug, title, level, topicId: topic.id, topicTitle: topic.title }))
     );
@@ -1452,8 +2623,6 @@
       themeToggle: document.getElementById("themeToggle"),
       headerStreak: document.getElementById("headerStreak"),
       headerStreakChip: document.getElementById("headerStreakChip"),
-      greeting: document.getElementById("greeting"),
-      heroSub: document.getElementById("heroSub"),
       overallCount: document.getElementById("overallCount"),
       overallPercent: document.getElementById("overallPercent"),
       overallBar: document.getElementById("overallBar"),
@@ -1466,8 +2635,8 @@
       streakDays: document.getElementById("streakDays"),
       streakLabel: document.getElementById("streakLabel"),
       streakCalendar: document.getElementById("streakCalendar"),
-      dailyTip: document.getElementById("dailyTip"),
       roadmapList: document.getElementById("roadmapList"),
+      stageNav: document.getElementById("stageNav"),
       checklistList: document.getElementById("checklistList"),
       checklistCount: document.getElementById("checklistCount"),
       checklistBar: document.getElementById("checklistBar"),
@@ -1742,13 +2911,13 @@
 
     function resolvedTheme() {
       if (state.theme === "light" || state.theme === "dark") return state.theme;
-      return darkMedia && darkMedia.matches ? "dark" : "light";
+      return "dark";
     }
 
     function applyTheme() {
       const theme = resolvedTheme();
       document.documentElement.dataset.theme = theme;
-      if (themeMeta) themeMeta.setAttribute("content", theme === "dark" ? "#0e1220" : "#5566e8");
+      if (themeMeta) themeMeta.setAttribute("content", theme === "dark" ? "#0d0b0c" : "#171416");
       if (dom.themeToggle) {
         const label = theme === "dark" ? "Включить светлую тему" : "Включить тёмную тему";
         dom.themeToggle.setAttribute("aria-label", label);
@@ -1756,7 +2925,7 @@
       }
     }
 
-    // ---------- Статистика, серия, совет дня ----------
+    // ---------- Статистика и серия ----------
     function currentStreak() {
       const cursor = new Date();
       if (!state.activity[dayKey(cursor)]) cursor.setDate(cursor.getDate() - 1);
@@ -1836,21 +3005,6 @@
       return unlocked;
     }
 
-    function updateGreeting(stats) {
-      const hour = new Date().getHours();
-      let greeting = "Добрый вечер";
-      if (hour < 6) greeting = "Доброй ночи";
-      else if (hour < 12) greeting = "Доброе утро";
-      else if (hour < 18) greeting = "Добрый день";
-      if (dom.greeting) dom.greeting.textContent = greeting;
-
-      let sub = "Спокойный темп важнее рывков.";
-      if (stats.percent >= 100) sub = "Роадмап пройден. Самое время откликаться!";
-      else if (stats.streak >= 3) sub = "Серия " + stats.streak + " " + plural(stats.streak, "день", "дня", "дней") + " — отличный ритм.";
-      else if (stats.percent > 0) sub = "Продолжайте с того места, где остановились.";
-      if (dom.heroSub) dom.heroSub.textContent = sub;
-    }
-
     function renderStreak() {
       const streak = currentStreak();
       if (dom.streakDays) dom.streakDays.textContent = String(streak);
@@ -1884,13 +3038,6 @@
       }
     }
 
-    function renderDailyTip() {
-      if (!dom.dailyTip) return;
-      const start = new Date(new Date().getFullYear(), 0, 0);
-      const dayOfYear = Math.floor((Date.now() - start.getTime()) / 86400000);
-      dom.dailyTip.textContent = TIPS[Math.abs(dayOfYear) % TIPS.length];
-    }
-
     // ---------- Отрисовка: роадмап ----------
     function renderAll() {
       renderRoadmap();
@@ -1901,11 +3048,22 @@
       updateOverview();
       updateChecklistUI();
       renderStreak();
-      renderDailyTip();
       applyTheme();
     }
 
     function renderRoadmap() {
+      if (dom.stageNav) {
+        dom.stageNav.innerHTML = ROADMAP.map((stage, index) => {
+          const total = stage.tasks.length;
+          const done = stage.tasks.reduce((count, _, taskIndex) =>
+            count + (state.tasks[taskKey(stage.id, taskIndex)] ? 1 : 0), 0);
+          const classes = ["stage-chip"];
+          if (openStages.has(stage.id)) classes.push("is-active");
+          if (total > 0 && done === total) classes.push("is-complete");
+          return `<button class="${classes.join(" ")}" type="button" data-jump-stage="${escapeHtml(stage.id)}"><span>${String(index + 1).padStart(2, "0")}</span><b>${escapeHtml(stage.title)}</b><em>${done}/${total}</em></button>`;
+        }).join("");
+      }
+
       dom.roadmapList.innerHTML = ROADMAP.map((stage, stageIndex) => {
         const isOpen = openStages.has(stage.id);
         const taskCount = stage.tasks.length;
@@ -1921,10 +3079,16 @@
               <label class="task${checked ? " is-done" : ""}">
                 <input type="checkbox" data-task="${escapeHtml(key)}"${checked ? " checked" : ""}>
                 <span class="check-box" aria-hidden="true"></span>
-                <span class="task-text">${escapeHtml(task)}</span>
+                <span class="task-body">
+                  <span class="task-text">${escapeHtml(task.title)}</span>
+                  ${task.detail ? `<span class="task-detail">${escapeHtml(task.detail)}</span>` : ""}
+                </span>
               </label>
             </li>`;
         }).join("");
+        const tips = (stage.tips && stage.tips.length)
+          ? `<div class="stage-tips"><span class="stage-tips-label">Заметки этапа</span><ul>${stage.tips.map((tip) => `<li>${escapeHtml(tip)}</li>`).join("")}</ul></div>`
+          : "";
 
         return `
           <article class="stage${isOpen ? " is-open" : ""}${complete ? " is-complete" : ""}" data-stage-id="${escapeHtml(stage.id)}">
@@ -1933,7 +3097,6 @@
                 <span class="stage-index" aria-hidden="true">${stageIndex + 1}</span>
                 <span class="stage-heading">
                   <span class="stage-title">${escapeHtml(stage.title)}</span>
-                  <span class="stage-weeks">${escapeHtml(stage.weeks)}</span>
                 </span>
                 <span class="stage-count" data-stage-count>${doneCount}/${taskCount}</span>
                 <span class="stage-chevron" aria-hidden="true">
@@ -1949,6 +3112,7 @@
                 <span class="stage-progress-text" data-stage-progress>выполнено ${doneCount} из ${taskCount}</span>
               </div>
               <ul class="task-list">${tasks}</ul>
+              ${tips}
               <div class="notes-block">
                 <div class="notes-head">
                   <label for="notes-${escapeHtml(stage.id)}">Заметки</label>
@@ -1992,7 +3156,6 @@
       if (dom.practiceUnit) dom.practiceUnit.textContent = plural(stats.practice, "задача", "задачи", "задач");
       dom.achievementStat.textContent = String(Object.keys(state.achievements).length);
       dom.practiceCount.textContent = stats.practice + " из " + TOTAL_PROBLEMS + " задач";
-      updateGreeting(stats);
       renderStreak();
     }
 
@@ -2031,7 +3194,7 @@
           count + (state.practice[problem[0]] ? 1 : 0), 0);
         const total = topic.problems.length;
         const percent = total ? Math.round((done / total) * 100) : 0;
-        const problems = topic.problems.map(([slug, title, level]) => {
+        const problems = topic.problems.map(([slug, title, level, number]) => {
           const info = DIFFICULTY[level] || DIFFICULTY.Medium;
           const checked = Boolean(state.practice[slug]);
           return `
@@ -2039,6 +3202,7 @@
               <label class="problem-label">
                 <input type="checkbox" data-problem="${escapeHtml(slug)}"${checked ? " checked" : ""}>
                 <span class="check-box" aria-hidden="true"></span>
+                <span class="problem-num" aria-hidden="true">${escapeHtml(String(number))}</span>
                 <span class="problem-title">${escapeHtml(title)}</span>
               </label>
               <span class="level ${info.cls}">${info.label}</span>
@@ -2052,7 +3216,7 @@
           <article class="topic${isOpen ? " is-open" : ""}" data-topic-id="${escapeHtml(topic.id)}">
             <h2>
               <button class="topic-toggle" type="button" aria-expanded="${isOpen}" aria-controls="topic-body-${escapeHtml(topic.id)}">
-                <span class="topic-emoji" aria-hidden="true">${topic.emoji}</span>
+                <span class="topic-code" aria-hidden="true">${escapeHtml(topic.code)}</span>
                 <span class="topic-heading">
                   <span class="topic-title">${escapeHtml(topic.title)}</span>
                   <span class="topic-weeks">${escapeHtml(topic.note)}</span>
@@ -2119,7 +3283,7 @@
       const unsolved = PRACTICE_PROBLEMS.filter((problem) => !state.practice[problem.slug]);
       if (!unsolved.length) {
         currentSuggestion = null;
-        dom.suggestResult.innerHTML = '<p class="suggest-empty">Все задачи из практики отмечены. Отличная работа — можно переходить к повторению и pet-проектам! 🎉</p>';
+        dom.suggestResult.innerHTML = '<p class="suggest-empty">Все задачи из практики отмечены. Отличная работа — можно переходить к повторению и pet-проектам.</p>';
         return;
       }
       const pick = unsolved[Math.floor(Math.random() * unsolved.length)];
@@ -2154,7 +3318,7 @@
       dom.achMeter.setAttribute("aria-valuenow", String(percent));
       if (dom.achievementStat) dom.achievementStat.textContent = String(unlockedCount);
 
-      dom.achievementGrid.innerHTML = ACHIEVEMENTS.map((item) => {
+      dom.achievementGrid.innerHTML = ACHIEVEMENTS.map((item, index) => {
         const unlockedAt = state.achievements[item.id];
         const value = Math.min(metricValue(item.metric, stats), item.target);
         const progress = item.target ? Math.min(100, Math.round((value / item.target) * 100)) : 0;
@@ -2164,14 +3328,14 @@
           const formatted = Number.isFinite(date.getTime())
             ? date.toLocaleDateString("ru-RU", { day: "numeric", month: "short" })
             : "";
-          foot = '<span class="achievement-date">🏅 ' + escapeHtml(formatted) + "</span>";
+          foot = '<span class="achievement-date">' + escapeHtml(formatted) + "</span>";
         } else {
           foot = '<span class="achievement-progress">' + value + " / " + item.target + "</span>" +
             '<div class="meter"><span style="width:' + progress + '%"></span></div>';
         }
         return `
           <article class="achievement${unlockedAt ? " is-unlocked" : " is-locked"}">
-            <div class="achievement-icon" aria-hidden="true">${item.icon}</div>
+            <div class="achievement-icon" aria-hidden="true">${String(index + 1).padStart(2, "0")}</div>
             <h3 class="achievement-title">${escapeHtml(item.title)}</h3>
             <p class="achievement-desc">${escapeHtml(item.desc)}</p>
             <div class="achievement-foot">${foot}</div>
@@ -2522,7 +3686,7 @@
       const link = document.createElement("a");
       const date = new Date().toISOString().slice(0, 10);
       link.href = url;
-      link.download = "go-roadmap-" + date + ".json";
+      link.download = "java-roadmap-" + date + ".json";
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -2732,7 +3896,7 @@
         saveStateLocal();
       }
       const payload = {
-        description: "Трекер роадмапа Go — прогресс",
+        description: "Java Roadmap — прогресс",
         "public": false,
         files: {
           [GIST_FILE]: { content: JSON.stringify(state) }
@@ -2894,6 +4058,16 @@
 
     // ---------- События ----------
     function bindEvents() {
+      dom.stageNav.addEventListener("click", (event) => {
+        const chip = event.target.closest("[data-jump-stage]");
+        if (!chip) return;
+        const stageId = chip.dataset.jumpStage;
+        openStages = new Set([stageId]);
+        renderRoadmap();
+        const article = dom.roadmapList.querySelector('[data-stage-id="' + stageId + '"]');
+        if (article) article.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
       dom.roadmapList.addEventListener("click", (event) => {
         const toggle = event.target.closest(".stage-toggle");
         if (toggle) toggleStage(toggle);
@@ -3054,11 +4228,43 @@
       refreshLeetcodeIfNeeded();
       setInterval(() => {
         renderStreak();
-        updateGreeting(computeStats());
       }, 60000);
     }
 
+    function adaptSharedRoadmap(data) {
+      if (!data || !Array.isArray(data.stages)) return [];
+      return data.stages.map((stage) => ({
+        id: String(stage.id || ""),
+        title: String(stage.title || ""),
+        subtitle: String(stage.subtitle || ""),
+        accent: String(stage.accent || ""),
+        tips: Array.isArray(stage.tips) ? stage.tips.filter((tip) => typeof tip === "string") : [],
+        tasks: Array.isArray(stage.steps) ? stage.steps.map((step) => ({
+          title: String(step.title || ""),
+          detail: String(step.detail || "")
+        })) : []
+      })).filter((stage) => stage.id && stage.tasks.length);
+    }
+
+    function loadSharedRoadmap() {
+      if (!window.fetch) return;
+      fetch("./roadmap.json", { cache: "no-cache" })
+        .then((response) => response.ok ? response.json() : Promise.reject(new Error("HTTP " + response.status)))
+        .then((data) => {
+          const adapted = adaptSharedRoadmap(data);
+          if (!adapted.length) return;
+          ROADMAP = adapted;
+          refreshRoadmapDerived();
+          state = normalizeState(state);
+          openStages = new Set([firstIncompleteStage().id]);
+          saveStateLocal();
+          renderAll();
+        })
+        .catch(() => {});
+    }
+
     init();
+    loadSharedRoadmap();
   </script>
 </body>
 </html>
