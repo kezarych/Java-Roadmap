@@ -2,7 +2,7 @@
 
 PWA-трекер подготовки к стажировке Java Backend. Этапы роадмапа, практика LeetCode по темам, ачивки, заметки, чек-лист минимума и синхронизация через приватный GitHub Gist.
 
-**Рабочее приложение:** https://vladqewbs.github.io/go-roadmap-app/
+**Рабочее приложение:** https://kezarych.github.io/Java-Roadmap/
 
 ## Что внутри
 
@@ -48,7 +48,7 @@ python -m http.server 8080
 
 ## Публикация на GitHub Pages
 
-Репозиторий: `Vladqewbs/go-roadmap-app`, ветка `main`, публикация из корня.
+Репозиторий: `kezarych/Java-Roadmap`, ветка `main`, публикация из корня.
 
 ```bash
 git add -A
@@ -59,17 +59,17 @@ git push origin main
 GitHub Pages пересоберёт сайт автоматически. Проверить статус:
 
 ```bash
-gh api repos/Vladqewbs/go-roadmap-app/pages/builds/latest --jq .status
+gh api repos/kezarych/Java-Roadmap/pages/builds/latest --jq .status
 ```
 
-Сайт доступен по адресу https://vladqewbs.github.io/go-roadmap-app/.
+Сайт доступен по адресу https://kezarych.github.io/Java-Roadmap/.
 
 ## Связь с Android-приложением
 
 `roadmap.json` — единый источник контента. Сайт при старте загружает его и обновляет экран, а при отсутствии сети использует встроенную копию. Android-приложение при старте пытается загрузить:
 
 ```text
-https://vladqewbs.github.io/go-roadmap-app/roadmap.json
+https://kezarych.github.io/Java-Roadmap/roadmap.json
 ```
 
 Если сети нет или сервер недоступен, приложение берёт встроенную копию из `app/src/main/assets/roadmap.json`. Поэтому достаточно обновить `roadmap.json` на сайте — приложение подтянет новый план при следующем запуске.
