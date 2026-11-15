@@ -2904,7 +2904,7 @@
     .map-road { stroke: #2a3164; }
     .map-road-dark { stroke: #060a20; }
     .map-road-dash { stroke: var(--gold); stroke-opacity: .34; }
-    .map-progress { stroke: var(--fire); stroke-linecap: butt; stroke-width: 20; stroke-opacity: .82; }
+    .map-progress { stroke: var(--gold); stroke-linecap: butt; stroke-width: 16; stroke-opacity: .62; }
     .room-meter { margin-top: 6px; }
     .streak-day.is-frozen { background: #1b1440; border-color: var(--mint); }
     .map-deco-dim { stroke: #2f6b4d; opacity: .55; }
@@ -2923,7 +2923,11 @@
     .map-stage.is-done .map-node { fill: var(--mint); stroke: var(--mint); }
     .map-stage.is-current .map-node { stroke: var(--gold); }
     .map-stage.is-future .map-node { stroke: var(--dim); }
-    .map-stage .map-plate { fill: rgba(6, 8, 20, .92); stroke: var(--line-strong); }
+    .map-stage .map-plate { fill: url(#mapPlateGrad); stroke: var(--line-strong); }
+    .map-stage .map-plate-post { fill: #2a2119; }
+    .map-stage .map-plate-rivet { fill: var(--line-strong); }
+    .map-stage .map-plate-strip { fill: var(--gold); opacity: .38; }
+    .map-stage.is-done .map-plate-strip { fill: var(--mint); opacity: .55; }
     .map-stage.is-current .map-plate { stroke: var(--gold); }
     .map-stage .map-title,
     .map-building .bldg-title,
@@ -2988,7 +2992,7 @@
     }
     .map-trail .trail-mark { fill: var(--gold); animation: star-twinkle 2.4s steps(2, end) infinite; }
     .map-trail .trail-glow { fill: var(--gold); opacity: .16; }
-    .map-trail .trail-label { fill: var(--muted); font: 8px var(--font-mono); text-anchor: middle; }
+    .map-trail .trail-label { fill: #b6bdd6; font: 9.5px var(--font-mono); text-anchor: middle; }
     .map-trail.is-found .trail-path { stroke: var(--mint); stroke-opacity: .55; }
     .map-trail.is-found .trail-mark { fill: var(--mint); animation: none; }
     .map-trail.is-found .trail-glow { fill: var(--mint); opacity: .12; }
@@ -3084,10 +3088,10 @@
     .hud-stats {
       display: flex;
       flex-wrap: wrap;
-      gap: 3px 11px;
+      gap: 4px 12px;
       color: var(--muted);
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: 11px;
       letter-spacing: .03em;
       text-transform: uppercase;
     }
@@ -3220,7 +3224,7 @@
     .map-frame { width: min(1100px, 100%); }
     .map-frame #journeyMap { width: 100%; }
     .map-stage .map-title { font-size: 12px; text-anchor: start; }
-    .map-stage .map-count { font-size: 9px; text-anchor: start; }
+    .map-stage .map-count { font-size: 10px; text-anchor: start; }
     .map-mini-track { fill: #1c2144; stroke: #4a5190; stroke-width: 1; }
     .map-mini-fill { fill: var(--gold); }
     .map-stage.is-done .map-mini-fill { fill: var(--mint); }
@@ -5130,22 +5134,33 @@
         ? `<circle class="camp-glow" cx="0" cy="2" r="${18 + level * 6}" fill="url(#campGlowGrad)" opacity="${lit ? 1 : 0.55}"/>`
         : "";
       const light = level
-        ? `<ellipse class="camp-light" cx="0" cy="30" rx="${46 + level * 9}" ry="${14 + level * 2}" fill="url(#campGlowGrad)" opacity="${lit ? 0.85 : 0.45}"/>`
+        ? `<ellipse class="camp-light" cx="0" cy="30" rx="${40 + level * 6}" ry="${13 + level * 1.8}" fill="url(#campGlowGrad)" opacity="${lit ? 0.85 : 0.45}"/>`
         : "";
       let logs = '<path class="camp-log" d="M-18 8l36 7M18 8l-36 7"/>';
       if (logsCount > 1) logs += '<path class="camp-log" d="M-22 10l44 3"/>';
       if (logsCount > 2) logs += '<path class="camp-log" d="M-12 4l24 14"/>';
       if (logsCount > 3) logs += '<path class="camp-log" d="M-24 12l48 1"/>';
       if (logsCount > 4) logs += '<path class="camp-log" d="M-16 4l32 14"/>';
-      let flames = "";
+      const flameShapes = [
+        "M0 0C-9-9-5-18 0-30C5-18 9-9 0 0z",
+        "M0 0C-7-10-2-19 1-32C7-19 10-9 0 0z",
+        "M0 0C-11-10-7-20-1-33C4-19 8-8 0 0z"
+      ];
+      let backFlames = "";
+      let frontFlames = "";
       for (let i = 0; i < level; i += 1) {
-        const offset = (i - (level - 1) / 2) * 5.2;
-        const scale = 0.34 + 0.11 * level - 0.04 * Math.abs(i - (level - 1) / 2);
+        const offset = (i - (level - 1) / 2) * 5.4;
+        const uneven = 0.9 + (((i * 11) % 7) / 7) * 0.28;
+        const scale = (0.3 + 0.1 * level - 0.035 * Math.abs(i - (level - 1) / 2)) * uneven;
+        const skew = ((i * 7) % 5 - 2) * 1.8;
+        const shape = flameShapes[i % flameShapes.length];
         const alternate = i % 2 === 1;
-        flames += `<g transform="translate(${offset.toFixed(1)} 6) scale(${scale.toFixed(2)})"><path class="camp-flame${alternate ? " camp-flame-alt" : ""}"${alternate ? ' fill="var(--fire-2)" opacity=".82"' : ""} style="animation-delay:${(i * 0.18).toFixed(2)}s" d="M0 0C-9-9-5-18 0-30C5-18 9-9 0 0z"/></g>`;
+        backFlames += `<g transform="translate(${offset.toFixed(1)} 7) skewX(${skew.toFixed(1)}) scale(${(scale * 1.24).toFixed(2)})"><path class="camp-flame-back" d="${shape}" fill="var(--fire)" opacity=".24"/></g>`;
+        frontFlames += `<g transform="translate(${offset.toFixed(1)} 6) skewX(${skew.toFixed(1)}) scale(${scale.toFixed(2)})"><path class="camp-flame${alternate ? " camp-flame-alt" : ""}"${alternate ? ' fill="var(--fire-2)" opacity=".82"' : ""} style="animation-delay:${(i * 0.18).toFixed(2)}s" d="${shape}"/></g>`;
       }
+      const flames = backFlames + frontFlames;
       const core = level
-        ? `<ellipse class="camp-core" cx="0" cy="7" rx="${7 + level}" ry="${2.5 + level * 0.5}" fill="var(--fire-2)" opacity=".9"/>`
+        ? `<ellipse class="camp-core" cx="0" cy="7" rx="${7 + level}" ry="${2.5 + level * 0.5}" fill="var(--fire-2)" opacity=".78"/><ellipse class="camp-core-hot" cx="0" cy="6" rx="${3 + level * 0.6}" ry="${1.5 + level * 0.25}" fill="#fff" opacity=".35"/>`
         : "";
       let sparks = "";
       if (level) {
@@ -5683,6 +5698,18 @@
       }
     }
 
+    function mapSkyDecorSvg() {
+      return `
+        <g class="map-sky-decor" aria-hidden="true">
+          <path d="M-40 214C120 150 260 170 380 214C500 258 620 180 760 196C880 210 980 176 1040 150V300H-40Z" fill="url(#mapAurora)"/>
+          <path d="M-20 286L70 244L150 280L240 252L330 288L430 258L520 292L610 266L700 294L800 262L900 292L1000 272V330H-20Z" fill="#060d16"/>
+          <path d="M-20 306L90 268L180 300L280 276L380 306L500 282L620 308L740 288L860 310L980 292L1020 300V330H-20Z" fill="#08121b" opacity=".9"/>
+          <ellipse cx="210" cy="262" rx="150" ry="16" fill="#8f96d8" opacity=".035"/>
+          <ellipse cx="740" cy="240" rx="190" ry="14" fill="#8f96d8" opacity=".03"/>
+          <ellipse cx="520" cy="300" rx="230" ry="12" fill="#6ee7b7" opacity=".025"/>
+        </g>`;
+    }
+
     function mapDecorSvg() {
       return `
         <g class="map-deco" data-decor="1" data-prop="hills" aria-hidden="true">
@@ -5796,10 +5823,19 @@
             <stop offset="1" stop-color="#07080f" stop-opacity="0"/>
           </linearGradient>
           <radialGradient id="campGlowGrad">
-            <stop offset="0" stop-color="var(--fire)" stop-opacity=".42"/>
-            <stop offset=".5" stop-color="var(--fire)" stop-opacity=".14"/>
+            <stop offset="0" stop-color="var(--fire)" stop-opacity=".34"/>
+            <stop offset=".5" stop-color="var(--fire)" stop-opacity=".1"/>
             <stop offset="1" stop-color="var(--fire)" stop-opacity="0"/>
           </radialGradient>
+          <linearGradient id="mapAurora" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#6ee7b7" stop-opacity=".18"/>
+            <stop offset=".55" stop-color="#8b7bff" stop-opacity=".08"/>
+            <stop offset="1" stop-color="#6ee7b7" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="mapPlateGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#181526"/>
+            <stop offset="1" stop-color="#0a0912"/>
+          </linearGradient>
         </defs>
         <rect width="${MAP_W}" height="${MAP_H}" fill="url(#mapSky)"/>
         <rect width="${MAP_W}" height="${MAP_H}" fill="url(#mapDots)" opacity=".35"/>
@@ -5821,6 +5857,7 @@
           <path d="M-24-10h46c0 7-6 11-14 11h-6v9h10v8h-34v-8h10v-9h-6c-8 0-12-4-6-11z"/>
           <path class="steam" d="M10-20l3-6M18-16l6-3M2-22v-7"/>
         </g>
+        ${mapSkyDecorSvg()}
         ${trees}
         ${mapDecorSvg()}
         <rect width="${MAP_W}" height="${MAP_H}" fill="url(#mapFireVignette)" aria-hidden="true"/>
@@ -5887,6 +5924,10 @@
         return `<g class="map-stage ${cls}${justCompleted ? " is-just-completed" : ""}" data-stage-open="${escapeHtml(stage.id)}" tabindex="0" role="button" aria-label="${escapeHtml(stage.title)}: ${done} из ${total}">
           <path class="map-deco-line" d="M${point.x} ${point.y} L${point.x} ${above ? py + plateH : py}"/>
           <rect class="map-plate" x="${px}" y="${py}" width="${plateW}" height="${plateH}" rx="3"/>
+          <rect class="map-plate-strip" x="${px}" y="${py}" width="3" height="${plateH}" rx="1.5"/>
+          <rect class="map-plate-post" x="${px + plateW / 2 - 2}" y="${above ? py + plateH : py - 7}" width="4" height="7" rx="1"/>
+          <circle class="map-plate-rivet" cx="${px + 9}" cy="${py + 8}" r="1.4"/>
+          <circle class="map-plate-rivet" cx="${px + plateW - 9}" cy="${py + 8}" r="1.4"/>
           <g class="map-icon" transform="translate(${px + 18} ${py + 15}) scale(.3)">${icon}</g>
           <text class="map-title" x="${px + 34}" y="${py + 21}">${lines.map((line, i) => `<tspan x="${px + 34}" dy="${i ? 13 : 0}">${escapeHtml(line)}</tspan>`).join("")}</text>
           <text class="map-count" x="${px + 34}" y="${py + 61}">${complete ? "пройдено" : done + " из " + total}</text>
@@ -6000,7 +6041,7 @@
       lastMapPos = target;
       const apply = (position) => {
         const point = road.getPointAtLength(Math.max(28, position));
-        walker.setAttribute("transform", "translate(" + point.x + " " + point.y + ")");
+        walker.setAttribute("transform", "translate(" + (point.x + 14) + " " + (point.y - 6) + ")");
         progress.setAttribute("stroke-dasharray", position + " 9999");
       };
       if (!animate || from === target || (reducedMotion && reducedMotion.matches)) {

@@ -331,16 +331,16 @@ Update `CACHE_NAME` to `java-roadmap-v7` before committing.
 
 - Composition is still left-heavy: house and fire on the left, road on the right.
   Phase 3 must center the house and place annexes around it.
-- Flame silhouette is too symmetric (fan/flower). Needs irregular heights,
-  a two-layer silhouette and a hotter core.
-- Upper-left sky is still emptier than the bottom; add a distant ridge,
-  low clouds or aurora.
-- Stage plates still read as a HUD over the world, not landmarks.
-  Phase 3 should turn them into plaques attached to annexes.
-- Revisit campfire scale after the house moves to the center.
-- Decide whether the road progress should follow the fire color
-  (blue with the water find) or use a neutral trail color.
 - Mobile is intentionally deferred by the user; only regression checks.
+
+Done in the post-phase-2 polish:
+
+- Flame silhouette: three shapes, uneven heights, skew, back layer, hotter core.
+- Sky: distant ridge, aurora band, low clouds.
+- Stage plates: gradient, gold/mint strip, rivets, post (signboard feel).
+- Road progress: gold instead of fire color, thinner; fire stands out.
+- Walker offset so it does not cover the current-stage node.
+- Trail/HUD labels enlarged for readability.
 
 ## Self-Review
 
