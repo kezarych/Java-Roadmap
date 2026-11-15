@@ -5967,10 +5967,7 @@
           </g>`
         : "";
       const litToday = Boolean(state.activity[dayKey()]);
-      return `${trails}${house}${fox}${stages}
-        <g class="map-campfire" data-fire tabindex="0" role="button" aria-label="Костёр. Нажми, чтобы открыть действия.">
-          <g transform="translate(${MAP_POINTS[0][0]} ${MAP_POINTS[0][1]}) scale(1.85)">${mapCampfireInner(stats.streak, litToday)}</g>
-        </g>
+      return `${trails}${house}${fox}
         <g id="mapWalker" class="map-walker" transform="translate(180 570)">
           <g transform="scale(2.2) translate(0 -4)">
             <g class="walker-body">
@@ -5981,6 +5978,9 @@
               <circle class="walker-glow" cx="9" cy="-3" r="4.6"/>
             </g>
           </g>
+        </g>${stages}
+        <g class="map-campfire" data-fire tabindex="0" role="button" aria-label="Костёр. Нажми, чтобы открыть действия.">
+          <g transform="translate(${MAP_POINTS[0][0]} ${MAP_POINTS[0][1]}) scale(1.85)">${mapCampfireInner(stats.streak, litToday)}</g>
         </g>`;
     }
 
@@ -6036,12 +6036,31 @@
       if (!road || !progress || !walker) return;
       walker.style.display = stats.tasks > 0 ? "" : "none";
       const ratio = TOTAL_TASKS ? Math.max(0, Math.min(1, stats.tasks / TOTAL_TASKS)) : 0;
-      const target = road.getTotalLength() * ratio;
+      const totalLength = road.getTotalLength();
+      const target = totalLength * ratio;
+      const nodePoints = (mapGeo && mapGeo.points ? mapGeo.points.slice() : []).concat([{ x: MAP_POINTS.slice(-1)[0][0], y: MAP_POINTS.slice(-1)[0][1] }]);
+      const nodeLengths = nodePoints.map((node) => {
+        let best = 0;
+        let bestDistance = Infinity;
+        for (let length = 0; length <= totalLength; length += 3) {
+          const p = road.getPointAtLength(length);
+          const distance = (p.x - node.x) ** 2 + (p.y - node.y) ** 2;
+          if (distance < bestDistance) { bestDistance = distance; best = length; }
+        }
+        return best;
+      }).sort((a, b) => a - b);
+      const walkerPosition = (position) => {
+        const near = nodeLengths.find((length) => Math.abs(length - position) < 60);
+        if (near === undefined) return position;
+        const index = nodeLengths.indexOf(near);
+        const previous = index > 0 ? nodeLengths[index - 1] : 28;
+        return Math.max(28, previous + (near - previous) * 0.42);
+      };
       const from = lastMapPos;
       lastMapPos = target;
       const apply = (position) => {
-        const point = road.getPointAtLength(Math.max(28, position));
-        walker.setAttribute("transform", "translate(" + (point.x + 14) + " " + (point.y - 6) + ")");
+        const point = road.getPointAtLength(walkerPosition(position));
+        walker.setAttribute("transform", "translate(" + point.x + " " + point.y + ")");
         progress.setAttribute("stroke-dasharray", position + " 9999");
       };
       if (!animate || from === target || (reducedMotion && reducedMotion.matches)) {
