@@ -13,7 +13,7 @@
   <title>Java Roadmap — лагерь в тёмном лесу</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800&family=Handjet:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./icon-192.png" type="image/png">
   <link rel="apple-touch-icon" href="./icon-192.png">
@@ -2148,6 +2148,146 @@
     .stage-sheet .task-detail { font-size: 12px; }
     .stage-sheet .stage-tips { margin-top: 16px; }
     .stage-sheet .notes-block { margin-top: 16px; }
+
+    /* ---------- Календарь огня ---------- */
+    .fire-calendar {
+      position: fixed;
+      inset: 0;
+      z-index: 85;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+    }
+    .fire-calendar[hidden] { display: none; }
+    .fire-cal-scrim {
+      position: absolute;
+      inset: 0;
+      background: rgba(2, 4, 10, .8);
+      backdrop-filter: blur(5px);
+    }
+    .fire-cal-card {
+      position: relative;
+      width: min(980px, 100%);
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 18px 20px 16px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #0d1120, #080a13);
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .62);
+    }
+    .fire-cal-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .fire-cal-kicker {
+      font: 600 10px var(--font-mono);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .fire-cal-head h2 {
+      margin: 4px 0 4px;
+      font: 700 24px var(--font-display);
+      color: var(--text);
+    }
+    .fire-cal-sub {
+      margin: 0;
+      font: 500 12px var(--font-mono);
+      color: var(--muted);
+    }
+    .fire-cal-close {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: var(--surface-2);
+      color: var(--text);
+      font: 500 18px var(--font-sans);
+      cursor: pointer;
+    }
+    .fire-cal-close:hover { border-color: var(--gold); color: var(--gold); }
+    .fire-cal-scroll {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 6px;
+    }
+    .fire-cal-months {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 12px;
+      gap: 3px;
+      height: 14px;
+      margin-left: 30px;
+    }
+    .fire-cal-months span {
+      font: 500 8.5px var(--font-mono);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .fire-cal-body { display: flex; gap: 6px; }
+    .fire-cal-weekdays {
+      display: grid;
+      grid-template-rows: repeat(7, 12px);
+      gap: 3px;
+      width: 24px;
+      flex: 0 0 auto;
+      font: 500 8px var(--font-mono);
+      color: var(--dim);
+      text-align: right;
+    }
+    .fire-cal-grid {
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-rows: repeat(7, 12px);
+      grid-auto-columns: 12px;
+      gap: 3px;
+    }
+    .fire-day {
+      width: 12px;
+      height: 12px;
+      padding: 0;
+      border: 1px solid #1e2638;
+      border-radius: 2px;
+      background: #131a28;
+      cursor: pointer;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    }
+    .fire-day:hover { transform: scale(1.3); border-color: var(--gold); }
+    .fire-day:focus-visible { outline: 1px solid var(--gold); outline-offset: 1px; }
+    .fire-day.is-lit { background: var(--fire); border-color: var(--fire-2); box-shadow: 0 0 6px rgba(255, 154, 46, .45); }
+    .fire-day.is-frozen { background: #23465a; border-color: #7fd6e8; }
+    .fire-day.is-off { background: #0d111b; border-color: #2c2026; }
+    .fire-day.is-today { outline: 1px solid var(--gold); outline-offset: 1px; }
+    .fire-day.is-pad { visibility: hidden; }
+    .fire-day:disabled { cursor: default; opacity: .3; }
+    .fire-cal-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font: 500 10px var(--font-mono);
+      color: var(--muted);
+    }
+    .fire-cal-legend i {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+      border-radius: 2px;
+      vertical-align: -1px;
+    }
+    body.fire-calendar-open { overflow: hidden; }
+    @media (max-width: 640px) {
+      .fire-calendar { padding: 8px; align-items: end; }
+      .fire-cal-card { max-height: 92vh; padding: 14px 14px 12px; }
+      .fire-cal-head h2 { font-size: 19px; }
+    }
     .stage-sheet .notes-head { margin-top: 0; }
     .sheet-icon {
       display: grid;
@@ -2440,9 +2580,9 @@
     :root,
     :root[data-theme="dark"] {
       color-scheme: dark;
-      --font-sans: "Exo 2", system-ui, -apple-system, "Segoe UI", sans-serif;
-      --font-display: "Handjet", "Press Start 2P", "JetBrains Mono", monospace;
-      --font-pixel: "Press Start 2P", "Handjet", "JetBrains Mono", monospace;
+      --font-sans: "Exo 2", "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-display: "Exo 2", "Manrope", system-ui, sans-serif;
+      --font-pixel: "JetBrains Mono", "Exo 2", monospace;
       --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", monospace;
 
       --paper: #07080f;
@@ -3390,7 +3530,6 @@
             <div class="hud-stats">
               <span class="is-gold">Стрик <b id="hudStreak">0</b></span>
               <span class="is-gold">Путь <b id="hudOverall">0%</b></span>
-              <span>Дрова <b id="hudWood">0</b></span>
               <span>Камень <b id="hudStone">0</b></span>
               <span class="is-mint">Искры <b id="hudEmber">0</b></span>
               <span>Заморозки <b id="hudFreeze">0</b></span>
@@ -3400,7 +3539,7 @@
         </div>
         <div class="camp-hud-actions">
           <button type="button" id="hudLight" class="is-primary">Зажечь огонь</button>
-          <button type="button" id="hudWoodBtn">Подкинуть дров</button>
+          <button type="button" id="hudHistoryBtn">История огня</button>
           <button type="button" id="hudFreezeBtn">Заморозить вчера</button>
         </div>
         <p class="camp-hud-note" id="hudNote">Огонь растёт от ежедневной серии. Дом растёт от пройденных тем. Пропуск дня гасит свет, но не отнимает построенное.</p>
@@ -3655,6 +3794,7 @@
       </div>
     </section>
     <div id="stageSheet"></div>
+    <div id="fireCalendar" class="fire-calendar" hidden></div>
     <button class="path-progress" type="button" id="pathProgress" aria-label="Общий прогресс">
       <span class="progress-ring" id="overallRing" style="--pct: 0" aria-hidden="true"><span id="overallPercent">0%</span></span>
       <span class="path-progress-label">путь</span>
@@ -4312,13 +4452,12 @@
       hudStage: document.getElementById("hudStage"),
       hudStreak: document.getElementById("hudStreak"),
       hudOverall: document.getElementById("hudOverall"),
-      hudWood: document.getElementById("hudWood"),
       hudStone: document.getElementById("hudStone"),
       hudEmber: document.getElementById("hudEmber"),
       hudFreeze: document.getElementById("hudFreeze"),
       hudStars: document.getElementById("hudStars"),
       hudLight: document.getElementById("hudLight"),
-      hudWoodBtn: document.getElementById("hudWoodBtn"),
+      hudHistoryBtn: document.getElementById("hudHistoryBtn"),
       hudFreezeBtn: document.getElementById("hudFreezeBtn"),
       hudNote: document.getElementById("hudNote"),
       campNav: document.getElementById("campNav"),
@@ -4331,6 +4470,7 @@
       houseRooms: document.getElementById("houseRooms"),
       houseChest: document.getElementById("houseChest"),
       stageSheet: document.getElementById("stageSheet"),
+      fireCalendar: document.getElementById("fireCalendar"),
       mapStagesDone: document.getElementById("mapStagesDone"),
       mapPracticeDone: document.getElementById("mapPracticeDone"),
       mapAchDone: document.getElementById("mapAchDone"),
@@ -4404,7 +4544,6 @@
     let lcRequestId = 0;
     let lcBusy = false;
     let sheetStage = null;
-    let fireMenuOpen = false;
     let justCompletedStage = null;
     let mapGeo = null;
     let lastMapPos = 0;
@@ -4485,22 +4624,21 @@
     // ---------- Состояние и localStorage ----------
     function createState() {
       return {
-        version: 3,
+        version: 4,
         tasks: {},
         notes: {},
         checklist: {},
         practice: {},
         activity: {},
-        manualDays: {},
-        manualStack: [],
         achievements: {},
-        resources: { wood: 0, stone: 0, ember: 0 },
+        resources: { stone: 0, ember: 0 },
         rewarded: {},
         finds: {},
         frozen: {},
         spentFreezes: 0,
+        manualOff: {},
         stars: 0,
-        boost: { day: "", amount: 0 },
+        celebrated: {},
         leetcode: { username: "", total: 0, easy: 0, medium: 0, hard: 0, ranking: 0, syncedAt: "" },
         syncedOnce: false,
         theme: "",
@@ -4542,16 +4680,6 @@
           }
         });
       }
-      if (raw.manualDays && typeof raw.manualDays === "object") {
-        Object.keys(raw.manualDays).forEach((key) => {
-          if (dayFromKey(key) && raw.manualDays[key] === true) normalized.manualDays[key] = true;
-        });
-      }
-      if (Array.isArray(raw.manualStack)) {
-        normalized.manualStack = raw.manualStack
-          .filter((key) => typeof key === "string" && dayFromKey(key) && normalized.manualDays[key])
-          .slice(-60);
-      }
       if (raw.achievements && typeof raw.achievements === "object") {
         const known = new Set(ACHIEVEMENTS.map((item) => item.id));
         Object.keys(raw.achievements).forEach((key) => {
@@ -4573,7 +4701,7 @@
         }
       }
       if (raw.resources && typeof raw.resources === "object") {
-        ["wood", "stone", "ember"].forEach((key) => {
+        ["stone", "ember"].forEach((key) => {
           const value = Number(raw.resources[key]);
           if (Number.isFinite(value) && value > 0) normalized.resources[key] = Math.min(Math.floor(value), 999999);
         });
@@ -4596,15 +4724,25 @@
           if (dayFromKey(key) && raw.frozen[key] === true) normalized.frozen[key] = true;
         });
       }
+      if (raw.manualOff && typeof raw.manualOff === "object") {
+        Object.keys(raw.manualOff).forEach((key) => {
+          if (dayFromKey(key) && raw.manualOff[key] === true) normalized.manualOff[key] = true;
+        });
+      }
       if (Number.isFinite(Number(raw.spentFreezes)) && Number(raw.spentFreezes) > 0) {
         normalized.spentFreezes = Math.min(Math.floor(Number(raw.spentFreezes)), 999);
       }
       if (Number.isFinite(Number(raw.stars)) && Number(raw.stars) > 0) {
         normalized.stars = Math.min(Math.floor(Number(raw.stars)), 999);
       }
-      if (raw.boost && typeof raw.boost === "object" && dayFromKey(raw.boost.day)) {
-        normalized.boost.day = raw.boost.day;
-        normalized.boost.amount = Math.min(Math.max(Math.floor(Number(raw.boost.amount) || 0), 0), 99);
+      if (raw.celebrated && typeof raw.celebrated === "object") {
+        const knownStages = new Set(ROADMAP.map((stage) => stage.id));
+        Object.keys(raw.celebrated).forEach((key) => {
+          const value = raw.celebrated[key];
+          if (knownStages.has(key) && typeof value === "string" && Number.isFinite(Date.parse(value))) {
+            normalized.celebrated[key] = value;
+          }
+        });
       }
       normalized.syncedOnce = raw.syncedOnce === true;
       if (raw.theme === "light" || raw.theme === "dark") normalized.theme = raw.theme;
@@ -4719,12 +4857,8 @@
       return FIRE_STAGES.find((stage) => stage.days > streak) || null;
     }
 
-    function boostAmount() {
-      return state.boost && state.boost.day === dayKey() ? Math.max(0, state.boost.amount || 0) : 0;
-    }
-
     function lightRadius(streak) {
-      return findFireStage(streak).radius + Math.min(3, boostAmount()) * 18;
+      return findFireStage(streak).radius;
     }
 
     function rewardCount() {
@@ -4763,8 +4897,8 @@
     function bumpActivity() {
       const key = dayKey();
       state.activity[key] = (state.activity[key] || 0) + 1;
-      const limit = Date.now() - 180 * 86400000;
-      [state.activity, state.frozen].forEach((map) => {
+      const limit = Date.now() - 400 * 86400000;
+      [state.activity, state.frozen, state.manualOff].forEach((map) => {
         Object.keys(map).forEach((day) => {
           const date = dayFromKey(day);
           if (!date || date.getTime() < limit) delete map[day];
@@ -4894,8 +5028,8 @@
     const MAP_W = 1000;
     const MAP_H = 700;
     const MAP_GROUND_Y = 330;
-    const PLATE_W = 140;
-    const PLATE_H = 64;
+    const PLATE_W = 150;
+    const PLATE_H = 76;
     const PLATE_GAP = 10;
     const MAP_POINTS = [
       [180, 570],  // костёр
@@ -4989,10 +5123,9 @@
 
     function mapCampfireInner(streak, lit) {
       const stage = findFireStage(streak);
-      const boost = boostAmount();
       const baseLevel = lit ? Math.max(1, stage.flames) : (streak > 0 ? Math.max(1, stage.flames - 2) : 0);
-      const level = Math.min(7, baseLevel + (lit ? Math.min(3, Math.ceil(boost / 2)) : 0));
-      const wood = Math.max(1, Math.min(6, Math.ceil((streak + 2) / 4)));
+      const level = Math.min(7, baseLevel);
+      const logsCount = Math.max(1, Math.min(6, Math.ceil((streak + 2) / 4)));
       const glow = level
         ? `<circle class="camp-glow" cx="0" cy="2" r="${18 + level * 6}" fill="url(#campGlowGrad)" opacity="${lit ? 1 : 0.55}"/>`
         : "";
@@ -5000,10 +5133,10 @@
         ? `<ellipse class="camp-light" cx="0" cy="30" rx="${46 + level * 9}" ry="${14 + level * 2}" fill="url(#campGlowGrad)" opacity="${lit ? 0.85 : 0.45}"/>`
         : "";
       let logs = '<path class="camp-log" d="M-18 8l36 7M18 8l-36 7"/>';
-      if (wood > 1) logs += '<path class="camp-log" d="M-22 10l44 3"/>';
-      if (wood > 2) logs += '<path class="camp-log" d="M-12 4l24 14"/>';
-      if (wood > 3) logs += '<path class="camp-log" d="M-24 12l48 1"/>';
-      if (wood > 4) logs += '<path class="camp-log" d="M-16 4l32 14"/>';
+      if (logsCount > 1) logs += '<path class="camp-log" d="M-22 10l44 3"/>';
+      if (logsCount > 2) logs += '<path class="camp-log" d="M-12 4l24 14"/>';
+      if (logsCount > 3) logs += '<path class="camp-log" d="M-24 12l48 1"/>';
+      if (logsCount > 4) logs += '<path class="camp-log" d="M-16 4l32 14"/>';
       let flames = "";
       for (let i = 0; i < level; i += 1) {
         const offset = (i - (level - 1) / 2) * 5.2;
@@ -5024,23 +5157,7 @@
         sparks = '<circle cx="-8" cy="7" r="1.4" fill="#7f2237"/><circle cx="8" cy="8" r="1.1" fill="#4a2210"/><circle cx="0" cy="9" r="1" fill="#ff9a2e" opacity=".55"/>';
       }
 
-      let menu = "";
-      if (fireMenuOpen) {
-        const canLight = !lit;
-        const canExtinguish = state.manualStack.length > 0;
-        menu = `<g class="camp-menu">
-          <rect class="camp-menu-plate" x="24" y="-30" width="104" height="60"/>
-          <g class="camp-menu-row${canLight ? "" : " is-disabled"}" data-fire-light tabindex="0" role="button" aria-label="${canLight ? "Зажечь огонь" : "Огонь уже горит"}">
-            <rect class="camp-menu-action${canLight ? "" : " is-disabled"}" x="30" y="-23" width="92" height="21"/>
-            <text class="camp-menu-text${canLight ? "" : " is-disabled"}" x="76" y="-8">${canLight ? "Зажечь" : "Горит"}</text>
-          </g>
-          <g class="camp-menu-row${canExtinguish ? "" : " is-disabled"}" data-fire-undo tabindex="0" role="button" aria-label="Отжечь огонь">
-            <rect class="camp-menu-action camp-menu-undo${canExtinguish ? "" : " is-disabled"}" x="30" y="3" width="92" height="21"/>
-            <text class="camp-menu-text camp-menu-undo-text${canExtinguish ? "" : " is-disabled"}" x="76" y="18">Отжечь</text>
-          </g>
-        </g>`;
-      }
-      return `${glow}${light}${logs}${core}${flames}${sparks}${menu}`;
+      return `${glow}${light}${logs}${core}${flames}${sparks}`;
     }
 
     function renderFire() {
@@ -5050,7 +5167,7 @@
       if (mapFire) {
         const inner = mapFire.querySelector("g");
         if (inner) inner.innerHTML = mapCampfireInner(streak, litToday);
-        mapFire.setAttribute("aria-label", "Костёр: серия " + streak + (litToday ? ", горит" : ", не горит") + (litToday ? "" : ". Нажми, чтобы зажечь"));
+        mapFire.setAttribute("aria-label", "Костёр: серия " + streak + (litToday ? ", горит" : ", не горит") + ". Нажми, чтобы открыть историю огня.");
       }
       const radius = lightRadius(streak);
       if (radius !== lastLightRadius) {
@@ -5061,17 +5178,168 @@
       applyCosmetics();
     }
 
+    const FIRE_MONTHS = ["янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
+    let fireCalendarFocus = null;
+
+    function fireCalendarData(today) {
+      const base = today
+        ? new Date(today.getFullYear(), today.getMonth(), today.getDate())
+        : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+      const mondayOffset = (base.getDay() + 6) % 7;
+      const weekStart = new Date(base);
+      weekStart.setDate(base.getDate() - mondayOffset);
+      const gridStart = new Date(weekStart);
+      gridStart.setDate(weekStart.getDate() - 52 * 7);
+      const cutoff = new Date(base);
+      cutoff.setDate(base.getDate() - 364);
+      const cells = [];
+      for (let i = 0; i < 371; i += 1) {
+        const date = new Date(gridStart);
+        date.setDate(gridStart.getDate() + i);
+        let kind = "past";
+        if (date.getTime() > base.getTime()) kind = "future";
+        else if (date.getTime() < cutoff.getTime()) kind = "pad";
+        else if (date.getTime() === base.getTime()) kind = "today";
+        cells.push({ key: dayKey(date), date, kind });
+      }
+      return cells;
+    }
+
+    function dateLabel(date) {
+      return date.toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" });
+    }
+
+    function renderFireCalendar() {
+      if (!dom.fireCalendar) return;
+      const cells = fireCalendarData();
+      const todayKey = dayKey();
+      const today = dayFromKey(todayKey);
+      const cutoff = new Date(today);
+      cutoff.setDate(today.getDate() - 364);
+      const streak = currentStreak();
+      const stars = Math.max(state.stars || 0, milestoneStars(streak));
+      let litCount = 0;
+      Object.keys(state.activity).forEach((key) => {
+        const date = dayFromKey(key);
+        if (date && date.getTime() >= cutoff.getTime() && date.getTime() <= today.getTime()) litCount += 1;
+      });
+
+      const cellsHtml = cells.map((cell) => {
+        const lit = Boolean(state.activity[cell.key]);
+        const frozen = Boolean(state.frozen[cell.key]) && !lit;
+        const off = Boolean(state.manualOff[cell.key]) && !lit;
+        const disabled = cell.kind === "future" || cell.kind === "pad";
+        const classes = ["fire-day"];
+        if (lit) classes.push("is-lit");
+        if (frozen) classes.push("is-frozen");
+        if (off) classes.push("is-off");
+        if (cell.kind === "today") classes.push("is-today");
+        if (cell.kind === "pad") classes.push("is-pad");
+        const status = lit ? "зажжён" : frozen ? "заморожен" : "пусто";
+        const label = dateLabel(cell.date) + " · " + status;
+        return `<button type="button" class="${classes.join(" ")}" data-day="${cell.key}" data-state="${cell.kind}" aria-label="${label}" aria-pressed="${lit ? "true" : "false"}"${disabled ? " disabled" : ""}></button>`;
+      }).join("");
+
+      let monthsHtml = "";
+      for (let column = 0; column < 53; column += 1) {
+        const monday = cells[column * 7].date;
+        const previous = column > 0 ? cells[(column - 1) * 7].date : null;
+        const showMonth = !previous || previous.getMonth() !== monday.getMonth();
+        monthsHtml += `<span>${showMonth ? FIRE_MONTHS[monday.getMonth()] : ""}</span>`;
+      }
+
+      dom.fireCalendar.innerHTML = `
+        <div class="fire-cal-scrim" data-fire-close></div>
+        <section class="fire-cal-card" role="dialog" aria-modal="true" aria-label="История огня">
+          <header class="fire-cal-head">
+            <div>
+              <span class="fire-cal-kicker">История огня</span>
+              <h2>${streak} ${plural(streak, "день", "дня", "дней")} подряд</h2>
+              <p class="fire-cal-sub">Зажжено ${litCount} из 365 · Заморозки ${freezesLeft()} · Звёзды ${stars}</p>
+            </div>
+            <button type="button" class="fire-cal-close" data-fire-close aria-label="Закрыть историю огня">×</button>
+          </header>
+          <div class="fire-cal-scroll">
+            <div class="fire-cal-months">${monthsHtml}</div>
+            <div class="fire-cal-body">
+              <div class="fire-cal-weekdays" aria-hidden="true"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
+              <div class="fire-cal-grid" id="fireCalendarGrid" role="group" aria-label="Дни огня">${cellsHtml}</div>
+            </div>
+          </div>
+          <footer class="fire-cal-legend">
+            <span><i style="background:var(--fire)"></i>зажжён</span>
+            <span><i style="background:#131a28;border:1px solid #1e2638"></i>пусто</span>
+            <span><i style="background:#23465a;border:1px solid #7fd6e8"></i>заморозка</span>
+            <span><i style="background:transparent;border:1px solid var(--gold)"></i>сегодня</span>
+            <span>Нажми на день, чтобы зажечь или отжечь.</span>
+          </footer>
+        </section>`;
+
+      const scroller = dom.fireCalendar.querySelector(".fire-cal-scroll");
+      if (scroller) scroller.scrollLeft = scroller.scrollWidth;
+    }
+
+    function toggleFireDay(key) {
+      const date = dayFromKey(key);
+      const today = dayFromKey(dayKey());
+      if (!date || !today) return;
+      const cutoff = new Date(today);
+      cutoff.setDate(today.getDate() - 364);
+      if (date.getTime() > today.getTime() || date.getTime() < cutoff.getTime()) return;
+      const wasLit = Boolean(state.activity[key]);
+      if (wasLit) {
+        delete state.activity[key];
+        state.manualOff[key] = true;
+      } else {
+        state.activity[key] = 1;
+        delete state.manualOff[key];
+      }
+      delete state.frozen[key];
+      syncStars(currentStreak());
+      markChanged();
+      renderStreak();
+      renderMap({ animate: false });
+      renderFireCalendar();
+      const next = dom.fireCalendar ? dom.fireCalendar.querySelector('[data-day="' + key + '"]') : null;
+      if (next) next.focus();
+      showToast(wasLit ? "День погашен." : "День зажжён.");
+    }
+
+    function openFireCalendar() {
+      if (!dom.fireCalendar) return;
+      const fire = dom.journeyMap ? dom.journeyMap.querySelector("[data-fire]") : null;
+      const active = document.activeElement;
+      fireCalendarFocus = active && active !== document.body && active.isConnected ? active : fire;
+      renderFireCalendar();
+      dom.fireCalendar.hidden = false;
+      document.body.classList.add("fire-calendar-open");
+      const close = dom.fireCalendar.querySelector(".fire-cal-close");
+      if (close) close.focus();
+    }
+
+    function closeFireCalendar() {
+      if (!dom.fireCalendar) return;
+      dom.fireCalendar.hidden = true;
+      dom.fireCalendar.innerHTML = "";
+      document.body.classList.remove("fire-calendar-open");
+      const target = fireCalendarFocus && fireCalendarFocus.isConnected
+        ? fireCalendarFocus
+        : (dom.journeyMap ? dom.journeyMap.querySelector("[data-fire]") : null);
+      if (target) target.focus();
+      fireCalendarFocus = null;
+    }
+
     function lightFire() {
       const key = dayKey();
       if (state.activity[key]) {
         showToast("Огонь уже горит сегодня.");
         return;
       }
-      state.manualDays[key] = true;
-      state.manualStack.push(key);
+      delete state.manualOff[key];
       bumpActivity();
       markChanged();
       renderStreak();
+      renderMap({ animate: false });
       const mapFire = dom.journeyMap ? dom.journeyMap.querySelector("[data-fire]") : null;
       if (mapFire) {
         mapFire.classList.remove("is-lighting");
@@ -5082,58 +5350,27 @@
       showToast("Огонь зажжён.");
     }
 
-    function undoFire() {
-      const key = state.manualStack.pop();
-      if (!key || !state.manualDays[key]) {
-        showToast("Нечего отменять.");
-        return;
-      }
-      delete state.manualDays[key];
-      if (state.activity[key]) {
-        state.activity[key] -= 1;
-        if (state.activity[key] <= 0) delete state.activity[key];
-      }
-      markChanged();
-      renderStreak();
-      showToast("Последнее ручное зажатие отменено.");
-    }
-
     // ---------- Награды, заморозка и находки ----------
     function grantResources(kind, key) {
       const id = kind + ":" + key;
       if (state.rewarded[id]) return false;
       state.rewarded[id] = true;
       if (kind === "task") {
-        state.resources.wood += 1;
         state.resources.stone += 1;
       } else {
         state.resources.ember += 1;
         if (kind === "practice" && currentSuggestion === key) {
-          state.resources.wood += 1;
           state.resources.stone += 1;
           state.resources.ember += 1;
-          showToast("Задача дня: бонус во все ресурсы.", "achievement");
+          showToast("Задача дня: бонус к камню и искрам.", "achievement");
         }
       }
       return true;
     }
 
-    function feedFire() {
-      if ((state.resources.wood || 0) < 1) {
-        showToast("Нужно немного дров: закрой новую тему роадмапа.", "error");
-        return;
-      }
-      state.resources.wood -= 1;
-      if (!state.boost || state.boost.day !== dayKey()) state.boost = { day: dayKey(), amount: 0 };
-      state.boost.amount = Math.min(9, (state.boost.amount || 0) + 1);
-      markChanged();
-      renderStreak();
-      renderMap({ animate: false });
-      showToast("В костёр подброшено дров. Свет стал ярче.");
-    }
-
     function canFreezeYesterday() {
       const key = yesterdayKey();
+      if (state.manualOff[key]) return false;
       if (state.activity[key] || state.frozen[key]) return false;
       const before = new Date();
       before.setDate(before.getDate() - 2);
@@ -5141,6 +5378,7 @@
     }
 
     function autoFreezeMissedDay() {
+      if (state.manualOff[yesterdayKey()]) return false;
       if (!canFreezeYesterday()) return false;
       const key = yesterdayKey();
       state.frozen[key] = true;
@@ -5227,7 +5465,6 @@
       if (dom.hudStage) dom.hudStage.textContent = stage.name;
       if (dom.hudStreak) dom.hudStreak.textContent = String(streak);
       if (dom.hudOverall) dom.hudOverall.textContent = (TOTAL_TASKS ? Math.round(((computeStats().tasks) / TOTAL_TASKS) * 100) : 0) + "%";
-      if (dom.hudWood) dom.hudWood.textContent = String(state.resources.wood || 0);
       if (dom.hudStone) dom.hudStone.textContent = String(state.resources.stone || 0);
       if (dom.hudEmber) dom.hudEmber.textContent = String(state.resources.ember || 0);
       if (dom.hudFreeze) dom.hudFreeze.textContent = String(freezesLeft());
@@ -5237,10 +5474,6 @@
         dom.hudLight.disabled = lit;
         dom.hudLight.classList.toggle("is-primary", !lit);
       }
-      if (dom.hudWoodBtn) {
-        dom.hudWoodBtn.textContent = "Подкинуть дров (" + (state.resources.wood || 0) + ")";
-        dom.hudWoodBtn.disabled = (state.resources.wood || 0) < 1;
-      }
       if (dom.hudFreezeBtn) {
         dom.hudFreezeBtn.textContent = freezesLeft() ? "Заморозить вчера (" + freezesLeft() + ")" : "Заморозить вчера";
         dom.hudFreezeBtn.disabled = !canFreezeYesterday();
@@ -5248,7 +5481,7 @@
       if (dom.hudNote) {
         if (lit) {
           dom.hudNote.textContent = next
-            ? "До ступени «" + next.name + "» осталось " + Math.max(0, next.days - streak) + " " + plural(Math.max(0, next.days - streak), "день", "дня", "дней") + ". Дрова делают огонь ярче."
+            ? "До ступени «" + next.name + "» осталось " + Math.max(0, next.days - streak) + " " + plural(Math.max(0, next.days - streak), "день", "дня", "дней") + ". Открой историю огня, чтобы поправить дни."
             : "Огонь на максимуме. Звёзды в небе остаются навсегда.";
         } else if (streak > 0) {
           dom.hudNote.textContent = "Огонь тлеет. Зажги сегодня, чтобы вернуть свет. Заморозка бережёт серию.";
@@ -5385,7 +5618,6 @@
       if (dom.houseResources) {
         const chips = [
           { cls: "is-gold", label: "Огонь", value: stats.streak + " дн." },
-          { cls: "", label: "Дрова", value: state.resources.wood || 0 },
           { cls: "", label: "Камень", value: state.resources.stone || 0 },
           { cls: "is-mint", label: "Искры", value: state.resources.ember || 0 },
           { cls: "", label: "Заморозки", value: freezesLeft() },
@@ -5474,11 +5706,11 @@
           <ellipse cx="330" cy="672" rx="6" ry="2.4" fill="#333845"/>
           <ellipse cx="292" cy="672" rx="5" ry="2" fill="#2c313d"/>
         </g>
-        <g class="map-deco" data-decor="1" data-prop="crates" aria-hidden="true" transform="translate(516 654)">
+        <g class="map-deco" data-decor="1" data-prop="crates" aria-hidden="true" transform="translate(575 662)">
           <rect x="-9" y="-9" width="18" height="18" fill="#4a3324" stroke="#24160d"/>
           <path d="M-9-9l18 18M9-9L-9 9" stroke="#2f2117" stroke-width="1.2"/>
         </g>
-        <g class="map-deco" data-decor="1" data-prop="well" aria-hidden="true" transform="translate(716 656)">
+        <g class="map-deco" data-decor="1" data-prop="well" aria-hidden="true" transform="translate(900 665)">
           <ellipse cx="0" cy="6" rx="13" ry="4" fill="#05080d" opacity=".5"/>
           <rect x="-11" y="-6" width="22" height="12" fill="#3c414f" stroke="#1c2029"/>
           <path d="M-13-6h26M-10-6v-11h20v11" fill="none" stroke="#3a2c20" stroke-width="2"/>
@@ -5639,7 +5871,7 @@
         const plateH = plate.h;
         const px = plate.x;
         const py = plate.y;
-        const lines = wrapText(stage.title, 15).slice(0, 2);
+        const lines = wrapText(stage.title, 16).slice(0, 3);
         const icon = STAGE_ICONS[index % STAGE_ICONS.length];
         const nodeInner = complete
           ? '<path class="map-node-check" d="M-4 0l3 3 5-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'
@@ -5648,10 +5880,10 @@
           <path class="map-deco-line" d="M${point.x} ${point.y} L${point.x} ${above ? py + plateH : py}"/>
           <rect class="map-plate" x="${px}" y="${py}" width="${plateW}" height="${plateH}" rx="3"/>
           <g class="map-icon" transform="translate(${px + 18} ${py + 15}) scale(.3)">${icon}</g>
-          <text class="map-title" x="${px + 34}" y="${py + 21}">${lines.map((line, i) => `<tspan x="${px + 34}" dy="${i ? 12 : 0}">${escapeHtml(line)}</tspan>`).join("")}</text>
-          <text class="map-count" x="${px + 34}" y="${py + 45}">${complete ? "пройдено" : done + " из " + total}</text>
-          <rect class="map-mini-track" x="${px + 34}" y="${py + 53}" width="${plateW - 48}" height="3"/>
-          <rect class="map-mini-fill" x="${px + 34}" y="${py + 53}" width="${((plateW - 48) * ratio).toFixed(1)}" height="3"/>
+          <text class="map-title" x="${px + 34}" y="${py + 21}">${lines.map((line, i) => `<tspan x="${px + 34}" dy="${i ? 13 : 0}">${escapeHtml(line)}</tspan>`).join("")}</text>
+          <text class="map-count" x="${px + 34}" y="${py + 61}">${complete ? "пройдено" : done + " из " + total}</text>
+          <rect class="map-mini-track" x="${px + 34}" y="${py + 68}" width="${plateW - 48}" height="3"/>
+          <rect class="map-mini-fill" x="${px + 34}" y="${py + 68}" width="${((plateW - 48) * ratio).toFixed(1)}" height="3"/>
           ${isCurrent ? `<circle class="map-current-ring" cx="${point.x}" cy="${point.y}" r="20"/>` : ""}
           <g transform="translate(${point.x} ${point.y})">
             <circle class="map-node" r="12"/>
@@ -5704,39 +5936,44 @@
     }
 
     function layoutStagePlates(points, currentIndex) {
-      const obstacles = [];
+      const obstacles = points.map((node) => ({ x: node.x - 24, y: node.y - 24, w: 48, h: 48 }));
       if (currentIndex >= 0 && points[currentIndex]) {
         const ring = points[currentIndex];
-        obstacles.push({ x: ring.x - 24, y: ring.y - 24, w: 48, h: 48 });
+        obstacles.push({ x: ring.x - 26, y: ring.y - 26, w: 52, h: 52 });
       }
       const result = [];
       points.forEach((point, index) => {
-        const above = index % 2 === 0;
+        const prefersAbove = index % 2 === 0;
         const w = PLATE_W;
         const h = PLATE_H;
         let x = Math.max(10, Math.min(MAP_W - w - 10, point.x - w / 2));
-        let y = above ? point.y - 100 - h : point.y + 42;
+        let y = prefersAbove ? point.y - 100 - h : point.y + 42;
         y = Math.max(200, Math.min(MAP_H - h - 12, y));
-        for (let guard = 0; guard < 8; guard += 1) {
+        for (let guard = 0; guard < 12; guard += 1) {
           const hit = obstacles.concat(result).find((box) => (
             x < box.x + box.w + PLATE_GAP && x + w + PLATE_GAP > box.x
             && y < box.y + box.h + PLATE_GAP && y + h + PLATE_GAP > box.y
           ));
           if (!hit) break;
+          const leftFirst = (x + w / 2) < (hit.x + hit.w / 2);
+          const sideways = leftFirst ? hit.x - w - PLATE_GAP : hit.x + hit.w + PLATE_GAP;
+          if (sideways >= 10 && sideways + w <= MAP_W - 10) {
+            x = sideways;
+            continue;
+          }
           const down = hit.y + hit.h + PLATE_GAP;
           const up = hit.y - h - PLATE_GAP;
-          if (down + h <= MAP_H - 12) {
+          if (prefersAbove && up >= 200 && point.y - (up + h) <= 160) {
+            y = up;
+          } else if (down + h <= MAP_H - 12) {
             y = down;
           } else if (up >= 200) {
             y = up;
           } else {
-            const right = hit.x + hit.w + PLATE_GAP;
-            const left = hit.x - w - PLATE_GAP;
-            if (right + w <= MAP_W - 10) x = right;
-            else if (left >= 10) x = left;
-            else break;
+            break;
           }
         }
+        const above = y + h <= point.y;
         result.push({ x, y, w, h, above });
       });
       return result;
@@ -6865,32 +7102,11 @@
     // ---------- События ----------
     function bindEvents() {
       dom.journeyMap.addEventListener("click", (event) => {
-        const light = event.target.closest("[data-fire-light]");
-        if (light) {
-          event.stopPropagation();
-          if (!state.activity[dayKey()]) lightFire();
-          else showToast("Огонь уже горит сегодня.");
-          fireMenuOpen = false;
-          renderFire();
-          return;
-        }
-        const extinguish = event.target.closest("[data-fire-undo]");
-        if (extinguish) {
-          event.stopPropagation();
-          undoFire();
-          fireMenuOpen = false;
-          renderFire();
-          return;
-        }
         const fire = event.target.closest("[data-fire]");
         if (fire) {
-          fireMenuOpen = !fireMenuOpen;
-          renderFire();
+          event.stopPropagation();
+          openFireCalendar();
           return;
-        }
-        if (fireMenuOpen) {
-          fireMenuOpen = false;
-          renderFire();
         }
         const stage = event.target.closest("[data-stage-open]");
         if (stage) { openStageSheet(stage.dataset.stageOpen); return; }
@@ -6904,7 +7120,7 @@
 
       dom.journeyMap.addEventListener("keydown", (event) => {
         if (event.key !== "Enter" && event.key !== " ") return;
-        const target = event.target.closest("[data-stage-open],[data-view],[data-fire],[data-fire-light],[data-fire-undo],[data-trail],[data-house]");
+        const target = event.target.closest("[data-stage-open],[data-view],[data-fire],[data-trail],[data-house]");
         if (!target) return;
         event.preventDefault();
         target.dispatchEvent(new MouseEvent("click", { bubbles: true }));
@@ -6921,6 +7137,20 @@
       dom.stageSheet.addEventListener("input", (event) => {
         if (event.target.matches("textarea[data-notes]")) handleNoteInput(event.target);
       });
+
+      if (dom.fireCalendar) {
+        dom.fireCalendar.addEventListener("click", (event) => {
+          if (event.target.closest("[data-fire-close]")) { closeFireCalendar(); return; }
+          const cell = event.target.closest("[data-day]");
+          if (cell) toggleFireDay(cell.getAttribute("data-day"));
+        });
+        dom.fireCalendar.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            closeFireCalendar();
+          }
+        });
+      }
 
       dom.backToMap.addEventListener("click", () => switchTab(activeTab === "house" && activeRoom !== "home" ? "house" : "map"));
       [dom.campNav, dom.topbarNav].forEach((nav) => {
@@ -6942,7 +7172,7 @@
           else showToast("Огонь уже горит сегодня.");
         });
       }
-      if (dom.hudWoodBtn) dom.hudWoodBtn.addEventListener("click", feedFire);
+      if (dom.hudHistoryBtn) dom.hudHistoryBtn.addEventListener("click", openFireCalendar);
       if (dom.hudFreezeBtn) dom.hudFreezeBtn.addEventListener("click", freezeYesterday);
       dom.pathProgress.addEventListener("click", () => {
         renderMap({ animate: false });

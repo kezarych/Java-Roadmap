@@ -327,6 +327,21 @@ git commit -m "Phase 1: bump service worker cache"
 
 Update `CACHE_NAME` to `java-roadmap-v7` before committing.
 
+## Deferred polish (do not forget; after Phase 2)
+
+- Composition is still left-heavy: house and fire on the left, road on the right.
+  Phase 3 must center the house and place annexes around it.
+- Flame silhouette is too symmetric (fan/flower). Needs irregular heights,
+  a two-layer silhouette and a hotter core.
+- Upper-left sky is still emptier than the bottom; add a distant ridge,
+  low clouds or aurora.
+- Stage plates still read as a HUD over the world, not landmarks.
+  Phase 3 should turn them into plaques attached to annexes.
+- Revisit campfire scale after the house moves to the center.
+- Decide whether the road progress should follow the fire color
+  (blue with the water find) or use a neutral trail color.
+- Mobile is intentionally deferred by the user; only regression checks.
+
 ## Self-Review
 
 - Spec coverage: framing (Task 1), overlaps (Task 2), fire (Task 3), decor (Task 4), verification (Task 5).
