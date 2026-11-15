@@ -5235,7 +5235,7 @@
         if (off) classes.push("is-off");
         if (cell.kind === "today") classes.push("is-today");
         if (cell.kind === "pad") classes.push("is-pad");
-        const status = lit ? "зажжён" : frozen ? "заморожен" : "пусто";
+        const status = lit ? "зажжён" : frozen ? "заморожен" : off ? "погашен" : "пусто";
         const label = dateLabel(cell.date) + " · " + status;
         return `<button type="button" class="${classes.join(" ")}" data-day="${cell.key}" data-state="${cell.kind}" aria-label="${label}" aria-pressed="${lit ? "true" : "false"}"${disabled ? " disabled" : ""}></button>`;
       }).join("");
@@ -5271,10 +5271,16 @@
             <span><i style="background:#131a28;border:1px solid #1e2638"></i>пусто</span>
             <span><i style="background:#23465a;border:1px solid #7fd6e8"></i>заморозка</span>
             <span><i style="background:transparent;border:1px solid var(--gold)"></i>сегодня</span>
+            <span><i style="background:#0d111b;border:1px solid #2c2026"></i>погашен вручную</span>
             <span>Нажми на день, чтобы зажечь или отжечь.</span>
           </footer>
         </section>`;
 
+      scrollFireCalendarToEnd();
+    }
+
+    function scrollFireCalendarToEnd() {
+      if (!dom.fireCalendar || dom.fireCalendar.hidden) return;
       const scroller = dom.fireCalendar.querySelector(".fire-cal-scroll");
       if (scroller) scroller.scrollLeft = scroller.scrollWidth;
     }
@@ -5313,6 +5319,8 @@
       renderFireCalendar();
       dom.fireCalendar.hidden = false;
       document.body.classList.add("fire-calendar-open");
+      scrollFireCalendarToEnd();
+      window.requestAnimationFrame(() => scrollFireCalendarToEnd());
       const close = dom.fireCalendar.querySelector(".fire-cal-close");
       if (close) close.focus();
     }

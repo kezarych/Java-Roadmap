@@ -1,5 +1,5 @@
 // Service worker: офлайн-кэш приложения
-const CACHE_NAME = "java-roadmap-v8";
+const CACHE_NAME = "java-roadmap-v9";
 const CORE_ASSETS = [
   "./",
   "./index.html",
