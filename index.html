@@ -3,14 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0d0b09">
-  <meta name="description" content="Трекер роадмапа Java Backend: этапы, практика LeetCode, ачивки, заметки, чек-лист и синхронизация через GitHub Gist.">
+  <meta name="theme-color" content="#07080f">
+  <meta name="description" content="Трекер роадмапа Java Backend: этапы, практика LeetCode, ачивки, заметки, чек-лист и синхронизация через GitHub Gist. Лагерь в тёмном лесу растёт вместе с прогрессом.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Java Roadmap">
   <meta name="application-name" content="Java Roadmap">
-  <title>Java Roadmap — путь до стажировки</title>
+  <title>Java Roadmap — лагерь в тёмном лесу</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800&family=Handjet:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./icon-192.png" type="image/png">
   <link rel="apple-touch-icon" href="./icon-192.png">
@@ -2427,19 +2430,914 @@
     }
 
   
-    .camp-glow { filter: blur(2px); }
+    .camp-glow { filter: none; }
     .map-walker .walker-glow { opacity: .1; }
+
+    /* ============================================================
+       ТЁМНЫЙ ЛЕС — визуальный слой
+       Палитра, шрифты и пиксельная геометрия взяты из тёмного леса.
+       ============================================================ */
+    :root,
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --font-sans: "Exo 2", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-display: "Handjet", "Press Start 2P", "JetBrains Mono", monospace;
+      --font-pixel: "Press Start 2P", "Handjet", "JetBrains Mono", monospace;
+      --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", monospace;
+
+      --paper: #07080f;
+      --paper-2: #0a0c18;
+      --surface: #12162e;
+      --surface-2: #171c3a;
+      --surface-3: #1c2144;
+      --ink: #080a16;
+      --on-ink: #e5e7f5;
+      --text: #e5e7f5;
+      --text-soft: #b9bfe8;
+      --muted: #8f96d8;
+      --line: #242a4a;
+      --line-strong: #4a5190;
+
+      --red: #ff9a2e;
+      --red-deep: #4a2210;
+      --red-bright: #ffd23f;
+      --red-soft: #2a170a;
+      --sand: #8f96d8;
+      --green: #6ee7b7;
+      --amber: #ffd23f;
+      --danger: #ff6b6b;
+      --bone: #e5e7f5;
+      --dim: #8f96d8;
+
+      --map-bg: #0a1030;
+      --map-road: #2a3164;
+      --ember: #ffd23f;
+      --gold: #ffd23f;
+      --moss: #6ee7b7;
+      --accent: #ffd23f;
+      --accent-2: #6ee7b7;
+      --accent-soft: #2a2410;
+      --fire: #ff9a2e;
+      --fire-2: #ffd23f;
+      --mint: #6ee7b7;
+
+      --shadow: 4px 4px 0 rgba(0, 0, 0, .55);
+      --shadow-sm: 2px 2px 0 rgba(0, 0, 0, .5);
+      --radius: 3px;
+    }
+
+    html,
+    body { background-color: #07080f; }
+    body {
+      color: var(--text);
+      font-family: var(--font-sans);
+      background-image:
+        radial-gradient(1100px 560px at 50% -10%, rgba(74, 81, 144, .3), transparent 62%),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, .018) 0 1px, transparent 1px 3px),
+        radial-gradient(rgba(255, 210, 63, .04) 1px, transparent 1px);
+      background-size: auto, auto, 26px 26px;
+      background-attachment: fixed;
+    }
+    body[data-fire-color="blue"] { --fire: #6ee7ff; --fire-2: #c9f7ff; }
+
+    /* Шапка */
+    .topbar {
+      background: #080a16;
+      border-bottom: 2px solid #1c2144;
+    }
+    .topbar::after {
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: repeating-linear-gradient(90deg, var(--gold) 0 12px, transparent 12px 24px);
+      opacity: .35;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border: 2px solid var(--gold);
+      border-radius: 2px;
+      background: #12162e;
+      color: var(--gold);
+      font-family: var(--font-pixel);
+      font-size: 14px;
+      box-shadow: 2px 2px 0 #000;
+    }
+    .brand-copy h1 {
+      font-family: var(--font-pixel);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.6;
+      letter-spacing: .01em;
+    }
+    .sync-chip,
+    .streak-chip {
+      min-height: 30px;
+      border: 2px solid var(--line-strong);
+      border-radius: 2px;
+      background: #0b0e20;
+      color: var(--muted);
+      font-family: var(--font-pixel);
+      font-size: 6.5px;
+      letter-spacing: .04em;
+    }
+    .streak-chip strong { color: var(--gold); }
+    .sync-dot,
+    .streak-chip .flame {
+      width: 6px;
+      height: 6px;
+      border-radius: 0;
+      background: var(--gold);
+      box-shadow: none;
+    }
+    .streak-chip .flame { background: var(--fire); }
+
+    /* Пиксельная геометрия существующих блоков */
+    .welcome-card,
+    .streak-card,
+    .stat-row,
+    .stage,
+    .topic,
+    .panel-dark,
+    .checklist-card,
+    .card,
+    .resource-card,
+    .achievement,
+    .fire-dock,
+    .toast,
+    .stage-sheet,
+    .tabbar,
+    .map-frame,
+    .stage-chip,
+    .lc-badge,
+    .level,
+    .stat-icon,
+    .stage-count,
+    .topic-count,
+    .sheet-close,
+    .sheet-icon,
+    .icon-btn,
+    .progress-label,
+    .achievement-icon,
+    .achievement-medal,
+    .suggest-result,
+    .suggest-emoji { border-radius: 2px; }
+
+    .welcome-card,
+    .stage,
+    .topic,
+    .checklist-card,
+    .card,
+    .resource-card,
+    .stat-row,
+    .panel-dark,
+    .achievement,
+    .toast {
+      border-width: 2px;
+    }
+    .welcome-card { border-left-width: 6px; border-left-color: var(--fire); }
+    .stage,
+    .topic,
+    .resource-card,
+    .achievement,
+    .card,
+    .checklist-card,
+    .stat-row,
+    .panel-dark { box-shadow: var(--shadow-sm); }
+    .stage:hover,
+    .topic:hover,
+    .resource-card:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: var(--shadow);
+    }
+    .stage.is-open,
+    .topic.is-open { box-shadow: inset 4px 0 0 var(--fire), var(--shadow-sm); }
+    .stage.is-complete .stage-index { background: var(--gold); color: #1a0f0a; }
+
+    /* Заголовки — пиксельный шрифт с кириллицей */
+    .welcome-title,
+    .panel-head h2,
+    .map-view-head h2,
+    .stage-title,
+    .topic-title,
+    .card h2,
+    .practice-head h2,
+    .resources-block h2,
+    .sheet-head h2,
+    .achievement-title,
+    .checklist-summary strong,
+    .achievement-summary-top strong {
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: .015em;
+    }
+    .eyebrow,
+    .stage-tips-label,
+    .notes-head label,
+    .field label,
+    .progress-label,
+    .stat-label,
+    .footer,
+    .hud-label { letter-spacing: .1em; }
+
+    /* Кнопки */
+    .btn,
+    button { border-radius: 2px; }
+    .btn {
+      border-width: 2px;
+      font-weight: 700;
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, .55);
+    }
+    .btn:active { transform: translate(2px, 2px); box-shadow: none; }
+    .btn-primary {
+      background: var(--fire);
+      border-color: #ffb45c;
+      color: #1a0f0a;
+    }
+    .btn-primary:hover { background: var(--gold); border-color: var(--gold); }
+    .btn-secondary { background: #0b0e20; border-color: var(--line-strong); color: var(--text); }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-warm { background: #12162e; border-color: var(--line-strong); color: var(--gold); }
+    .btn-warm:hover { background: var(--gold); border-color: var(--gold); color: #1a0f0a; }
+    .btn-danger { background: transparent; border-color: var(--danger); color: var(--danger); }
+    .btn-danger:hover { background: var(--danger); border-color: var(--danger); color: #1a0f0a; }
+    .btn-row .btn { text-transform: none; }
+
+    /* Поля */
+    .field input,
+    textarea {
+      border-width: 2px;
+      border-radius: 2px;
+      background: #0b0d1a;
+    }
+    .field input:focus,
+    textarea:focus { border-color: var(--gold); background: #0b0d1a; }
+    .field input.is-invalid { border-color: var(--danger); background: var(--red-soft); }
+
+    /* Полоски прогресса */
+    .meter {
+      height: 10px;
+      border: 2px solid var(--line-strong);
+      border-radius: 0;
+      background: var(--surface-3);
+    }
+    .meter > span {
+      border-radius: 0;
+      background: linear-gradient(90deg, var(--fire), var(--gold));
+    }
+    .progress-ring {
+      background: conic-gradient(var(--gold) calc(var(--pct) * 1%), var(--surface-3) 0);
+    }
+    .progress-ring span { font-family: var(--font-pixel); font-size: 13px; }
+
+    /* Карточки этапов */
+    .stage-index,
+    .topic-code {
+      border: 2px solid var(--line-strong);
+      border-radius: 2px;
+      background: var(--surface-3);
+      color: var(--gold);
+      font-family: var(--font-display);
+      font-size: 15px;
+    }
+    .stage-chip { border-width: 2px; }
+    .stage-chip.is-active { background: var(--fire); border-color: var(--fire); color: #1a0f0a; }
+    .stage-chip:hover { border-color: var(--gold); }
+    .check-box,
+    .stage-sheet .check-box {
+      border-radius: 2px;
+      border-width: 2px;
+      background: #0b0d1a;
+    }
+    .task input:focus-visible + .check-box,
+    .problem-label input:focus-visible + .check-box { outline-color: var(--gold); }
+    .task:hover { background: var(--surface-2); }
+    .problem.is-done .problem-title { text-decoration: line-through; }
+
+    /* Панель ачивок и шторки */
+    .panel-dark {
+      border-color: var(--line);
+      border-top: 3px solid var(--gold);
+      background: #0b0e20;
+    }
+    .panel-dark .achievement { border-color: var(--line); background: #10142a; }
+    .panel-dark .achievement.is-unlocked { border-color: rgba(255, 210, 63, .45); background: rgba(255, 154, 46, .09); }
+    .sheet-scrim { background: rgba(2, 3, 9, .8); }
+    .stage-sheet {
+      border-top: 3px solid var(--gold);
+      border-radius: 0;
+      background: var(--surface);
+      box-shadow: 0 -6px 0 rgba(0, 0, 0, .35);
+    }
+    .sheet-close { border-radius: 2px; }
+    .sheet-icon { border-radius: 2px; color: var(--gold); }
+    .sheet-icon svg { stroke: currentColor; }
+
+    /* Уведомления */
+    .toast {
+      bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+      border: 2px solid var(--gold);
+      border-radius: 2px;
+      background: #0b0e20;
+      color: var(--text);
+    }
+    .toast[data-tone="error"] { background: #2a1010; border-color: var(--danger); }
+    .toast[data-tone="achievement"] { background: #1a1508; border-color: var(--gold); }
+
+    /* Ссылки и мелочи */
+    a { color: var(--accent-2); }
+    .resource-host { color: var(--gold); }
+    .stage-tips { border-left-color: var(--fire); }
+    .info-list li::before { color: var(--gold); }
+    .footer::before { background: var(--gold); }
+
+    /* Карта */
+    @media (min-width: 900px) { body { zoom: 1; } }
+    .map-frame {
+      width: min(600px, 100%);
+      border: 4px solid #1c2144;
+      border-radius: 3px;
+      background: var(--map-bg);
+      box-shadow: 6px 6px 0 rgba(0, 0, 0, .5);
+    }
+    #journeyMap { shape-rendering: crispEdges; }
+    .map-road { stroke: #2a3164; }
+    .map-road-dark { stroke: #060a20; }
+    .map-road-dash { stroke: var(--gold); stroke-opacity: .34; }
+    .map-progress { stroke: var(--fire); stroke-linecap: butt; stroke-width: 20; stroke-opacity: .82; }
+    .room-meter { margin-top: 6px; }
+    .streak-day.is-frozen { background: #1b1440; border-color: var(--mint); }
+    .map-deco-dim { stroke: #2f6b4d; opacity: .55; }
+    .map-star {
+      fill: var(--gold);
+      opacity: .55;
+      animation: star-twinkle 3.4s steps(2, end) infinite;
+    }
+    .map-star:nth-of-type(3n) { animation-delay: 1.1s; }
+    .map-star:nth-of-type(3n + 1) { animation-delay: 2.2s; }
+    @keyframes star-twinkle {
+      0%, 100% { opacity: .22; }
+      50% { opacity: .95; }
+    }
+    .map-stage .map-node { fill: #0a1030; stroke: var(--bone); }
+    .map-stage.is-done .map-node { fill: var(--mint); stroke: var(--mint); }
+    .map-stage.is-current .map-node { stroke: var(--gold); }
+    .map-stage.is-future .map-node { stroke: var(--dim); }
+    .map-stage .map-plate { fill: rgba(6, 8, 20, .92); stroke: var(--line-strong); }
+    .map-stage.is-current .map-plate { stroke: var(--gold); }
+    .map-stage .map-title,
+    .map-building .bldg-title,
+    .camp-title { font-family: var(--font-display); font-weight: 700; letter-spacing: .02em; }
+    .map-stage.is-done .map-title { fill: var(--mint); }
+    .map-stage:hover .map-node { stroke: var(--gold); fill: var(--accent-soft); }
+    .map-stage:hover .map-title { fill: var(--gold); }
+    .map-building .bldg-plate { fill: rgba(6, 8, 20, .95); stroke: var(--line-strong); }
+    .map-building:hover .bldg-line { stroke: var(--gold); }
+    .map-building:hover .bldg-title { fill: var(--gold); }
+    .map-walker .walker-head { fill: var(--gold); }
+    .map-walker .walker-lantern { fill: var(--fire); }
+    .map-walker .walker-glow { fill: var(--fire); opacity: .2; }
+    .map-campfire .camp-flame {
+      animation: flame-pixel 1s steps(3, end) infinite alternate;
+      filter: drop-shadow(0 0 6px rgba(255, 154, 46, .6));
+    }
+    @keyframes flame-pixel {
+      0% { transform: scaleY(.92) skewX(-1deg); }
+      100% { transform: scaleY(1.1) skewX(1deg); }
+    }
+    .map-campfire:hover .camp-flame { fill: var(--gold); }
+    .map-campfire { filter: drop-shadow(0 0 10px rgba(255, 154, 46, .35)); }
+    body[data-fire-color="blue"] .map-campfire { filter: drop-shadow(0 0 12px rgba(110, 231, 255, .4)); }
+    .map-deco { pointer-events: none; }
+    .map-prop-lamp { fill: var(--fire); filter: drop-shadow(0 0 5px rgba(255, 154, 46, .55)); }
+    .camp-menu-plate { fill: rgba(6, 8, 20, .97); stroke: var(--line-strong); }
+    .camp-menu-action { fill: var(--accent-soft); stroke: var(--gold); }
+    .camp-menu-text { fill: var(--gold); }
+    .camp-menu-undo { fill: var(--red-soft); stroke: var(--fire); }
+
+    /* Новые пиксельные объекты карты */
+    .map-pine { fill: #1a4632; stroke: #081c13; stroke-width: .8; }
+    .map-pine-lit { fill: #2b7a54; }
+    .map-pine-deep { fill: #0f2c20; stroke: #071710; }
+    .map-rock { fill: #30375f; stroke: #1a1f3a; stroke-width: .8; }
+    .map-grass { fill: none; stroke: #1d5a3d; stroke-width: 1.4; stroke-linecap: square; }
+    .map-house { cursor: pointer; outline: none; }
+    .map-house .house-fill { fill: #2a1c14; stroke: #0b0d1a; stroke-width: 1; }
+    .map-house .house-roof { fill: #5a3a22; stroke: #160d08; stroke-width: 1; }
+    .map-house .house-line { fill: none; stroke: var(--bone); stroke-width: 1.6; stroke-linejoin: miter; }
+    .map-house .house-window { fill: var(--gold); }
+    .map-house .house-glow { fill: var(--fire); opacity: .16; }
+    .map-house .house-title {
+      fill: var(--bone);
+      font: 700 13px var(--font-display);
+      text-anchor: middle;
+      letter-spacing: .04em;
+    }
+    .map-house .house-sub { fill: var(--muted); font: 8px var(--font-mono); text-anchor: middle; }
+    .map-house:hover .house-line,
+    .map-house:hover .house-title { stroke: var(--gold); fill: var(--gold); }
+    .map-house:focus-visible .house-line { stroke: var(--gold); }
+    .map-trail { cursor: pointer; outline: none; }
+    .map-trail .trail-path {
+      fill: none;
+      stroke: var(--gold);
+      stroke-opacity: .48;
+      stroke-width: 1.4;
+      stroke-dasharray: 3 5;
+      stroke-linecap: square;
+    }
+    .map-trail .trail-mark { fill: var(--gold); animation: star-twinkle 2.4s steps(2, end) infinite; }
+    .map-trail .trail-glow { fill: var(--gold); opacity: .16; }
+    .map-trail .trail-label { fill: var(--muted); font: 8px var(--font-mono); text-anchor: middle; }
+    .map-trail.is-found .trail-path { stroke: var(--mint); stroke-opacity: .55; }
+    .map-trail.is-found .trail-mark { fill: var(--mint); animation: none; }
+    .map-trail.is-found .trail-glow { fill: var(--mint); opacity: .12; }
+    .map-trail:hover .trail-mark { fill: #fff; }
+    .map-eyes { fill: var(--danger); opacity: .5; animation: eyes-blink 6s steps(1, end) infinite; }
+    @keyframes eyes-blink {
+      0%, 88%, 100% { opacity: .5; }
+      91%, 95% { opacity: 0; }
+    }
+    .map-fireflies circle { fill: var(--gold); animation: firefly-drift 5.5s ease-in-out infinite; }
+    .map-fireflies circle:nth-child(2n) { animation-delay: 1.4s; fill: var(--mint); }
+    .map-fireflies circle:nth-child(3n) { animation-delay: 2.6s; }
+    @keyframes firefly-drift {
+      0%, 100% { transform: translate(0, 0); opacity: .15; }
+      50% { transform: translate(4px, -9px); opacity: .95; }
+    }
+    .map-fox { animation: fox-breathe 2.6s steps(2, end) infinite; }
+    @keyframes fox-breathe {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-1px); }
+    }
+    .map-smoke { animation: smoke-rise 4s steps(6, end) infinite; opacity: .3; }
+    @keyframes smoke-rise {
+      0% { transform: translateY(0); opacity: .38; }
+      100% { transform: translateY(-18px); opacity: 0; }
+    }
+    .map-meteor { stroke: var(--gold); stroke-width: 1.4; opacity: 0; animation: meteor-fall 5.5s linear infinite; }
+    .map-meteor:nth-child(2) { animation-delay: 2.7s; }
+    @keyframes meteor-fall {
+      0% { opacity: 0; transform: translate(0, 0); }
+      6% { opacity: .9; }
+      20% { opacity: 0; transform: translate(-60px, 46px); }
+      100% { opacity: 0; }
+    }
+
+    /* HUD лагеря */
+    .camp-hud {
+      display: grid;
+      gap: 6px;
+      width: min(600px, 100%);
+      margin: 0 auto 6px;
+      padding: 8px 12px;
+      border: 2px solid var(--line);
+      border-radius: 3px;
+      background: linear-gradient(180deg, #12162e, #0b0e20);
+      box-shadow: 4px 4px 0 rgba(0, 0, 0, .45);
+    }
+    .camp-hud-main { display: flex; align-items: center; gap: 11px; flex-wrap: wrap; }
+    .camp-hud-flame {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      flex: none;
+      border: 2px solid var(--line-strong);
+      border-radius: 2px;
+      background: #0b0d1a;
+      box-shadow: inset 0 0 12px rgba(255, 154, 46, .12);
+    }
+    .camp-hud-flame svg { display: block; width: 27px; height: 27px; }
+    .camp-hud-copy { flex: 1 1 170px; min-width: 170px; }
+    .hud-label {
+      color: var(--muted);
+      font-family: var(--font-pixel);
+      font-size: 8px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .hud-fire-row { display: flex; align-items: center; gap: 8px; margin-top: 5px; }
+    .hud-bar {
+      position: relative;
+      flex: 1;
+      height: 10px;
+      overflow: hidden;
+      border: 2px solid var(--line-strong);
+      background: var(--surface-3);
+    }
+    .hud-bar i {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--fire), var(--gold));
+      transition: width .5s steps(10, end);
+    }
+    .hud-stage {
+      color: var(--gold);
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .hud-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px 11px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+    .hud-stats b { color: var(--text); font-weight: 700; }
+    .hud-stats .is-gold b { color: var(--gold); }
+    .hud-stats .is-mint b { color: var(--mint); }
+    .camp-hud-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+    .camp-hud-actions button {
+      flex: 1 1 auto;
+      min-height: 31px;
+      padding: 6px 8px;
+      border: 2px solid var(--line-strong);
+      border-radius: 2px;
+      background: #0b0e20;
+      color: var(--text-soft);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, .55);
+    }
+    .camp-hud-actions button:hover { border-color: var(--gold); color: var(--gold); }
+    .camp-hud-actions button:active { transform: translate(2px, 2px); box-shadow: none; }
+    .camp-hud-actions button[disabled] { opacity: .42; cursor: default; transform: none; box-shadow: none; }
+    .camp-hud-actions button.is-primary { background: var(--fire); border-color: #ffb45c; color: #1a0f0a; }
+    .camp-hud-actions button.is-primary:hover { background: var(--gold); border-color: var(--gold); color: #1a0f0a; }
+    .camp-hud-note { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.45; }
+
+    /* Окно дома */
+    .house-sheet .sheet-head h2 { color: var(--gold); }
+    .house-stage-line {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 4px 0 12px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .house-stage-line .meter { flex: 1; }
+    .house-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .house-room {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 12px;
+      border: 2px solid var(--line);
+      border-radius: 2px;
+      background: #0b0e20;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, .45);
+    }
+    .house-room:hover { border-color: var(--gold); transform: translate(-1px, -1px); }
+    .house-room:active { transform: translate(1px, 1px); }
+    .room-name {
+      color: var(--gold);
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .room-desc { color: var(--muted); font-size: 10.5px; line-height: 1.4; }
+    .room-progress {
+      margin-top: 3px;
+      color: var(--text-soft);
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: .03em;
+    }
+    .house-subhead {
+      margin: 16px 0 6px;
+      color: var(--mint);
+      font-family: var(--font-pixel);
+      font-size: 7px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .find-list { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+    .find-item {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 8px 10px;
+      border-left: 4px solid var(--gold);
+      background: #0b0e20;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    .find-item b { color: var(--gold); font-family: var(--font-display); font-size: 15px; }
+    .find-item span { color: var(--muted); }
+    .find-item time { margin-left: auto; color: var(--muted); font-family: var(--font-mono); font-size: 8px; white-space: nowrap; }
+    .house-empty { color: var(--muted); font-size: 11px; line-height: 1.5; }
+
+    @media (max-width: 720px) {
+      .brand-copy h1 { font-size: 8px; }
+      .camp-hud { padding: 8px; gap: 6px; }
+      .camp-hud-flame { width: 32px; height: 32px; }
+      .hud-stage { font-size: 14px; }
+      .camp-hud-actions button { min-height: 27px; font-size: 8px; padding: 5px 6px; }
+      .house-grid { grid-template-columns: 1fr; }
+      .map-frame { width: 100%; }
+    }
+
+    /* ---------- Новый UX: карта — главный экран, дом — хаб ---------- */
+    body {
+      padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+    }
+    body[data-tab="map"] .app-main,
+    body[data-tab="house"] .app-main { padding-top: 2px; }
+    #panel-roadmap { margin-top: 0; }
+    body[data-tab="map"] .path-progress,
+    body[data-tab="house"] .path-progress { display: none; }
+    .camp-hud {
+      position: sticky;
+      top: 66px;
+      z-index: 25;
+      width: min(1100px, 100%);
+      backdrop-filter: blur(3px);
+    }
+    .map-frame { width: min(1100px, 100%); }
+    .map-frame #journeyMap { width: 100%; }
+    .map-stage .map-title { font-size: 12px; text-anchor: start; }
+    .map-stage .map-count { font-size: 9px; text-anchor: start; }
+    .map-mini-track { fill: #1c2144; stroke: #4a5190; stroke-width: 1; }
+    .map-mini-fill { fill: var(--gold); }
+    .map-stage.is-done .map-mini-fill { fill: var(--mint); }
+    .map-finish-label {
+      fill: var(--gold);
+      font: 700 12px var(--font-display);
+      letter-spacing: .05em;
+    }
+    .map-finish { animation: star-twinkle 4.4s steps(2, end) infinite; }
+    .map-hint {
+      display: none;
+      margin: 8px auto 0;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .05em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .camp-nav {
+      position: fixed;
+      left: 50%;
+      bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+      z-index: 60;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      width: min(460px, calc(100% - 20px));
+      padding: 6px;
+      border: 2px solid var(--line-strong);
+      border-radius: 3px;
+      background: rgba(8, 10, 22, .96);
+      box-shadow: 0 5px 0 rgba(0, 0, 0, .32), 4px 4px 0 rgba(0, 0, 0, .5);
+      transform: translateX(-50%);
+      backdrop-filter: blur(5px);
+    }
+    .camp-nav-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 46px;
+      border: 2px solid transparent;
+      border-radius: 2px;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      cursor: pointer;
+      transition: color .15s steps(2), background .15s steps(2), border-color .15s steps(2);
+    }
+    .camp-nav-btn svg { width: 20px; height: 20px; flex: none; }
+    .camp-nav-btn:hover { color: var(--text); border-color: var(--line); }
+    .camp-nav-btn[aria-selected="true"] {
+      background: var(--surface-2);
+      border-color: var(--gold);
+      color: var(--gold);
+      box-shadow: inset 0 0 0 1px rgba(255, 210, 63, .12);
+    }
+    .camp-nav-btn em {
+      padding: 1px 4px;
+      border: 1px solid var(--line-strong);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      font-style: normal;
+      letter-spacing: .02em;
+    }
+    .camp-nav-btn[aria-selected="true"] em { border-color: rgba(255, 210, 63, .45); color: var(--gold); }
+    .topbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px;
+      border: 2px solid var(--line-strong);
+      border-radius: 2px;
+      background: #0b0e20;
+    }
+    .topbar-nav .camp-nav-btn { min-height: 30px; padding: 2px 10px; font-size: 16px; gap: 5px; }
+    .topbar-nav .camp-nav-btn svg { width: 16px; height: 16px; }
+    .topbar-nav .camp-nav-btn em { padding: 0 3px; font-size: 7px; }
+
+    @media (min-width: 981px) {
+      .camp-nav { display: none; }
+      body { padding-bottom: 0; }
+      .toast { bottom: 22px; }
+    }
+
+    @media (max-width: 980px) {
+      .topbar-nav { display: none; }
+    }
+
+    /* Дом-хаб */
+    .house-panel { max-width: 980px; margin: 0 auto; }
+    .house-hero {
+      display: grid;
+      grid-template-columns: minmax(230px, .95fr) minmax(280px, 1.05fr);
+      gap: 20px;
+      align-items: center;
+      padding: 20px;
+      border: 2px solid var(--line);
+      border-left: 6px solid var(--fire);
+      border-radius: 3px;
+      background:
+        radial-gradient(ellipse at 26% 82%, rgba(255, 154, 46, .12), transparent 60%),
+        linear-gradient(180deg, #0d1124, #090b18);
+      box-shadow: var(--shadow);
+    }
+    .house-scene {
+      position: relative;
+      min-height: 262px;
+      overflow: hidden;
+      border: 2px solid var(--line-strong);
+      border-radius: 2px;
+      background:
+        radial-gradient(ellipse at 50% 88%, rgba(255, 154, 46, .16), transparent 62%),
+        radial-gradient(rgba(255, 210, 63, .22) 1px, transparent 1px),
+        #070a18;
+      background-size: auto, 44px 44px, auto;
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, .65);
+    }
+    .house-scene svg { display: block; width: 100%; height: auto; }
+    .house-hero-copy h2 {
+      margin-top: 2px;
+      color: var(--gold);
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 700;
+      line-height: .95;
+      letter-spacing: .01em;
+    }
+    .house-lead {
+      margin-top: 8px;
+      color: var(--text-soft);
+      font-size: 12.5px;
+      line-height: 1.55;
+      max-width: 54ch;
+    }
+    .house-stage-line {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .house-stage-line .meter { flex: 1; }
+    .house-resources { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; }
+    .house-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 7px;
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      background: #0b0e20;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+    .house-chip b { color: var(--text); }
+    .house-chip.is-gold b { color: var(--gold); }
+    .house-chip.is-mint b { color: var(--mint); }
+    .house-rooms-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 24px 0 10px;
+    }
+    .house-rooms-head h2 {
+      margin-top: 2px;
+      font-family: var(--font-display);
+      font-size: 30px;
+      font-weight: 700;
+    }
+    .house-rooms-head > p { max-width: 42ch; color: var(--muted); font-size: 10.5px; line-height: 1.45; text-align: right; }
+    .house-grid { gap: 10px; }
+    .house-room { min-height: 108px; padding: 15px; }
+    .room-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .room-icon { display: grid; place-items: center; width: 30px; height: 30px; border: 2px solid var(--line-strong); border-radius: 2px; background: #0b0d1a; }
+    .room-icon svg { width: 18px; height: 18px; fill: none; stroke: var(--gold); stroke-width: 1.7; stroke-linecap: square; stroke-linejoin: miter; }
+    .room-arrow { color: var(--muted); font-family: var(--font-mono); font-size: 12px; }
+    .house-room:hover .room-arrow { color: var(--gold); }
+    .room-name { font-size: 21px; }
+    .house-panel .house-subhead { margin: 20px 0 7px; color: var(--gold); }
+    .house-panel .find-item b { font-size: 16px; }
+    .house-empty { padding: 12px; border-left: 4px solid var(--line-strong); background: #0b0e20; color: var(--muted); font-size: 11.5px; line-height: 1.5; }
+
+    /* Кнопка «назад» в комнатах */
+    body[data-room="practice"] .app-main,
+    body[data-room="achievements"] .app-main,
+    body[data-room="checklist"] .app-main,
+    body[data-room="settings"] .app-main { padding-top: 58px; }
+    .back-to-map {
+      border: 2px solid var(--line-strong);
+      border-radius: 2px;
+      background: #0b0e20;
+      color: var(--gold);
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, .5);
+    }
+    .back-to-map:hover { border-color: var(--gold); background: var(--accent-soft); color: var(--gold); }
+
+    @media (max-width: 980px) {
+      .map-frame {
+        overflow-x: auto;
+        overflow-y: hidden;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+      .map-frame #journeyMap { width: 780px; max-width: none; }
+      .map-hint { display: block; }
+    }
+
+    @media (max-width: 820px) {
+      .house-hero { grid-template-columns: 1fr; padding: 12px; gap: 12px; }
+      .house-scene { min-height: 200px; max-height: none; }
+      .house-hero-copy h2 { font-size: 34px; }
+      .house-rooms-head { flex-direction: column; align-items: flex-start; gap: 3px; }
+      .house-rooms-head > p { text-align: left; }
+      .camp-hud { top: 60px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .map-star,
+      .map-fireflies circle,
+      .map-campfire .camp-flame,
+      .map-trail .trail-mark,
+      .map-eyes,
+      .map-smoke,
+      .map-meteor,
+      .map-fox { animation: none !important; }
+    }
 
   </style>
 </head>
-<body data-tab="roadmap">
+<body data-tab="map" data-room="home">
   <script>
-    // Вкладка до первой отрисовки, чтобы дашборд не мелькал при загрузке с хэшем
+    // Раздел до первой отрисовки, чтобы панели не мелькали при загрузке с хэшем
     (function () {
       var hash = (location.hash || "").replace(/^#/, "");
-      if (hash === "resources") hash = "roadmap";
-      var allowed = ["roadmap", "practice", "achievements", "checklist", "settings"];
-      document.body.dataset.tab = allowed.indexOf(hash) >= 0 ? hash : "roadmap";
+      if (hash === "roadmap" || hash === "resources") hash = "map";
+      var rooms = ["practice", "achievements", "checklist", "settings"];
+      document.body.dataset.tab = (hash === "house" || rooms.indexOf(hash) >= 0) ? "house" : "map";
+      document.body.dataset.room = rooms.indexOf(hash) >= 0 ? hash : "home";
     })();
   </script>
   <noscript><div class="noscript">Для работы трекера нужен JavaScript.</div></noscript>
@@ -2452,6 +3350,17 @@
           <h1>Java Roadmap</h1>
         </div>
       </div>
+      <nav class="topbar-nav" id="topbarNav" aria-label="Основные разделы">
+        <button class="camp-nav-btn" type="button" data-top-tab="map" aria-selected="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg>
+          <span>Карта</span>
+        </button>
+        <button class="camp-nav-btn" type="button" data-top-tab="house" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M3 11l9-7 9 7v9H3z"/><path d="M9 20v-6h6v6"/><path d="M16 4v4"/></svg>
+          <span>Дом</span>
+          <em class="house-nav-stage">1/6</em>
+        </button>
+      </nav>
       <div class="top-actions">
         <span class="sync-chip" title="Статус синхронизации">
           <span class="sync-dot" aria-hidden="true"></span>
@@ -2469,9 +3378,37 @@
     <button class="back-to-map" type="button" id="backToMap" hidden>← На карту</button>
 
     <section class="panel" id="panel-roadmap" role="tabpanel" aria-label="Карта пути" tabindex="0">
-      <div class="map-frame">
-        <svg id="journeyMap" viewBox="0 0 400 1326" role="group" aria-label="Карта пути до стажировки"></svg>
+      <div class="camp-hud" id="campHud" aria-label="Лагерь: огонь, ресурсы и серия">
+        <div class="camp-hud-main">
+          <span class="camp-hud-flame" aria-hidden="true" id="hudFlame"></span>
+          <div class="camp-hud-copy">
+            <span class="hud-label" id="hudLabel">Огонь</span>
+            <div class="hud-fire-row">
+              <span class="hud-bar" aria-hidden="true"><i id="hudFireBar"></i></span>
+              <span class="hud-stage" id="hudStage">Тлеющие угли</span>
+            </div>
+            <div class="hud-stats">
+              <span class="is-gold">Стрик <b id="hudStreak">0</b></span>
+              <span class="is-gold">Путь <b id="hudOverall">0%</b></span>
+              <span>Дрова <b id="hudWood">0</b></span>
+              <span>Камень <b id="hudStone">0</b></span>
+              <span class="is-mint">Искры <b id="hudEmber">0</b></span>
+              <span>Заморозки <b id="hudFreeze">0</b></span>
+              <span>Звёзды <b id="hudStars">0</b></span>
+            </div>
+          </div>
+        </div>
+        <div class="camp-hud-actions">
+          <button type="button" id="hudLight" class="is-primary">Зажечь огонь</button>
+          <button type="button" id="hudWoodBtn">Подкинуть дров</button>
+          <button type="button" id="hudFreezeBtn">Заморозить вчера</button>
+        </div>
+        <p class="camp-hud-note" id="hudNote">Огонь растёт от ежедневной серии. Дом растёт от пройденных тем. Пропуск дня гасит свет, но не отнимает построенное.</p>
       </div>
+      <div class="map-frame" id="mapFrame">
+        <svg id="journeyMap" viewBox="0 0 1000 700" role="group" aria-label="Карта пути до стажировки"></svg>
+      </div>
+      <p class="map-hint">Карта шире экрана — листай вбок →</p>
 
       <section class="resources-block" aria-labelledby="resourcesTitle">
         <h2 id="resourcesTitle">Полезные ссылки</h2>
@@ -2509,6 +3446,33 @@
           </a>
         </div>
       </section>
+    </section>
+
+    <section class="panel house-panel" id="panel-house" role="tabpanel" aria-label="Дом" tabindex="0" hidden>
+      <div class="house-hero">
+        <div class="house-scene" id="houseScene" aria-hidden="true"></div>
+        <div class="house-hero-copy">
+          <p class="eyebrow">Лагерь в тёмном лесу</p>
+          <h2>Дом</h2>
+          <p class="house-lead">Он растёт от пройденных тем. Внутри живут все разделы приложения: тренажёр, ачивки, минимум и настройки. Постройка не отнимается при срыве серии.</p>
+          <div class="house-stage-line">
+            <span id="houseStageNum">1 / 6</span>
+            <div class="meter" role="progressbar" aria-label="Постройка дома" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="houseStageBar" style="width:4%"></span></div>
+            <span id="houseStageName">Фундамент</span>
+          </div>
+          <div class="house-resources" id="houseResources"></div>
+        </div>
+      </div>
+      <div class="house-rooms-head">
+        <div>
+          <p class="eyebrow">Внутри дома</p>
+          <h2>Комнаты</h2>
+        </div>
+        <p>Каждая комната ведёт к своему разделу. Награды только косметические — доступ ничем не закрыт.</p>
+      </div>
+      <div class="house-grid" id="houseRooms"></div>
+      <h3 class="house-subhead">Сундук находок</h3>
+      <div id="houseChest"></div>
     </section>
 
     <section class="panel" id="panel-practice" role="tabpanel" aria-label="Практика" tabindex="0" hidden>
@@ -2696,6 +3660,18 @@
       <span class="path-progress-label">путь</span>
     </button>
   </main>
+
+  <nav class="camp-nav" id="campNav" aria-label="Основные разделы">
+    <button class="camp-nav-btn" type="button" data-top-tab="map" aria-selected="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg>
+      <span>Карта</span>
+    </button>
+    <button class="camp-nav-btn" type="button" data-top-tab="house" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M3 11l9-7 9 7v9H3z"/><path d="M9 20v-6h6v6"/><path d="M16 4v4"/></svg>
+      <span>Дом</span>
+      <em class="house-nav-stage">1/6</em>
+    </button>
+  </nav>
 
   <footer class="shell footer">Java Roadmap · данные не покидают ваши устройства без вашего Gist</footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -3252,6 +4228,41 @@
       { id: "cloud", icon: "☁️", title: "В облаке", desc: "Первая успешная синхронизация", metric: "sync", target: 1 }
     ];
 
+    // ---------- Данные: лагерь в тёмном лесу ----------
+    const FIRE_STAGES = [
+      { days: 0, name: "Тлеющие угли", radius: 58, flames: 0 },
+      { days: 3, name: "Первое пламя", radius: 86, flames: 2 },
+      { days: 7, name: "Костёр", radius: 118, flames: 3 },
+      { days: 14, name: "Яркий огонь", radius: 150, flames: 4 },
+      { days: 30, name: "Большой огонь", radius: 186, flames: 5 },
+      { days: 60, name: "Сторожевой огонь", radius: 224, flames: 6 },
+      { days: 100, name: "Рассвет", radius: 262, flames: 7 }
+    ];
+
+    const TRAILS = [
+      { id: "spring", name: "Родник", days: 3, x: 430, y: 380, find: "water" },
+      { id: "hut", name: "Старая хижина", days: 7, x: 620, y: 655, find: "rug" },
+      { id: "glade", name: "Поляна светлячков", days: 14, x: 80, y: 650, find: "fireflies" },
+      { id: "ruins", name: "Руины", days: 21, x: 60, y: 320, find: "tablet" },
+      { id: "cave", name: "Пещера", days: 30, x: 520, y: 300, find: "crystal" },
+      { id: "mill", name: "Заброшенная мельница", days: 45, x: 780, y: 160, find: "weathervane" },
+      { id: "lake", name: "Чёрное озеро", days: 60, x: 830, y: 620, find: "boat" },
+      { id: "hill", name: "Вершина холма", days: 100, x: 300, y: 130, find: "vista" }
+    ];
+
+    const FINDS = {
+      water: { name: "Зачарованная вода", desc: "Пламя стало холодным и синим.", room: "camp" },
+      rug: { name: "Старый ковёр", desc: "В доме стало теплее: у очага появился ковёр.", room: "house" },
+      fireflies: { name: "Рой светлячков", desc: "Искры превратились в живые огоньки.", room: "forest" },
+      tablet: { name: "Каменная табличка", desc: "На стене дома появилась запись о пути.", room: "house" },
+      crystal: { name: "Кристалл", desc: "Окна дома светятся ровным светом.", room: "house" },
+      weathervane: { name: "Кованый флюгер", desc: "На крыше дома появился флюгер.", room: "house" },
+      boat: { name: "Лодка", desc: "У Чёрного озера появился причал.", room: "forest" },
+      vista: { name: "Обзорная точка", desc: "В небе над лагерем падают метеоры.", room: "forest" }
+    };
+
+    const HOUSE_STAGE_NAMES = ["Фундамент", "Стены", "Крыша", "Дверь", "Окна", "Труба"];
+
     // ---------- Константы ----------
     const STATE_KEY = "go-roadmap-v1";
     const SYNC_KEY = "go-roadmap-sync-v1";
@@ -3294,6 +4305,31 @@
       backToMap: document.getElementById("backToMap"),
       pathProgress: document.getElementById("pathProgress"),
       journeyMap: document.getElementById("journeyMap"),
+      mapFrame: document.getElementById("mapFrame"),
+      campHud: document.getElementById("campHud"),
+      hudFlame: document.getElementById("hudFlame"),
+      hudFireBar: document.getElementById("hudFireBar"),
+      hudStage: document.getElementById("hudStage"),
+      hudStreak: document.getElementById("hudStreak"),
+      hudOverall: document.getElementById("hudOverall"),
+      hudWood: document.getElementById("hudWood"),
+      hudStone: document.getElementById("hudStone"),
+      hudEmber: document.getElementById("hudEmber"),
+      hudFreeze: document.getElementById("hudFreeze"),
+      hudStars: document.getElementById("hudStars"),
+      hudLight: document.getElementById("hudLight"),
+      hudWoodBtn: document.getElementById("hudWoodBtn"),
+      hudFreezeBtn: document.getElementById("hudFreezeBtn"),
+      hudNote: document.getElementById("hudNote"),
+      campNav: document.getElementById("campNav"),
+      topbarNav: document.getElementById("topbarNav"),
+      houseScene: document.getElementById("houseScene"),
+      houseStageNum: document.getElementById("houseStageNum"),
+      houseStageBar: document.getElementById("houseStageBar"),
+      houseStageName: document.getElementById("houseStageName"),
+      houseResources: document.getElementById("houseResources"),
+      houseRooms: document.getElementById("houseRooms"),
+      houseChest: document.getElementById("houseChest"),
       stageSheet: document.getElementById("stageSheet"),
       mapStagesDone: document.getElementById("mapStagesDone"),
       mapPracticeDone: document.getElementById("mapPracticeDone"),
@@ -3363,17 +4399,17 @@
     let lastSyncAt = null;
     let toastTimer = null;
     let storageWarned = false;
-    let activeTab = "roadmap";
+    let activeTab = "map";
     let currentSuggestion = null;
     let lcRequestId = 0;
     let lcBusy = false;
     let sheetStage = null;
     let fireMenuOpen = false;
     let justCompletedStage = null;
-    let mapNeedsScroll = true;
     let mapGeo = null;
     let lastMapPos = 0;
     let mapWalkToken = 0;
+    let lastLightRadius = -1;
     const reducedMotion = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
 
     // ---------- Утилиты ----------
@@ -3449,7 +4485,7 @@
     // ---------- Состояние и localStorage ----------
     function createState() {
       return {
-        version: 2,
+        version: 3,
         tasks: {},
         notes: {},
         checklist: {},
@@ -3458,6 +4494,13 @@
         manualDays: {},
         manualStack: [],
         achievements: {},
+        resources: { wood: 0, stone: 0, ember: 0 },
+        rewarded: {},
+        finds: {},
+        frozen: {},
+        spentFreezes: 0,
+        stars: 0,
+        boost: { day: "", amount: 0 },
         leetcode: { username: "", total: 0, easy: 0, medium: 0, hard: 0, ranking: 0, syncedAt: "" },
         syncedOnce: false,
         theme: "",
@@ -3528,6 +4571,40 @@
         if (typeof lc.syncedAt === "string" && Number.isFinite(Date.parse(lc.syncedAt))) {
           normalized.leetcode.syncedAt = lc.syncedAt;
         }
+      }
+      if (raw.resources && typeof raw.resources === "object") {
+        ["wood", "stone", "ember"].forEach((key) => {
+          const value = Number(raw.resources[key]);
+          if (Number.isFinite(value) && value > 0) normalized.resources[key] = Math.min(Math.floor(value), 999999);
+        });
+      }
+      if (raw.rewarded && typeof raw.rewarded === "object") {
+        Object.keys(raw.rewarded).slice(0, 5000).forEach((key) => {
+          if (raw.rewarded[key] === true && key.length < 160) normalized.rewarded[key] = true;
+        });
+      }
+      if (raw.finds && typeof raw.finds === "object") {
+        Object.keys(raw.finds).forEach((key) => {
+          const value = raw.finds[key];
+          if (Object.prototype.hasOwnProperty.call(FINDS, key) && typeof value === "string" && Number.isFinite(Date.parse(value))) {
+            normalized.finds[key] = value;
+          }
+        });
+      }
+      if (raw.frozen && typeof raw.frozen === "object") {
+        Object.keys(raw.frozen).forEach((key) => {
+          if (dayFromKey(key) && raw.frozen[key] === true) normalized.frozen[key] = true;
+        });
+      }
+      if (Number.isFinite(Number(raw.spentFreezes)) && Number(raw.spentFreezes) > 0) {
+        normalized.spentFreezes = Math.min(Math.floor(Number(raw.spentFreezes)), 999);
+      }
+      if (Number.isFinite(Number(raw.stars)) && Number(raw.stars) > 0) {
+        normalized.stars = Math.min(Math.floor(Number(raw.stars)), 999);
+      }
+      if (raw.boost && typeof raw.boost === "object" && dayFromKey(raw.boost.day)) {
+        normalized.boost.day = raw.boost.day;
+        normalized.boost.amount = Math.min(Math.max(Math.floor(Number(raw.boost.amount) || 0), 0), 99);
       }
       normalized.syncedOnce = raw.syncedOnce === true;
       if (raw.theme === "light" || raw.theme === "dark") normalized.theme = raw.theme;
@@ -3607,29 +4684,93 @@
 
     function applyTheme() {
       document.documentElement.dataset.theme = "dark";
-      if (themeMeta) themeMeta.setAttribute("content", "#0d0b09");
+      if (themeMeta) themeMeta.setAttribute("content", "#07080f");
     }
 
     // ---------- Статистика и серия ----------
+    function dayActive(key) {
+      return Boolean(state.activity[key] || state.frozen[key]);
+    }
+
+    function yesterdayKey() {
+      const date = new Date();
+      date.setDate(date.getDate() - 1);
+      return dayKey(date);
+    }
+
     function currentStreak() {
       const cursor = new Date();
-      if (!state.activity[dayKey(cursor)]) cursor.setDate(cursor.getDate() - 1);
+      if (!dayActive(dayKey(cursor))) cursor.setDate(cursor.getDate() - 1);
       let count = 0;
-      while (count < 4000 && state.activity[dayKey(cursor)]) {
+      while (count < 4000 && dayActive(dayKey(cursor))) {
         count += 1;
         cursor.setDate(cursor.getDate() - 1);
       }
       return count;
     }
 
+    function findFireStage(streak) {
+      let result = FIRE_STAGES[0];
+      FIRE_STAGES.forEach((stage) => { if (streak >= stage.days) result = stage; });
+      return result;
+    }
+
+    function nextFireStage(streak) {
+      return FIRE_STAGES.find((stage) => stage.days > streak) || null;
+    }
+
+    function boostAmount() {
+      return state.boost && state.boost.day === dayKey() ? Math.max(0, state.boost.amount || 0) : 0;
+    }
+
+    function lightRadius(streak) {
+      return findFireStage(streak).radius + Math.min(3, boostAmount()) * 18;
+    }
+
+    function rewardCount() {
+      return Object.keys(state.rewarded || {}).length;
+    }
+
+    function freezesEarned() {
+      return Math.min(3, Math.floor(rewardCount() / 7));
+    }
+
+    function freezesLeft() {
+      return Math.max(0, freezesEarned() - (state.spentFreezes || 0));
+    }
+
+    function milestoneStars(streak) {
+      if (streak < 100) return 0;
+      return 1 + Math.floor((streak - 100) / 50);
+    }
+
+    function syncStars(streak) {
+      const value = Math.max(state.stars || 0, milestoneStars(streak));
+      if (value === (state.stars || 0)) return false;
+      state.stars = value;
+      return true;
+    }
+
+    function hasFind(id) {
+      return Boolean(state.finds && state.finds[id]);
+    }
+
+    function houseStageFor(percent) {
+      if (!Number.isFinite(percent) || percent <= 0) return 1;
+      return Math.min(6, Math.max(1, Math.ceil(percent / (100 / 6))));
+    }
+
     function bumpActivity() {
       const key = dayKey();
       state.activity[key] = (state.activity[key] || 0) + 1;
       const limit = Date.now() - 180 * 86400000;
-      Object.keys(state.activity).forEach((day) => {
-        const date = dayFromKey(day);
-        if (!date || date.getTime() < limit) delete state.activity[day];
+      [state.activity, state.frozen].forEach((map) => {
+        Object.keys(map).forEach((day) => {
+          const date = dayFromKey(day);
+          if (!date || date.getTime() < limit) delete map[day];
+        });
       });
+      syncStars(currentStreak());
     }
 
     function computeStats() {
@@ -3655,9 +4796,11 @@
         if (problem.topicId === "concurrency") concurrency += 1;
       });
       const notes = Object.keys(state.notes).length;
+      const streak = currentStreak();
+      const percent = TOTAL_TASKS ? Math.round((tasks / TOTAL_TASKS) * 100) : 0;
       return {
         tasks: tasks,
-        percent: TOTAL_TASKS ? Math.round((tasks / TOTAL_TASKS) * 100) : 0,
+        percent: percent,
         stages: stages,
         checklist: checklist,
         practice: practice,
@@ -3665,10 +4808,14 @@
         sql: sql,
         concurrency: concurrency,
         notes: notes,
-        streak: currentStreak(),
+        streak: streak,
         solved: state.leetcode.total || 0,
         leetcode: state.leetcode.username ? 1 : 0,
-        sync: state.syncedOnce ? 1 : 0
+        sync: state.syncedOnce ? 1 : 0,
+        finds: Object.keys(state.finds || {}).length,
+        freezes: freezesLeft(),
+        stars: Math.max(state.stars || 0, milestoneStars(streak)),
+        houseStage: houseStageFor(percent)
       };
     }
 
@@ -3710,13 +4857,15 @@
           date.setDate(date.getDate() - offset);
           const key = dayKey(date);
           const active = Boolean(state.activity[key]);
+          const frozen = Boolean(state.frozen[key]);
           const classes = ["streak-day"];
           if (active) classes.push("is-active");
+          if (frozen) classes.push("is-frozen");
           if (offset === 0) classes.push("is-today");
           cells.push(
             '<span class="' + classes.join(" ") + '" title="' +
             date.toLocaleDateString("ru-RU", { day: "numeric", month: "short" }) +
-            (active ? ": были занятия" : ": без занятий") + '"></span>'
+            (frozen ? ": заморожено" : (active ? ": были занятия" : ": без занятий")) + '"></span>'
           );
         }
         dom.streakCalendar.innerHTML = cells.join("");
@@ -3734,27 +4883,31 @@
       renderLeetCode();
       updateOverview();
       updateChecklistUI();
+      renderHousePanel();
       renderStreak();
+      renderCampHud();
+      applyCosmetics();
       applyTheme();
     }
 
-    // Точки дороги: старт с костром, шесть остановок, финал.
-    const MAP_RAW = [
-      [200, 70], [350, 280], [50, 500], [350, 720],
-      [50, 940], [350, 1160], [200, 1370]
+    // Широкая карта-сцена: лагерь слева, путь-волна через шесть этапов к финалу.
+    const MAP_W = 1000;
+    const MAP_H = 700;
+    const MAP_GROUND_Y = 330;
+    const PLATE_W = 140;
+    const PLATE_H = 64;
+    const PLATE_GAP = 10;
+    const MAP_POINTS = [
+      [180, 570],  // костёр
+      [320, 520],  // этап 1
+      [460, 560],  // этап 2
+      [600, 490],  // этап 3
+      [730, 530],  // этап 4
+      [850, 440],  // этап 5
+      [915, 340],  // этап 6
+      [950, 220]   // финал: стажировка
     ];
-    const MAP_Y = 0.85;
-    const MAP_H = 1560 * MAP_Y;
-    const MAP_POINTS = MAP_RAW.map(([x, y]) => [x, y * MAP_Y]);
-    const MAP_MID = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
-    let MAP_D = "M" + MAP_POINTS[0][0] + " " + MAP_POINTS[0][1];
-    const firstMid = MAP_MID(MAP_POINTS[0], MAP_POINTS[1]);
-    MAP_D += " L" + firstMid[0] + " " + firstMid[1];
-    for (let i = 1; i < 6; i += 1) {
-      const mid = MAP_MID(MAP_POINTS[i], MAP_POINTS[i + 1]);
-      MAP_D += " Q" + MAP_POINTS[i][0] + " " + MAP_POINTS[i][1] + " " + mid[0] + " " + mid[1];
-    }
-    MAP_D += " L" + MAP_POINTS[6][0] + " " + MAP_POINTS[6][1];
+    const MAP_D = "M180 570 Q250 548 320 520 Q390 540 460 560 Q530 528 600 490 Q665 508 730 530 Q790 488 850 440 Q886 392 915 340 Q936 282 950 220";
 
     const STAGE_ICONS = [
       '<path d="M-24-10h46c0 7-6 11-14 11h-6v9h10v8h-34v-8h10v-9h-6c-8 0-12-4-6-11z"/><path d="M10-20l3-6M18-16l6-3M2-22v-7"/>',
@@ -3766,22 +4919,23 @@
     ];
 
     const MAP_TREES = [
-      [26, 110, 1], [374, 120, .9], [24, 230, .8], [376, 240, 1.1],
-      [28, 350, .9], [372, 360, 1], [24, 470, .8], [376, 480, .9],
-      [30, 590, 1], [370, 600, .8], [26, 710, .9], [374, 720, 1.1],
-      [24, 830, .8], [376, 840, 1], [30, 960, .9], [370, 970, .8],
-      [26, 1090, 1], [374, 1100, .9], [24, 1220, .8], [376, 1230, 1.1],
-      [28, 1350, .9], [372, 1360, 1], [26, 1480, .8], [374, 1490, .9]
+      [34, 435, 1.4], [78, 350, 1.1], [128, 300, 1.2], [58, 205, 1.3], [176, 180, 1.1],
+      [248, 250, 1.4], [322, 160, 1.2], [386, 250, 1.1], [444, 140, 1.3], [520, 195, 1.4],
+      [604, 120, 1.2], [684, 215, 1.3], [758, 122, 1.1], [838, 185, 1.3], [918, 105, 1.2],
+      [966, 245, 1.1], [40, 610, 1.3], [108, 665, 1.2], [210, 645, 1.4], [280, 615, 1.1],
+      [372, 660, 1.2], [438, 625, 1.4], [540, 675, 1.2], [612, 635, 1.3], [700, 670, 1.1],
+      [762, 640, 1.4], [838, 610, 1.1], [902, 655, 1.3], [966, 610, 1.2], [970, 455, 1.3],
+      [54, 500, 1.2], [26, 700, 1.2], [748, 265, 1.1], [880, 300, 1.1], [410, 330, 1.2],
+      [140, 420, 1.1]
     ];
 
     const MAP_STARS = [
-      [70, 54, .9], [112, 80, 1.2], [160, 48, .8], [250, 60, 1.1], [300, 92, .8],
-      [40, 160, .7], [350, 300, .9], [30, 520, .8], [360, 680, .9], [40, 800, .7],
-      [350, 900, .8], [30, 1040, .9], [360, 1180, .7], [40, 1320, .8],
-      [350, 1460, .9], [100, 120, .7], [280, 160, .8], [120, 340, .7],
-      [300, 520, .7], [90, 680, .8], [320, 820, .7], [100, 960, .8],
-      [300, 1080, .7], [80, 1240, .8], [320, 1380, .7], [150, 1500, .8],
-      [250, 1520, .7]
+      [46, 42, 1.2], [112, 78, 1.6], [168, 40, 1.1], [230, 64, 1.4], [292, 36, 1.2],
+      [352, 88, 1.5], [418, 46, 1.2], [486, 70, 1.6], [548, 34, 1.1], [614, 90, 1.4],
+      [676, 44, 1.2], [742, 76, 1.5], [806, 38, 1.2], [868, 82, 1.4], [930, 44, 1.6],
+      [976, 96, 1.2], [68, 142, 1.1], [148, 120, 1.3], [346, 144, 1.1], [566, 152, 1.3],
+      [690, 136, 1.1], [806, 168, 1.2], [896, 150, 1.1], [24, 260, 1.1], [984, 300, 1.2],
+      [34, 342, 1.1], [966, 370, 1.2], [58, 392, 1.1], [944, 402, 1.1]
     ];
 
     function wrapText(text, max) {
@@ -3834,18 +4988,40 @@
     }
 
     function mapCampfireInner(streak, lit) {
-      const wood = woodLevel(streak);
-      const level = lit ? Math.max(1, fireLevel(streak)) : 0;
-      const glow = lit ? `<circle class="camp-glow" cx="0" cy="2" r="${16 + level * 4}" fill="var(--fire)" opacity=".14"/>` : "";
+      const stage = findFireStage(streak);
+      const boost = boostAmount();
+      const baseLevel = lit ? Math.max(1, stage.flames) : (streak > 0 ? Math.max(1, stage.flames - 2) : 0);
+      const level = Math.min(7, baseLevel + (lit ? Math.min(3, Math.ceil(boost / 2)) : 0));
+      const wood = Math.max(1, Math.min(6, Math.ceil((streak + 2) / 4)));
+      const glow = level
+        ? `<circle class="camp-glow" cx="0" cy="2" r="${18 + level * 6}" fill="url(#campGlowGrad)" opacity="${lit ? 1 : 0.55}"/>`
+        : "";
+      const light = level
+        ? `<ellipse class="camp-light" cx="0" cy="30" rx="${46 + level * 9}" ry="${14 + level * 2}" fill="url(#campGlowGrad)" opacity="${lit ? 0.85 : 0.45}"/>`
+        : "";
       let logs = '<path class="camp-log" d="M-18 8l36 7M18 8l-36 7"/>';
       if (wood > 1) logs += '<path class="camp-log" d="M-22 10l44 3"/>';
       if (wood > 2) logs += '<path class="camp-log" d="M-12 4l24 14"/>';
       if (wood > 3) logs += '<path class="camp-log" d="M-24 12l48 1"/>';
+      if (wood > 4) logs += '<path class="camp-log" d="M-16 4l32 14"/>';
       let flames = "";
       for (let i = 0; i < level; i += 1) {
-        const offset = (i - (level - 1) / 2) * 6;
-        const scale = 0.44 + 0.075 * level - 0.025 * Math.abs(i - (level - 1) / 2);
-        flames += `<g transform="translate(${offset.toFixed(1)} 6) scale(${scale.toFixed(2)})"><path class="camp-flame" style="animation-delay:${(i * 0.18).toFixed(2)}s" d="M0 0C-9-9-5-18 0-30C5-18 9-9 0 0z"/></g>`;
+        const offset = (i - (level - 1) / 2) * 5.2;
+        const scale = 0.34 + 0.11 * level - 0.04 * Math.abs(i - (level - 1) / 2);
+        const alternate = i % 2 === 1;
+        flames += `<g transform="translate(${offset.toFixed(1)} 6) scale(${scale.toFixed(2)})"><path class="camp-flame${alternate ? " camp-flame-alt" : ""}"${alternate ? ' fill="var(--fire-2)" opacity=".82"' : ""} style="animation-delay:${(i * 0.18).toFixed(2)}s" d="M0 0C-9-9-5-18 0-30C5-18 9-9 0 0z"/></g>`;
+      }
+      const core = level
+        ? `<ellipse class="camp-core" cx="0" cy="7" rx="${7 + level}" ry="${2.5 + level * 0.5}" fill="var(--fire-2)" opacity=".9"/>`
+        : "";
+      let sparks = "";
+      if (level) {
+        sparks = '<circle class="camp-spark" style="animation-delay:0s" cx="-11" cy="-16" r="1.3"/><circle class="camp-spark" style="animation-delay:.8s" cx="9" cy="-22" r="1.1"/><circle class="camp-spark" style="animation-delay:1.5s" cx="1" cy="-9" r="1"/>';
+        if (hasFind("fireflies")) {
+          sparks = '<circle cx="-14" cy="-18" r="1.4" fill="var(--mint)"/><circle cx="12" cy="-24" r="1.2" fill="var(--gold)"/><circle cx="3" cy="-10" r="1.1" fill="var(--mint)"/>';
+        }
+      } else {
+        sparks = '<circle cx="-8" cy="7" r="1.4" fill="#7f2237"/><circle cx="8" cy="8" r="1.1" fill="#4a2210"/><circle cx="0" cy="9" r="1" fill="#ff9a2e" opacity=".55"/>';
       }
 
       let menu = "";
@@ -3853,18 +5029,18 @@
         const canLight = !lit;
         const canExtinguish = state.manualStack.length > 0;
         menu = `<g class="camp-menu">
-          <rect class="camp-menu-plate" x="24" y="-26" width="104" height="58" rx="9"/>
+          <rect class="camp-menu-plate" x="24" y="-30" width="104" height="60"/>
           <g class="camp-menu-row${canLight ? "" : " is-disabled"}" data-fire-light tabindex="0" role="button" aria-label="${canLight ? "Зажечь огонь" : "Огонь уже горит"}">
-            <rect class="camp-menu-action${canLight ? "" : " is-disabled"}" x="30" y="-19" width="92" height="20" rx="7"/>
-            <text class="camp-menu-text${canLight ? "" : " is-disabled"}" x="76" y="-5">${canLight ? "Зажечь" : "Горит"}</text>
+            <rect class="camp-menu-action${canLight ? "" : " is-disabled"}" x="30" y="-23" width="92" height="21"/>
+            <text class="camp-menu-text${canLight ? "" : " is-disabled"}" x="76" y="-8">${canLight ? "Зажечь" : "Горит"}</text>
           </g>
           <g class="camp-menu-row${canExtinguish ? "" : " is-disabled"}" data-fire-undo tabindex="0" role="button" aria-label="Отжечь огонь">
-            <rect class="camp-menu-action camp-menu-undo${canExtinguish ? "" : " is-disabled"}" x="30" y="6" width="92" height="20" rx="7"/>
-            <text class="camp-menu-text camp-menu-undo-text${canExtinguish ? "" : " is-disabled"}" x="76" y="20">Отжечь</text>
+            <rect class="camp-menu-action camp-menu-undo${canExtinguish ? "" : " is-disabled"}" x="30" y="3" width="92" height="21"/>
+            <text class="camp-menu-text camp-menu-undo-text${canExtinguish ? "" : " is-disabled"}" x="76" y="18">Отжечь</text>
           </g>
         </g>`;
       }
-      return `${glow}${logs}${flames}${menu}`;
+      return `${glow}${light}${logs}${core}${flames}${sparks}${menu}`;
     }
 
     function renderFire() {
@@ -3876,6 +5052,13 @@
         if (inner) inner.innerHTML = mapCampfireInner(streak, litToday);
         mapFire.setAttribute("aria-label", "Костёр: серия " + streak + (litToday ? ", горит" : ", не горит") + (litToday ? "" : ". Нажми, чтобы зажечь"));
       }
+      const radius = lightRadius(streak);
+      if (radius !== lastLightRadius) {
+        lastLightRadius = radius;
+        renderMap({ animate: false });
+      }
+      renderCampHud();
+      applyCosmetics();
     }
 
     function lightFire() {
@@ -3915,24 +5098,504 @@
       showToast("Последнее ручное зажатие отменено.");
     }
 
-    function mapStaticSvg() {
-      const trees = MAP_TREES.map(([x, y, s]) => `<path class="map-deco-dim" transform="translate(${x} ${y * MAP_Y}) scale(${s})" d="M0-18l-8 14h16zM0-8l-11 16h22zM0 8v6"/>`).join("");
-      const stars = MAP_STARS.map(([x, y, r]) => `<circle class="map-star" cx="${x}" cy="${y * MAP_Y}" r="${r}"/>`).join("");
+    // ---------- Награды, заморозка и находки ----------
+    function grantResources(kind, key) {
+      const id = kind + ":" + key;
+      if (state.rewarded[id]) return false;
+      state.rewarded[id] = true;
+      if (kind === "task") {
+        state.resources.wood += 1;
+        state.resources.stone += 1;
+      } else {
+        state.resources.ember += 1;
+        if (kind === "practice" && currentSuggestion === key) {
+          state.resources.wood += 1;
+          state.resources.stone += 1;
+          state.resources.ember += 1;
+          showToast("Задача дня: бонус во все ресурсы.", "achievement");
+        }
+      }
+      return true;
+    }
+
+    function feedFire() {
+      if ((state.resources.wood || 0) < 1) {
+        showToast("Нужно немного дров: закрой новую тему роадмапа.", "error");
+        return;
+      }
+      state.resources.wood -= 1;
+      if (!state.boost || state.boost.day !== dayKey()) state.boost = { day: dayKey(), amount: 0 };
+      state.boost.amount = Math.min(9, (state.boost.amount || 0) + 1);
+      markChanged();
+      renderStreak();
+      renderMap({ animate: false });
+      showToast("В костёр подброшено дров. Свет стал ярче.");
+    }
+
+    function canFreezeYesterday() {
+      const key = yesterdayKey();
+      if (state.activity[key] || state.frozen[key]) return false;
+      const before = new Date();
+      before.setDate(before.getDate() - 2);
+      return dayActive(dayKey(before)) && freezesLeft() > 0;
+    }
+
+    function autoFreezeMissedDay() {
+      if (!canFreezeYesterday()) return false;
+      const key = yesterdayKey();
+      state.frozen[key] = true;
+      state.spentFreezes = (state.spentFreezes || 0) + 1;
+      state.updatedAt = nowIso();
+      saveStateLocal();
+      scheduleSync();
+      window.setTimeout(() => {
+        showToast("Заморозка сохранила серию: вчерашний день не потерян.", "achievement");
+      }, 700);
+      return true;
+    }
+
+    function freezeYesterday() {
+      const key = yesterdayKey();
+      if (state.frozen[key]) { showToast("Вчерашний день уже заморожен."); return; }
+      if (state.activity[key]) { showToast("Вчера огонь горел — заморозка не нужна."); return; }
+      const before = new Date();
+      before.setDate(before.getDate() - 2);
+      if (!dayActive(dayKey(before))) {
+        showToast("Серия уже прервалась. Начни новую сегодня — без вины.", "error");
+        return;
+      }
+      if (freezesLeft() <= 0) {
+        showToast("Заморозок пока нет. Каждые 7 новых отметок дают одну.", "error");
+        return;
+      }
+      state.frozen[key] = true;
+      state.spentFreezes = (state.spentFreezes || 0) + 1;
+      markChanged();
+      renderStreak();
+      renderMap({ animate: false });
+      showToast("Вчерашний день заморожен. Серия сохранена.");
+    }
+
+    function trailById(id) {
+      return TRAILS.find((trail) => trail.id === id) || null;
+    }
+
+    function claimTrail(id) {
+      const trail = trailById(id);
+      if (!trail) return;
+      if (currentStreak() < trail.days) return;
+      if (hasFind(trail.find)) {
+        showToast("Здесь уже найдено: " + FINDS[trail.find].name + ".");
+        return;
+      }
+      state.finds[trail.find] = nowIso();
+      markChanged();
+      renderMap({ animate: false });
+      renderCampHud();
+      renderHousePanel();
+      const find = FINDS[trail.find];
+      showToast("Находка: " + find.name + " — " + find.desc, "achievement");
+    }
+
+    function applyCosmetics() {
+      document.body.dataset.fireColor = hasFind("water") ? "blue" : "orange";
+      document.body.dataset.dawn = currentStreak() >= 100 ? "true" : "false";
+    }
+
+    function fireGlyphSvg(streak, lit) {
+      const stage = findFireStage(streak);
+      if (!lit && stage.flames === 0) {
+        return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="18" r="7.5" fill="#ff9a2e" opacity=".12"/><rect x="4" y="17.5" width="16" height="2.6" fill="#4a2210"/><rect x="6.5" y="15.6" width="11" height="2" fill="#5a3a22"/><rect x="9.5" y="13.6" width="5" height="3.4" fill="#ff9a2e"/><rect x="11" y="12.4" width="2" height="2.2" fill="#ffd23f"/></svg>';
+      }
+      const h = lit ? 14 : 9;
+      return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 ' + (20 - h) + 'l3 5 3 3-2 7H8l-2-7 3-3z" fill="var(--fire)"/><path d="M12 ' + (20 - h + 5) + 'l2 3 1 2-1 4h-4l-1-4 1-2z" fill="var(--gold)"/><rect x="4" y="20" width="16" height="2.4" fill="#4a2210"/></svg>';
+    }
+
+    function renderCampHud() {
+      if (!dom.campHud) return;
+      const streak = currentStreak();
+      const stage = findFireStage(streak);
+      const next = nextFireStage(streak);
+      const lit = Boolean(state.activity[dayKey()]);
+      const from = stage.days;
+      const to = next ? next.days : stage.days + 50;
+      const percent = next
+        ? Math.max(4, Math.min(100, Math.round(((streak - from) / Math.max(1, to - from)) * 100)))
+        : 100;
+      if (dom.hudFlame) dom.hudFlame.innerHTML = fireGlyphSvg(streak, lit);
+      if (dom.hudFireBar) dom.hudFireBar.style.width = percent + "%";
+      if (dom.hudStage) dom.hudStage.textContent = stage.name;
+      if (dom.hudStreak) dom.hudStreak.textContent = String(streak);
+      if (dom.hudOverall) dom.hudOverall.textContent = (TOTAL_TASKS ? Math.round(((computeStats().tasks) / TOTAL_TASKS) * 100) : 0) + "%";
+      if (dom.hudWood) dom.hudWood.textContent = String(state.resources.wood || 0);
+      if (dom.hudStone) dom.hudStone.textContent = String(state.resources.stone || 0);
+      if (dom.hudEmber) dom.hudEmber.textContent = String(state.resources.ember || 0);
+      if (dom.hudFreeze) dom.hudFreeze.textContent = String(freezesLeft());
+      if (dom.hudStars) dom.hudStars.textContent = String(Math.max(state.stars || 0, milestoneStars(streak)));
+      if (dom.hudLight) {
+        dom.hudLight.textContent = lit ? "Огонь горит" : "Зажечь огонь";
+        dom.hudLight.disabled = lit;
+        dom.hudLight.classList.toggle("is-primary", !lit);
+      }
+      if (dom.hudWoodBtn) {
+        dom.hudWoodBtn.textContent = "Подкинуть дров (" + (state.resources.wood || 0) + ")";
+        dom.hudWoodBtn.disabled = (state.resources.wood || 0) < 1;
+      }
+      if (dom.hudFreezeBtn) {
+        dom.hudFreezeBtn.textContent = freezesLeft() ? "Заморозить вчера (" + freezesLeft() + ")" : "Заморозить вчера";
+        dom.hudFreezeBtn.disabled = !canFreezeYesterday();
+      }
+      if (dom.hudNote) {
+        if (lit) {
+          dom.hudNote.textContent = next
+            ? "До ступени «" + next.name + "» осталось " + Math.max(0, next.days - streak) + " " + plural(Math.max(0, next.days - streak), "день", "дня", "дней") + ". Дрова делают огонь ярче."
+            : "Огонь на максимуме. Звёзды в небе остаются навсегда.";
+        } else if (streak > 0) {
+          dom.hudNote.textContent = "Огонь тлеет. Зажги сегодня, чтобы вернуть свет. Заморозка бережёт серию.";
+        } else {
+          dom.hudNote.textContent = "Зажги огонь, чтобы начать серию. Награды только косметические — путь открыт всегда.";
+        }
+      }
+    }
+
+    // ---------- Дом ----------
+    let activeRoom = "home";
+
+    const HOUSE_ROOMS = [
+      {
+        view: "practice",
+        name: "Мастерская",
+        desc: "Тренажёр задач в духе LeetCode: темы, сложность и статистика.",
+        icon: '<path d="M4 7v10M8 4v16M16 4v16M20 7v10M8 12h8"/>'
+      },
+      {
+        view: "achievements",
+        name: "Зал трофеев",
+        desc: "Ачивки за прогресс, практику и серию занятий.",
+        icon: '<path d="M7 4h10v4a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 3M17 6h3a3 3 0 0 1-3 3M12 13v4M8 20h8M10 17h4"/>'
+      },
+      {
+        view: "checklist",
+        name: "Кладовая",
+        desc: "Минимум к собеседованию и чек-лист тем.",
+        icon: '<path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/><path d="M15 5v4"/>'
+      },
+      {
+        view: "settings",
+        name: "Кузница",
+        desc: "Настройки, экспорт, импорт и синхронизация через Gist.",
+        icon: '<path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'
+      }
+    ];
+
+    function houseSvg(stage) {
+      const parts = [];
+      const lit = Boolean(state.activity[dayKey()]);
+      if (stage < 6) {
+        parts.push('<rect x="-46" y="-60" width="92" height="96" fill="rgba(0,0,0,0)" stroke="#4a5190" stroke-width="1" stroke-dasharray="4 3" opacity=".7"/>');
+      }
+      parts.push('<ellipse cx="0" cy="36" rx="46" ry="10" fill="#04050c" opacity=".65"/>');
+      parts.push('<rect x="-38" y="22" width="76" height="12" fill="#5b5f7a" stroke="#161a33" stroke-width="1"/>');
+      parts.push('<path d="M-22 22v12M0 22v12M22 22v12" stroke="#3a3f6b" stroke-width="1"/>');
+      if (stage >= 2) {
+        parts.push('<rect x="-33" y="-14" width="66" height="36" fill="#7a4a22" stroke="#3b2410" stroke-width="1.4"/>');
+        parts.push('<rect x="-33" y="2" width="66" height="3" fill="#5e3818"/>');
+        parts.push('<rect x="-33" y="14" width="66" height="3" fill="#5e3818"/>');
+      }
+      if (stage >= 3) {
+        parts.push('<path d="M-38-14L0-48 38-14Z" fill="#8b2f2f" stroke="#3b1a1a" stroke-width="1.4"/>');
+        parts.push('<path d="M-30-16L0-43 30-16" fill="none" stroke="#a83a3a" stroke-width="1.2" opacity=".7"/>');
+        parts.push('<rect x="-4" y="-50" width="8" height="4" fill="#5b5f7a" stroke="#161a33"/>');
+      }
+      if (stage >= 4) {
+        parts.push('<rect x="-9" y="-10" width="18" height="32" fill="#3b2410" stroke="#1a100a" stroke-width="1"/>');
+        parts.push('<rect x="3" y="4" width="3" height="3" fill="#ffd23f"/>');
+      }
+      if (stage >= 5) {
+        const windowFill = lit ? "#ffd23f" : "#22305a";
+        if (lit) parts.push('<circle cx="20.5" cy="-1.5" r="15" fill="#ffd23f" opacity=".12"/>');
+        parts.push('<rect x="13" y="-8" width="15" height="13" fill="' + windowFill + '" stroke="#3b2410" stroke-width="1.4"/>');
+        parts.push('<path d="M20.5-8v13M13-1.5h15" stroke="#3b2410" stroke-width="1"/>');
+      }
+      if (stage >= 6) {
+        parts.push('<rect x="20" y="-60" width="9" height="36" fill="#5b5f7a" stroke="#161a33" stroke-width="1"/>');
+        parts.push('<path class="map-smoke" d="M24.5-66c-4-5 4-9 0-14" stroke="#8f96d8" fill="none" stroke-width="1.4"/>');
+      }
+      if (hasFind("weathervane")) {
+        parts.push('<path d="M24.5-70v6M20.5-68h8M24.5-72l3 4h-6z" stroke="var(--gold)" fill="var(--gold)" stroke-width="1"/>');
+      }
+      if (hasFind("crystal")) {
+        parts.push('<circle cx="20.5" cy="-1.5" r="9" fill="#6ee7ff" opacity=".18"/>');
+        parts.push('<circle cx="20.5" cy="-1.5" r="2.6" fill="#6ee7ff"/>');
+      }
+      if (hasFind("rug")) {
+        parts.push('<rect x="-24" y="30" width="48" height="7" fill="#7f2237" opacity=".85"/>');
+        parts.push('<path d="M-16 30v7M-8 30v7M0 30v7M8 30v7M16 30v7" stroke="var(--gold)" stroke-width=".8" opacity=".7"/>');
+      }
+      if (hasFind("tablet")) {
+        parts.push('<rect x="-38" y="2" width="7" height="11" fill="#4a5190" stroke="#161a33" stroke-width="1"/>');
+        parts.push('<path d="M-36 5h3M-36 8h3" stroke="var(--gold)" stroke-width=".8"/>');
+      }
+      parts.push('<rect x="-48" y="-72" width="96" height="116" fill="rgba(0,0,0,0)"/>');
+      return parts.join("");
+    }
+
+    function houseSceneSvg(stage) {
+      const pine = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})">
+        <path class="map-pine" d="M0-2l-7 10h14z"/><path class="map-pine" d="M0-9l-9 12h18z"/><path class="map-pine" d="M0-17l-6 9h12z"/>
+        <rect x="-1.6" y="8" width="3.2" height="7" fill="#3b2a1a"/>
+      </g>`;
+      const stars = [["-62", "-56", "1.2"], ["48", "-64", "1.6"], ["70", "-36", "1.1"], ["-50", "-34", "1.4"]]
+        .map(([x, y, r]) => `<circle class="map-star" cx="${x}" cy="${y}" r="${r}"/>`).join("");
+      const fireflies = hasFind("fireflies")
+        ? `<g class="map-fireflies"><circle cx="-30" cy="18" r="1.4"/><circle cx="34" cy="10" r="1.2"/><circle cx="22" cy="34" r="1.3"/><circle cx="-42" cy="34" r="1"/></g>`
+        : "";
+      return `<svg viewBox="-90 -84 180 176" role="img" aria-label="Дом: ${HOUSE_STAGE_NAMES[stage - 1]}">
+        <defs>
+          <radialGradient id="houseGlow" cx="0" cy="38" r="80" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#ff9a2e" stop-opacity=".24"/>
+            <stop offset="1" stop-color="#ff9a2e" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect x="-90" y="-84" width="180" height="176" fill="#070a18"/>
+        ${stars}
+        <ellipse cx="0" cy="52" rx="86" ry="22" fill="#0f2c20" opacity=".8"/>
+        ${pine(-66, 12, 1.8)}${pine(68, 10, 2)}${pine(-50, 32, 1.2)}${pine(58, 30, 1.35)}
+        <circle cx="0" cy="30" r="76" fill="url(#houseGlow)"/>
+        <g transform="translate(0 24) scale(1.5)">${houseSvg(stage)}</g>
+        ${fireflies}
+      </svg>`;
+    }
+
+    function renderHousePanel() {
+      if (!dom.houseRooms) return;
+      const stats = computeStats();
+      const stage = houseStageFor(stats.percent);
+      const stageName = HOUSE_STAGE_NAMES[stage - 1];
+      if (dom.houseScene) dom.houseScene.innerHTML = houseSceneSvg(stage);
+      if (dom.houseStageNum) dom.houseStageNum.textContent = stage + " / 6";
+      if (dom.houseStageBar) dom.houseStageBar.style.width = Math.max(4, stats.percent) + "%";
+      if (dom.houseStageName) dom.houseStageName.textContent = stageName;
+      document.querySelectorAll(".house-nav-stage").forEach((badge) => {
+        badge.textContent = stage + "/6";
+      });
+      const hero = dom.houseScene ? dom.houseScene.closest(".house-hero") : null;
+      const stageMeter = hero ? hero.querySelector(".house-stage-line .meter") : null;
+      if (stageMeter) stageMeter.setAttribute("aria-valuenow", String(stats.percent));
+      if (dom.houseResources) {
+        const chips = [
+          { cls: "is-gold", label: "Огонь", value: stats.streak + " дн." },
+          { cls: "", label: "Дрова", value: state.resources.wood || 0 },
+          { cls: "", label: "Камень", value: state.resources.stone || 0 },
+          { cls: "is-mint", label: "Искры", value: state.resources.ember || 0 },
+          { cls: "", label: "Заморозки", value: freezesLeft() },
+          { cls: "is-gold", label: "Звёзды", value: Math.max(state.stars || 0, milestoneStars(stats.streak)) },
+          { cls: "is-mint", label: "Находки", value: stats.finds + " / " + Object.keys(FINDS).length }
+        ];
+        dom.houseResources.innerHTML = chips.map((chip) =>
+          `<span class="house-chip ${chip.cls}">${chip.label} <b>${chip.value}</b></span>`
+        ).join("");
+      }
+      if (dom.houseRooms) {
+        const progress = {
+          practice: { done: stats.practice, total: TOTAL_PROBLEMS, label: stats.practice + " из " + TOTAL_PROBLEMS + " задач" },
+          achievements: {
+            done: Object.keys(state.achievements).length,
+            total: ACHIEVEMENTS.length,
+            label: Object.keys(state.achievements).length + " из " + ACHIEVEMENTS.length + " ачивок"
+          },
+          checklist: { done: stats.checklist, total: CHECKLIST_MIN.length, label: stats.checklist + " из " + CHECKLIST_MIN.length + " пунктов" },
+          settings: { done: 0, total: 0, label: state.syncedOnce ? "синхронизация подключена" : "локальное хранение" }
+        };
+        dom.houseRooms.innerHTML = HOUSE_ROOMS.map((room) => {
+          const item = progress[room.view] || { done: 0, total: 0, label: "" };
+          const percent = item.total ? Math.round((item.done / item.total) * 100) : 100;
+          const meter = item.total
+            ? `<div class="meter room-meter" aria-hidden="true"><span style="width:${Math.max(4, Math.min(100, percent))}%"></span></div>`
+            : "";
+          return `<button class="house-room" type="button" data-house-view="${room.view}">
+            <span class="room-top">
+              <span class="room-icon" aria-hidden="true"><svg viewBox="0 0 24 24">${room.icon}</svg></span>
+              <span class="room-arrow" aria-hidden="true">→</span>
+            </span>
+            <span class="room-name">${room.name}</span>
+            <span class="room-desc">${room.desc}</span>
+            <span class="room-progress">${item.label}</span>
+            ${meter}
+          </button>`;
+        }).join("");
+      }
+      if (dom.houseChest) {
+        const finds = Object.keys(state.finds || {})
+          .sort((a, b) => String(state.finds[a]).localeCompare(String(state.finds[b])))
+          .map((id) => {
+            const find = FINDS[id];
+            if (!find) return "";
+            const date = new Date(state.finds[id]);
+            const label = Number.isFinite(date.getTime())
+              ? date.toLocaleDateString("ru-RU", { day: "numeric", month: "short" })
+              : "";
+            return `<li class="find-item"><b>${escapeHtml(find.name)}</b><span>${escapeHtml(find.desc)}</span><time>${label}</time></li>`;
+          }).join("");
+        dom.houseChest.innerHTML = finds
+          ? `<ul class="find-list">${finds}</ul>`
+          : '<p class="house-empty">Находок пока нет. Огонь открывает тропы на краю света — иди по ним, когда станет светлее.</p>';
+      }
+    }
+
+    function mapDecorSvg() {
+      return `
+        <g class="map-deco" data-decor="1" data-prop="hills" aria-hidden="true">
+          <path d="M28 ${MAP_GROUND_Y} L96 296 L150 ${MAP_GROUND_Y} Z" fill="#08121b"/>
+          <path d="M120 ${MAP_GROUND_Y} L200 304 L268 ${MAP_GROUND_Y} Z" fill="#071018"/>
+          <path d="M236 ${MAP_GROUND_Y} L318 312 L392 ${MAP_GROUND_Y} Z" fill="#061017"/>
+          <path d="M360 ${MAP_GROUND_Y} L430 318 L492 ${MAP_GROUND_Y} Z" fill="#08121b"/>
+        </g>
+        <g class="map-deco" data-decor="1" data-prop="fence" aria-hidden="true">
+          <path d="M44 640v-20M60 642v-20M76 644v-20M92 646v-20M108 648v-20" stroke="#2a2119" stroke-width="3"/>
+          <path d="M40 630h74M40 640h74" stroke="#3a2c20" stroke-width="2"/>
+        </g>
+        <g class="map-deco" data-decor="1" data-prop="barrel" aria-hidden="true" transform="translate(140 615)">
+          <ellipse cx="0" cy="9" rx="10" ry="3" fill="#05080d" opacity=".5"/>
+          <rect x="-8" y="-8" width="16" height="17" rx="2" fill="#4a3324" stroke="#24160d"/>
+          <path d="M-8-2h16M-8 5h16" stroke="#24160d" stroke-width="1.4"/>
+        </g>
+        <g class="map-deco" data-decor="1" data-prop="bench" aria-hidden="true" transform="translate(268 642)">
+          <rect x="-16" y="-2" width="32" height="6" fill="#4a3324" stroke="#24160d"/>
+          <path d="M-12 4v8M12 4v8" stroke="#3a2c20" stroke-width="3"/>
+        </g>
+        <g class="map-deco" data-decor="1" data-prop="lamp" aria-hidden="true" transform="translate(362 628)">
+          <path d="M0 12v-8" stroke="#3a2c20" stroke-width="3"/>
+          <circle class="map-prop-lamp" cx="0" cy="2" r="6" opacity=".25"/>
+          <circle class="map-prop-lamp" cx="0" cy="2" r="2.2"/>
+        </g>
+        <g class="map-deco" data-decor="1" data-prop="stones" aria-hidden="true">
+          <ellipse cx="312" cy="666" rx="9" ry="3" fill="#3c414f"/>
+          <ellipse cx="330" cy="672" rx="6" ry="2.4" fill="#333845"/>
+          <ellipse cx="292" cy="672" rx="5" ry="2" fill="#2c313d"/>
+        </g>
+        <g class="map-deco" data-decor="1" data-prop="crates" aria-hidden="true" transform="translate(516 654)">
+          <rect x="-9" y="-9" width="18" height="18" fill="#4a3324" stroke="#24160d"/>
+          <path d="M-9-9l18 18M9-9L-9 9" stroke="#2f2117" stroke-width="1.2"/>
+        </g>
+        <g class="map-deco" data-decor="1" data-prop="well" aria-hidden="true" transform="translate(716 656)">
+          <ellipse cx="0" cy="6" rx="13" ry="4" fill="#05080d" opacity=".5"/>
+          <rect x="-11" y="-6" width="22" height="12" fill="#3c414f" stroke="#1c2029"/>
+          <path d="M-13-6h26M-10-6v-11h20v11" fill="none" stroke="#3a2c20" stroke-width="2"/>
+        </g>`;
+    }
+
+    function mapStaticSvg(stats) {
+      const streak = stats ? stats.streak : currentStreak();
+      const radius = lightRadius(streak);
+      const campX = MAP_POINTS[0][0];
+      const campY = MAP_POINTS[0][1];
+      const trees = MAP_TREES.map(([x, y, s]) => {
+        const lit = Math.hypot(x - campX, y - campY) < radius * 0.94;
+        return `<g class="map-pine${lit ? " map-pine-lit" : ""}" transform="translate(${x} ${y}) scale(${s.toFixed(2)})">
+          <rect x="-1.6" y="8" width="3.2" height="7" fill="#3b2a1a"/>
+          <path d="M0-2l-7 10h14z"/><path d="M0-9l-9 12h18z"/><path d="M0-17l-6 9h12z"/>
+        </g>`;
+      }).join("");
+      const stars = MAP_STARS.map(([x, y, r]) => `<circle class="map-star" cx="${x}" cy="${y}" r="${r}"/>`).join("");
+      const constellationPoints = [[720, 62], [752, 88], [790, 52], [822, 98], [858, 66], [892, 106], [926, 80]];
+      const starCount = stats ? Math.max(state.stars || 0, milestoneStars(streak)) : (state.stars || 0);
+      const constellation = (() => {
+        const count = Math.min(starCount, constellationPoints.length);
+        if (!count) return "";
+        const points = constellationPoints.slice(0, count);
+        const lines = points.map((point, index) => index
+          ? `M${points[index - 1][0]} ${points[index - 1][1]}L${point[0]} ${point[1]}`
+          : "").join("");
+        const crosses = points.map(([x, y]) => `<path d="M${x - 4} ${y}h8M${x} ${y - 4}v8" stroke="var(--gold)" stroke-width="1.2" opacity=".9"/>`).join("");
+        return `<g class="map-constellation" aria-hidden="true"><path d="${lines}" fill="none" stroke="var(--gold)" stroke-opacity=".32" stroke-width="1"/>${crosses}</g>`;
+      })();
+      const meteors = hasFind("vista")
+        ? '<g aria-hidden="true"><path class="map-meteor" d="M260 40l-22 17"/><path class="map-meteor" d="M700 26l-22 17"/></g>'
+        : "";
+      const eyes = streak < 3
+        ? [[300, 430], [640, 630], [880, 520], [456, 300], [742, 340]]
+          .map(([x, y]) => `<g class="map-eyes" aria-hidden="true"><circle cx="${x}" cy="${y}" r="1.8"/><circle cx="${x + 8}" cy="${y}" r="1.8"/></g>`).join("")
+        : "";
+      const fireflies = (hasFind("fireflies") || streak >= 14)
+        ? `<g class="map-fireflies" aria-hidden="true">
+            <circle cx="140" cy="590" r="1.4"/><circle cx="224" cy="612" r="1.6"/><circle cx="116" cy="622" r="1.2"/>
+            <circle cx="252" cy="558" r="1.4"/><circle cx="158" cy="632" r="1.2"/><circle cx="208" cy="544" r="1.5"/>
+          </g>`
+        : "";
+      const dawn = streak >= 100
+        ? `<rect width="1000" height="280" fill="url(#mapDawn)" aria-hidden="true"/>`
+        : "";
+      const horizon = Array.from({ length: 22 }, (_, index) => {
+        const x = 14 + index * 47;
+        const h = 12 + (index % 4) * 5;
+        return `<path d="M${x} ${MAP_GROUND_Y + 6}h1l6-${h} 6 ${h}h1z" fill="#0a1a14"/>`;
+      }).join("");
       return `
         <defs>
-          <pattern id="mapDots" width="20" height="20" patternUnits="userSpaceOnUse">
-            <circle cx="1.1" cy="1.1" r="1" fill="var(--line)" opacity=".55"/>
+          <linearGradient id="mapSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#0b1236"/>
+            <stop offset=".55" stop-color="#080c22"/>
+            <stop offset="1" stop-color="#05070f"/>
+          </linearGradient>
+          <linearGradient id="mapGround" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#08121a"/>
+            <stop offset="1" stop-color="#04070c"/>
+          </linearGradient>
+          <pattern id="mapDots" width="26" height="26" patternUnits="userSpaceOnUse">
+            <circle cx="1.2" cy="1.2" r="1" fill="var(--line)" opacity=".4"/>
           </pattern>
+          <radialGradient id="mapFireVignette" cx="${campX}" cy="${campY}" r="${radius}" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#02030a" stop-opacity="0"/>
+            <stop offset=".68" stop-color="#02030a" stop-opacity="0"/>
+            <stop offset="1" stop-color="#02030a" stop-opacity=".62"/>
+          </radialGradient>
+          <linearGradient id="mapDawn" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ff9a2e" stop-opacity=".26"/>
+            <stop offset=".5" stop-color="#7f2237" stop-opacity=".12"/>
+            <stop offset="1" stop-color="#07080f" stop-opacity="0"/>
+          </linearGradient>
+          <radialGradient id="campGlowGrad">
+            <stop offset="0" stop-color="var(--fire)" stop-opacity=".42"/>
+            <stop offset=".5" stop-color="var(--fire)" stop-opacity=".14"/>
+            <stop offset="1" stop-color="var(--fire)" stop-opacity="0"/>
+          </radialGradient>
         </defs>
-        <rect width="400" height="${MAP_H}" fill="var(--map-bg)"/>
-        <rect width="400" height="${MAP_H}" fill="url(#mapDots)" opacity=".5"/>
-        <g class="map-java-mark" transform="translate(74 ${196 * MAP_Y}) scale(2.1)">
+        <rect width="${MAP_W}" height="${MAP_H}" fill="url(#mapSky)"/>
+        <rect width="${MAP_W}" height="${MAP_H}" fill="url(#mapDots)" opacity=".35"/>
+        <g aria-hidden="true">
+          <circle cx="858" cy="100" r="46" fill="#c9cdf5" opacity=".035"/>
+          <circle cx="858" cy="100" r="30" fill="#c9cdf5" opacity=".1"/>
+          <circle cx="858" cy="100" r="18" fill="#dfe3ff" opacity=".22"/>
+          <circle cx="851" cy="95" r="4" fill="#0a1030" opacity=".3"/>
+        </g>
+        ${horizon}
+        <rect data-ground="1" y="${MAP_GROUND_Y}" width="${MAP_W}" height="${MAP_H - MAP_GROUND_Y}" fill="url(#mapGround)"/>
+        <rect y="${MAP_GROUND_Y - 34}" width="${MAP_W}" height="52" fill="#8f96d8" opacity=".03"/>
+        <rect y="${MAP_GROUND_Y + 46}" width="${MAP_W}" height="26" fill="#6ee7b7" opacity=".022"/>
+        <rect y="${MAP_GROUND_Y + 4}" width="${MAP_W}" height="18" fill="#c9cdf5" opacity=".035"/>
+        <ellipse cx="${campX}" cy="${campY + 12}" rx="92" ry="28" fill="#0f2c20" opacity=".6"/>
+        <path class="map-grass" d="M130 602v-8M136 604v-5M232 590v-8M240 592v-6M118 558v-7M252 548v-6M92 512v-6M274 628v-6"/>
+        <circle class="map-rock" cx="128" cy="616" r="3"/><circle class="map-rock" cx="258" cy="600" r="2.4"/><circle class="map-rock" cx="96" cy="598" r="2"/>
+        <g class="map-java-mark" transform="translate(872 486) scale(1.5)">
           <path d="M-24-10h46c0 7-6 11-14 11h-6v9h10v8h-34v-8h10v-9h-6c-8 0-12-4-6-11z"/>
           <path class="steam" d="M10-20l3-6M18-16l6-3M2-22v-7"/>
         </g>
-        ${trees}${stars}
-        <path class="map-deco-dim" d="M0 ${MAP_H - 46}c64-26 128-26 192 0s128 26 208 0"/>
-        <path class="map-deco-dim" d="M0 ${MAP_H - 22}c74-18 138-18 202 0s118 18 198 0"/>
+        ${trees}
+        ${mapDecorSvg()}
+        <rect width="${MAP_W}" height="${MAP_H}" fill="url(#mapFireVignette)" aria-hidden="true"/>
+        ${stars}
+        ${constellation}
+        ${dawn}
+        ${meteors}
+        ${eyes}
+        ${fireflies}
+        <g class="map-finish" transform="translate(950 220)" aria-hidden="true">
+          <circle r="22" fill="var(--gold)" opacity=".09"/>
+          <circle r="4.5" fill="var(--gold)"/>
+          <path d="M-15 0h9M6 0h9M0-15v9M0 6v9M-11-11l6 6M11 11l-6-6M11-11l-6 6M-11 11l6-6" stroke="var(--gold)" stroke-width="1.2" opacity=".75"/>
+          <text class="map-finish-label" x="-18" y="4" text-anchor="end">СТАЖИРОВКА</text>
+        </g>
         <path id="mapRoad" class="map-road" d="${MAP_D}"/>
         <path class="map-road-dark" d="${MAP_D}"/>
         <path id="mapProgress" class="map-progress" d="${MAP_D}" stroke-dasharray="0 9999"/>
@@ -3942,7 +5605,7 @@
 
     function buildMapGeo(road) {
       const length = road.getTotalLength();
-      const points = MAP_POINTS.slice(1).map((target) => {
+      const points = MAP_POINTS.slice(1, 7).map((target) => {
         let best = 0;
         let bestD = Infinity;
         for (let l = 0; l <= length; l += 2) {
@@ -3957,62 +5620,78 @@
 
     function mapDynamicSvg(stats) {
       const current = firstIncompleteStage();
+      const stagePoints = ROADMAP.map((_, index) => (mapGeo && mapGeo.points[index]) || { x: 320 + index * 120, y: 520 });
+      const currentIndex = current ? ROADMAP.findIndex((stage) => stage.id === current.id) : -1;
+      const plates = layoutStagePlates(stagePoints, currentIndex);
       const stages = ROADMAP.map((stage, index) => {
         const total = stage.tasks.length;
         const done = stage.tasks.reduce((count, _, taskIndex) =>
           count + (state.tasks[taskKey(stage.id, taskIndex)] ? 1 : 0), 0);
+        const ratio = total ? done / total : 0;
         const complete = total > 0 && done === total;
         const isCurrent = Boolean(current && current.id === stage.id);
         const cls = complete ? "is-done" : (isCurrent ? "is-current" : "is-future");
         const justCompleted = justCompletedStage === stage.id;
-        const point = (mapGeo && mapGeo.points[index]) || { x: 200, y: 220 + index * 180 };
-        const side = point.x > 200 ? -1 : 1;
-        const lx = point.x + side * 104;
-        const lines = wrapText(stage.title, stage.id === "stage5" ? 15 : 18).slice(0, 3);
-        const plateH = 70 + lines.length * 16;
+        const point = stagePoints[index];
+        const plate = plates[index];
+        const above = plate.above;
+        const plateW = plate.w;
+        const plateH = plate.h;
+        const px = plate.x;
+        const py = plate.y;
+        const lines = wrapText(stage.title, 15).slice(0, 2);
         const icon = STAGE_ICONS[index % STAGE_ICONS.length];
         const nodeInner = complete
           ? '<path class="map-node-check" d="M-4 0l3 3 5-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'
           : `<text class="map-node-num" y="4">${index + 1}</text>`;
         return `<g class="map-stage ${cls}${justCompleted ? " is-just-completed" : ""}" data-stage-open="${escapeHtml(stage.id)}" tabindex="0" role="button" aria-label="${escapeHtml(stage.title)}: ${done} из ${total}">
-          <path class="map-deco-line" d="M${point.x} ${point.y} L${lx - side * 84} ${point.y}"/>
-          <rect class="map-plate" x="${lx - 84}" y="${point.y - 52}" width="168" height="${plateH}" rx="10"/>
-          <g class="map-icon" transform="translate(${lx} ${point.y - 26}) scale(.72)">${icon}</g>
-          <text class="map-title" x="${lx}" y="${point.y + 2}">${lines.map((line, i) => `<tspan x="${lx}" dy="${i ? 16 : 0}">${escapeHtml(line)}</tspan>`).join("")}</text>
-          <text class="map-count" x="${lx}" y="${point.y + 6 + lines.length * 16}">${complete ? "пройдено" : done + " из " + total}</text>
-          ${isCurrent ? `<circle class="map-current-ring" cx="${point.x}" cy="${point.y}" r="18"/>` : ""}
+          <path class="map-deco-line" d="M${point.x} ${point.y} L${point.x} ${above ? py + plateH : py}"/>
+          <rect class="map-plate" x="${px}" y="${py}" width="${plateW}" height="${plateH}" rx="3"/>
+          <g class="map-icon" transform="translate(${px + 18} ${py + 15}) scale(.3)">${icon}</g>
+          <text class="map-title" x="${px + 34}" y="${py + 21}">${lines.map((line, i) => `<tspan x="${px + 34}" dy="${i ? 12 : 0}">${escapeHtml(line)}</tspan>`).join("")}</text>
+          <text class="map-count" x="${px + 34}" y="${py + 45}">${complete ? "пройдено" : done + " из " + total}</text>
+          <rect class="map-mini-track" x="${px + 34}" y="${py + 53}" width="${plateW - 48}" height="3"/>
+          <rect class="map-mini-fill" x="${px + 34}" y="${py + 53}" width="${((plateW - 48) * ratio).toFixed(1)}" height="3"/>
+          ${isCurrent ? `<circle class="map-current-ring" cx="${point.x}" cy="${point.y}" r="20"/>` : ""}
           <g transform="translate(${point.x} ${point.y})">
-            <circle class="map-node" r="11"/>
+            <circle class="map-node" r="12"/>
             ${nodeInner}
           </g>
         </g>`;
       }).join("");
 
-      const buildingData = [
-        { x: 64, y: 600, title: "Тренажёрка", sub: "Практика", view: "practice", icon: '<path d="M-24-8v16M-16-12v24M16-12v24M24-8v16M-16 0h32"/><path d="M-26 14v-8M26 14v-8"/>' },
-        { x: 336, y: 820, title: "Зал славы", sub: "Ачивки", view: "achievements", icon: '<path d="M-26 14l26-38 26 38zM0-24v34M0-24h16v10H0"/><path class="bldg-gold" d="M0-24h16v10H0z"/>' },
-        { x: 64, y: 1040, title: "Библиотека", sub: "Минимум", view: "checklist", icon: '<path d="M-26 14v-22l26-16 26 16v22M-12 14V0h24v14M-6 4h12M-6 8h12"/><path class="bldg-moss" d="M-12 0h24v14h-24z" opacity=".28"/>' },
-        { x: 336, y: 1476, title: "Дом", sub: "Ещё", view: "settings", icon: '<path d="M-28 14v-22l28-18 28 18v22M-10 14V2h20v12M-4 2h8M16-28v10"/><rect class="bldg-accent" x="-4" y="4" width="8" height="8" rx="1"/>' }
-      ];
-
-      const buildings = buildingData.map((building) => {
-        const by = building.y * MAP_Y;
-        return `<g class="map-building" data-view="${building.view}" tabindex="0" role="button" aria-label="${building.title} — ${building.sub}">
-        <g transform="translate(${building.x} ${by})"><g class="bldg-line">${building.icon}</g></g>
-        <rect class="bldg-plate" x="${building.x - 62}" y="${by + 24}" width="124" height="38" rx="9"/>
-        <text class="bldg-title" x="${building.x}" y="${by + 40}">${building.title}</text>
-        <text class="bldg-sub" x="${building.x}" y="${by + 53}">${building.sub}</text>
+      const houseStage = houseStageFor(stats.percent);
+      const house = `<g class="map-house" data-house tabindex="0" role="button" aria-label="Дом: ${HOUSE_STAGE_NAMES[houseStage - 1]}. Открыть дом">
+        <g transform="translate(96 460) scale(1.35)">${houseSvg(houseStage)}</g>
+        <text class="house-title" x="96" y="526">Дом</text>
+        <text class="house-sub" x="96" y="541">${HOUSE_STAGE_NAMES[houseStage - 1]} · ${stats.percent}%</text>
       </g>`;
+      const trails = TRAILS.filter((trail) => stats.streak >= trail.days).map((trail) => {
+        const found = hasFind(trail.find);
+        const dir = trail.x < MAP_W / 2 ? 1 : -1;
+        const sx = trail.x + dir * 44;
+        const sy = trail.y + 30;
+        return `<g class="map-trail${found ? " is-found" : ""}" data-trail="${trail.id}" tabindex="0" role="button" aria-label="${escapeHtml(trail.name)}${found ? ": находка уже здесь" : ": исследовать"}">
+          <path class="trail-path" d="M${sx} ${sy}Q${trail.x} ${trail.y + 18} ${trail.x} ${trail.y}"/>
+          <circle class="trail-glow" cx="${trail.x}" cy="${trail.y}" r="10"/>
+          <circle class="trail-mark" cx="${trail.x}" cy="${trail.y}" r="3.1"/>
+          <text class="trail-label" x="${trail.x}" y="${trail.y + 17}">${escapeHtml(trail.name)}</text>
+        </g>`;
       }).join("");
-
+      const fox = stats.streak >= 7
+        ? `<g class="map-fox" aria-hidden="true" transform="translate(248 608) scale(1.6)">
+            <path d="M-10 8C-18 8-22 4-22-1c0-5 4-8 9-8 4 0 6 2 8 4l3-5 3 6 4-4 1 6c1 4-1 10-8 10z" fill="#d9772f" stroke="#3a1a08" stroke-width=".8"/>
+            <circle cx="-15" cy="-2" r="1.2" fill="#0b0d1a"/>
+            <path d="M-22 2h-6" stroke="#d9772f" stroke-width="2.2" stroke-linecap="square"/>
+          </g>`
+        : "";
       const litToday = Boolean(state.activity[dayKey()]);
-      return `<g class="map-campfire" data-fire tabindex="0" role="button" aria-label="Костёр. Нажми, чтобы открыть действия.">
-          <g transform="translate(${MAP_POINTS[0][0]} ${MAP_POINTS[0][1]})">${mapCampfireInner(stats.streak, litToday)}</g>
+      return `${trails}${house}${fox}${stages}
+        <g class="map-campfire" data-fire tabindex="0" role="button" aria-label="Костёр. Нажми, чтобы открыть действия.">
+          <g transform="translate(${MAP_POINTS[0][0]} ${MAP_POINTS[0][1]}) scale(1.85)">${mapCampfireInner(stats.streak, litToday)}</g>
         </g>
-        ${stages}
-        ${buildings}
-        <g id="mapWalker" class="map-walker" transform="translate(200 70)">
-          <g transform="scale(1.35) translate(0 -4)">
+        <g id="mapWalker" class="map-walker" transform="translate(180 570)">
+          <g transform="scale(2.2) translate(0 -4)">
             <g class="walker-body">
               <circle class="walker-head" cy="-17" r="3.6"/>
               <path class="walker-line" d="M0-13v11M-5 7l5-9 5 9"/>
@@ -4024,12 +5703,52 @@
         </g>`;
     }
 
+    function layoutStagePlates(points, currentIndex) {
+      const obstacles = [];
+      if (currentIndex >= 0 && points[currentIndex]) {
+        const ring = points[currentIndex];
+        obstacles.push({ x: ring.x - 24, y: ring.y - 24, w: 48, h: 48 });
+      }
+      const result = [];
+      points.forEach((point, index) => {
+        const above = index % 2 === 0;
+        const w = PLATE_W;
+        const h = PLATE_H;
+        let x = Math.max(10, Math.min(MAP_W - w - 10, point.x - w / 2));
+        let y = above ? point.y - 100 - h : point.y + 42;
+        y = Math.max(200, Math.min(MAP_H - h - 12, y));
+        for (let guard = 0; guard < 8; guard += 1) {
+          const hit = obstacles.concat(result).find((box) => (
+            x < box.x + box.w + PLATE_GAP && x + w + PLATE_GAP > box.x
+            && y < box.y + box.h + PLATE_GAP && y + h + PLATE_GAP > box.y
+          ));
+          if (!hit) break;
+          const down = hit.y + hit.h + PLATE_GAP;
+          const up = hit.y - h - PLATE_GAP;
+          if (down + h <= MAP_H - 12) {
+            y = down;
+          } else if (up >= 200) {
+            y = up;
+          } else {
+            const right = hit.x + hit.w + PLATE_GAP;
+            const left = hit.x - w - PLATE_GAP;
+            if (right + w <= MAP_W - 10) x = right;
+            else if (left >= 10) x = left;
+            else break;
+          }
+        }
+        result.push({ x, y, w, h, above });
+      });
+      return result;
+    }
+
     function updateMapWalk(stats, animate) {
       if (!dom.journeyMap) return;
       const road = dom.journeyMap.querySelector("#mapRoad");
       const progress = dom.journeyMap.querySelector("#mapProgress");
       const walker = dom.journeyMap.querySelector("#mapWalker");
       if (!road || !progress || !walker) return;
+      walker.style.display = stats.tasks > 0 ? "" : "none";
       const ratio = TOTAL_TASKS ? Math.max(0, Math.min(1, stats.tasks / TOTAL_TASKS)) : 0;
       const target = road.getTotalLength() * ratio;
       const from = lastMapPos;
@@ -4054,25 +5773,14 @@
         };
         requestAnimationFrame(step);
       }
-      if (mapNeedsScroll && document.body.dataset.tab === "roadmap") {
-        mapNeedsScroll = false;
-        const point = road.getPointAtLength(target);
-        window.requestAnimationFrame(() => {
-          const rect = dom.journeyMap.getBoundingClientRect();
-          const scale = rect.width / 400;
-          const pageY = rect.top + window.scrollY + point.y * scale;
-          window.setTimeout(() => {
-            window.scrollTo({ top: Math.max(0, pageY - window.innerHeight * 0.58), behavior: "smooth" });
-          }, 80);
-        });
-      }
     }
 
     function renderMap(options) {
       if (!dom.journeyMap) return;
       const stats = computeStats();
-      dom.journeyMap.setAttribute("viewBox", "0 0 400 " + MAP_H);
-      dom.journeyMap.innerHTML = mapStaticSvg();
+      dom.journeyMap.setAttribute("viewBox", "0 24 " + MAP_W + " " + (MAP_H - 24));
+      dom.journeyMap.innerHTML = mapStaticSvg(stats);
+      lastLightRadius = lightRadius(stats.streak);
       const road = dom.journeyMap.querySelector("#mapRoad");
       if (!mapGeo && road) mapGeo = buildMapGeo(road);
       const dynamic = dom.journeyMap.querySelector("#mapDynamic");
@@ -4561,6 +6269,8 @@
       saveStateLocal();
       updateOverview();
       updateChecklistUI();
+      renderCampHud();
+      renderHousePanel();
       if (unlocked.length) {
         renderAchievements();
         toastAchievements(unlocked);
@@ -4632,6 +6342,7 @@
       if (input.checked) {
         state.tasks[key] = true;
         bumpActivity();
+        grantResources("task", key);
       } else {
         delete state.tasks[key];
       }
@@ -4696,7 +6407,10 @@
     function handleProblemChange(input) {
       const slug = input.dataset.problem;
       if (!slug) return;
-      if (input.checked) bumpActivity();
+      if (input.checked) {
+        bumpActivity();
+        grantResources("practice", slug);
+      }
       applyProblemDone(slug, input.checked);
       updateOverview();
       markChanged();
@@ -4726,32 +6440,48 @@
       else openTopics.delete(article.dataset.topicId);
     }
 
-    // ---------- Вкладки ----------
-    const TAB_NAMES = ["roadmap", "practice", "achievements", "checklist", "settings"];
-    const TAB_ALIASES = { resources: "roadmap" };
+    // ---------- Вкладки: карта + дом-хаб ----------
+    const TOP_TABS = ["map", "house"];
+    const ROOM_TABS = ["practice", "achievements", "checklist", "settings"];
+    const TAB_ALIASES = { roadmap: "map", resources: "map", map: "map", house: "house" };
+    const HASH_TABS = ["map", "house", ...ROOM_TABS];
+
+    function currentHashName(top, room) {
+      if (top === "map") return "map";
+      return room === "home" ? "house" : room;
+    }
 
     function switchTab(name, withHash) {
       name = TAB_ALIASES[name] || name;
-      if (!TAB_NAMES.includes(name)) name = "roadmap";
-      const previous = activeTab;
-      const mapPanel = document.getElementById("panel-roadmap");
-      const mapWasHidden = mapPanel ? mapPanel.hidden : false;
-      if (name !== activeTab) closeStageSheet();
-      activeTab = name;
-      document.querySelectorAll('[role="tabpanel"]').forEach((panel) => {
-        panel.hidden = panel.id !== "panel-" + name;
+      const top = name === "map" ? "map" : "house";
+      const room = top === "house" && ROOM_TABS.includes(name) ? name : "home";
+      activeTab = top;
+      activeRoom = room;
+      closeStageSheet();
+      document.querySelectorAll('[role="tabpanel"]').forEach((panel) => { panel.hidden = true; });
+      const panelId = top === "map" ? "panel-roadmap" : (room === "home" ? "panel-house" : "panel-" + room);
+      const panel = document.getElementById(panelId);
+      if (panel) panel.hidden = false;
+      document.body.dataset.tab = top;
+      document.body.dataset.room = room;
+      document.querySelectorAll(".camp-nav-btn[data-top-tab]").forEach((button) => {
+        button.setAttribute("aria-selected", String(button.dataset.topTab === top));
       });
-      document.body.dataset.tab = name;
-      if (dom.backToMap) dom.backToMap.hidden = name === "roadmap";
-      if (name === "roadmap") {
-        if (previous !== "roadmap") mapNeedsScroll = true;
-        if (mapWasHidden || previous !== "roadmap") renderMap({ animate: false });
+      if (dom.backToMap) {
+        const inRoom = top === "house" && room !== "home";
+        dom.backToMap.hidden = !inRoom;
+        dom.backToMap.textContent = "← Дом";
       }
-      if (window.matchMedia("(max-width: 720px)").matches && window.scrollY > 0 && name !== "roadmap") {
+      if (top === "map") {
+        renderMap({ animate: false });
+      } else {
+        renderHousePanel();
+      }
+      if (window.matchMedia("(max-width: 720px)").matches && top !== "map" && window.scrollY > 0) {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
       if (withHash !== false) {
-        try { history.replaceState(null, "", "#" + name); } catch (error) {}
+        try { history.replaceState(null, "", "#" + currentHashName(top, room)); } catch (error) {}
       }
     }
 
@@ -5166,11 +6896,15 @@
         if (stage) { openStageSheet(stage.dataset.stageOpen); return; }
         const building = event.target.closest("[data-view]");
         if (building) { switchTab(building.dataset.view); return; }
+        const trail = event.target.closest("[data-trail]");
+        if (trail) { claimTrail(trail.dataset.trail); return; }
+        const house = event.target.closest("[data-house]");
+        if (house) { switchTab("house"); return; }
       });
 
       dom.journeyMap.addEventListener("keydown", (event) => {
         if (event.key !== "Enter" && event.key !== " ") return;
-        const target = event.target.closest("[data-stage-open],[data-view],[data-fire],[data-fire-light],[data-fire-undo]");
+        const target = event.target.closest("[data-stage-open],[data-view],[data-fire],[data-fire-light],[data-fire-undo],[data-trail],[data-house]");
         if (!target) return;
         event.preventDefault();
         target.dispatchEvent(new MouseEvent("click", { bubbles: true }));
@@ -5188,9 +6922,29 @@
         if (event.target.matches("textarea[data-notes]")) handleNoteInput(event.target);
       });
 
-      dom.backToMap.addEventListener("click", () => switchTab("roadmap"));
+      dom.backToMap.addEventListener("click", () => switchTab(activeTab === "house" && activeRoom !== "home" ? "house" : "map"));
+      [dom.campNav, dom.topbarNav].forEach((nav) => {
+        if (!nav) return;
+        nav.addEventListener("click", (event) => {
+          const button = event.target.closest("[data-top-tab]");
+          if (button) switchTab(button.dataset.topTab);
+        });
+      });
+      if (dom.houseRooms) {
+        dom.houseRooms.addEventListener("click", (event) => {
+          const button = event.target.closest("[data-house-view]");
+          if (button) switchTab(button.dataset.houseView);
+        });
+      }
+      if (dom.hudLight) {
+        dom.hudLight.addEventListener("click", () => {
+          if (!state.activity[dayKey()]) lightFire();
+          else showToast("Огонь уже горит сегодня.");
+        });
+      }
+      if (dom.hudWoodBtn) dom.hudWoodBtn.addEventListener("click", feedFire);
+      if (dom.hudFreezeBtn) dom.hudFreezeBtn.addEventListener("click", freezeYesterday);
       dom.pathProgress.addEventListener("click", () => {
-        mapNeedsScroll = true;
         renderMap({ animate: false });
       });
 
@@ -5216,6 +6970,7 @@
         if (!slug || state.practice[slug]) return;
         bumpActivity();
         applyProblemDone(slug, true);
+        grantResources("practice", slug);
         updateOverview();
         markChanged();
         showToast("Задача отмечена решённой");
@@ -5272,7 +7027,7 @@
       window.addEventListener("hashchange", () => {
         const name = location.hash.replace(/^#/, "");
         const normalized = TAB_ALIASES[name] || name;
-        if (TAB_NAMES.includes(normalized) && normalized !== activeTab) switchTab(normalized, false);
+        if (HASH_TABS.includes(normalized)) switchTab(normalized, false);
       });
 
       if (darkMedia) {
@@ -5299,13 +7054,18 @@
       dom.gistId.value = syncConfig.gistId;
       openStages = new Set([firstIncompleteStage().id]);
       openTopics = new Set([PRACTICE[0].id]);
+      autoFreezeMissedDay();
+      if (syncStars(currentStreak())) {
+        state.updatedAt = nowIso();
+        saveStateLocal();
+      }
       applyTheme();
       renderAll();
       bindEvents();
       updateSyncControls();
 
       const hash = TAB_ALIASES[location.hash.replace(/^#/, "")] || location.hash.replace(/^#/, "");
-      switchTab(TAB_NAMES.includes(hash) ? hash : "roadmap", false);
+      switchTab(HASH_TABS.includes(hash) ? hash : "map", false);
 
       if (hasSyncConfig()) {
         runSync({ pullFirst: true });
