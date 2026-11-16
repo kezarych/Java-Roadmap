@@ -1,14 +1,14 @@
 {
-  "name": "Java Roadmap — путь до стажировки",
+  "name": "Java Roadmap — лагерь в тёмном лесу",
   "short_name": "Java Roadmap",
-  "description": "Трекер Java Backend: роадмап, практика LeetCode, ачивки, заметки и синхронизация через GitHub Gist.",
+  "description": "Трекер Java Backend: роадмап, практика LeetCode, ачивки, лагерь в тёмном лесу и синхронизация через GitHub Gist.",
   "lang": "ru",
   "dir": "ltr",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "theme_color": "#0d0b09",
-  "background_color": "#0d0b09",
+  "theme_color": "#07080f",
+  "background_color": "#07080f",
   "categories": [
     "education",
     "productivity"

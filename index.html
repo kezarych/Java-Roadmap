@@ -2929,6 +2929,36 @@
     .map-stage .map-plate-strip { fill: var(--gold); opacity: .38; }
     .map-stage.is-done .map-plate-strip { fill: var(--mint); opacity: .55; }
     .map-stage.is-current .map-plate { stroke: var(--gold); }
+    .map-stage .map-title { font: 700 10px var(--font-mono); text-anchor: start; letter-spacing: 0; }
+    .map-stage .map-count { font: 8px var(--font-mono); text-anchor: start; }
+    .map-plate-num { fill: #0a1030; stroke: var(--line-strong); stroke-width: 1.2; }
+    .map-stage.is-done .map-plate-num { fill: var(--mint); stroke: var(--mint); }
+    .map-stage.is-current .map-plate-num { fill: var(--gold); stroke: var(--gold); }
+    .map-plate-num-text { fill: #0b0d1a; font: 700 8px var(--font-mono); text-anchor: middle; }
+    .map-annex .annex-window.is-lit { filter: drop-shadow(0 0 4px rgba(255, 179, 71, .7)); }
+    .annex-plot { pointer-events: none; }
+    .annex-hit { pointer-events: all; }
+    .map-sign-text { fill: #c8b98f; font: 700 7px var(--font-mono); text-anchor: middle; }
+    .map-scaffold { opacity: .9; }
+    .annex-smoke { animation: annex-smoke 3.6s ease-in-out infinite; }
+    @keyframes annex-smoke {
+      0%, 100% { opacity: .12; transform: translateY(0); }
+      50% { opacity: .3; transform: translateY(-4px); }
+    }
+    .annex-flag { animation: annex-flag 2.2s steps(2, end) infinite; transform-box: fill-box; transform-origin: 0 50%; }
+    @keyframes annex-flag {
+      0%, 100% { transform: skewY(0deg); }
+      50% { transform: skewY(-3deg); }
+    }
+    .annex-forge-glow { animation: forge-pulse 2s ease-in-out infinite; }
+    @keyframes forge-pulse {
+      0%, 100% { opacity: .12; }
+      50% { opacity: .28; }
+    }
+    .map-trail.is-locked { opacity: .45; cursor: pointer; }
+    .map-trail.is-locked .trail-mark { animation: none; fill: var(--dim); }
+    .map-trail.is-locked .trail-label { fill: #6f7691; }
+    .map-trail.is-locked .trail-path { stroke: var(--dim); stroke-opacity: .4; }
     .map-stage .map-title,
     .map-building .bldg-title,
     .camp-title { font-family: var(--font-display); font-weight: 700; letter-spacing: .02em; }
@@ -4384,14 +4414,14 @@
     ];
 
     const TRAILS = [
-      { id: "spring", name: "Родник", days: 3, x: 430, y: 380, find: "water" },
-      { id: "hut", name: "Старая хижина", days: 7, x: 620, y: 655, find: "rug" },
-      { id: "glade", name: "Поляна светлячков", days: 14, x: 80, y: 650, find: "fireflies" },
-      { id: "ruins", name: "Руины", days: 21, x: 60, y: 320, find: "tablet" },
-      { id: "cave", name: "Пещера", days: 30, x: 520, y: 300, find: "crystal" },
-      { id: "mill", name: "Заброшенная мельница", days: 45, x: 780, y: 160, find: "weathervane" },
-      { id: "lake", name: "Чёрное озеро", days: 60, x: 830, y: 620, find: "boat" },
-      { id: "hill", name: "Вершина холма", days: 100, x: 300, y: 130, find: "vista" }
+      { id: "spring", name: "Родник", days: 3, x: 60, y: 470, find: "water" },
+      { id: "hut", name: "Старая хижина", days: 7, x: 60, y: 640, find: "rug" },
+      { id: "glade", name: "Поляна светлячков", days: 14, x: 170, y: 350, find: "fireflies" },
+      { id: "ruins", name: "Руины", days: 21, x: 60, y: 300, find: "tablet" },
+      { id: "cave", name: "Пещера", days: 30, x: 350, y: 90, find: "crystal" },
+      { id: "mill", name: "Заброшенная мельница", days: 45, x: 860, y: 90, find: "weathervane" },
+      { id: "lake", name: "Чёрное озеро", days: 60, x: 940, y: 560, find: "boat" },
+      { id: "hill", name: "Вершина холма", days: 100, x: 240, y: 90, find: "vista" }
     ];
 
     const FINDS = {
@@ -4551,6 +4581,7 @@
     let justCompletedStage = null;
     let mapGeo = null;
     let lastMapPos = 0;
+    let lastWalkerPoint = null;
     let mapWalkToken = 0;
     let lastLightRadius = -1;
     const reducedMotion = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
@@ -5032,20 +5063,40 @@
     const MAP_W = 1000;
     const MAP_H = 700;
     const MAP_GROUND_Y = 330;
-    const PLATE_W = 150;
-    const PLATE_H = 76;
+    const PLATE_W = 128;
+    const PLATE_H = 44;
     const PLATE_GAP = 10;
-    const MAP_POINTS = [
-      [180, 570],  // костёр
-      [320, 520],  // этап 1
-      [460, 560],  // этап 2
-      [600, 490],  // этап 3
-      [730, 530],  // этап 4
-      [850, 440],  // этап 5
-      [915, 340],  // этап 6
-      [950, 220]   // финал: стажировка
+    const COURT_HOUSE = { x: 500, y: 510, scale: 1.6 };
+    const COURT_FIRE = { x: 240, y: 610, scale: 1.45 };
+    const COURT_BEACON = { x: 900, y: 200 };
+    const ANNEX_SLOTS = [
+      { id: "stage1", x: 285, y: 530, type: "workshop" },
+      { id: "stage2", x: 420, y: 665, type: "arena" },
+      { id: "stage3", x: 660, y: 665, type: "archive" },
+      { id: "stage4", x: 760, y: 555, type: "lab" },
+      { id: "stage5", x: 830, y: 420, type: "forge" },
+      { id: "stage6", x: 700, y: 340, type: "observatory" }
     ];
-    const MAP_D = "M180 570 Q250 548 320 520 Q390 540 460 560 Q530 528 600 490 Q665 508 730 530 Q790 488 850 440 Q886 392 915 340 Q936 282 950 220";
+    const ANNEX_PLATE_POS = [
+      { x: 206, y: 396 },
+      { x: 470, y: 630 },
+      { x: 720, y: 610 },
+      { x: 820, y: 480 },
+      { x: 858, y: 290 },
+      { x: 620, y: 200 }
+    ];
+    const MAP_RING_D = "M285 530 C315 590 360 640 420 665 C490 693 580 693 660 665 C705 649 745 610 760 555 C775 500 805 455 830 420 C852 388 820 356 700 340 C610 328 520 300 440 330 C365 358 300 440 285 530 Z";
+    const MAP_POINTS = [
+      [COURT_FIRE.x, COURT_FIRE.y],
+      ...ANNEX_SLOTS.map((slot) => [slot.x, slot.y]),
+      [COURT_BEACON.x, COURT_BEACON.y]
+    ];
+    const MAP_D = MAP_RING_D;
+
+    function pointForStage(index) {
+      const slot = ANNEX_SLOTS[index] || ANNEX_SLOTS[0];
+      return { x: slot.x, y: slot.y };
+    }
 
     const STAGE_ICONS = [
       '<path d="M-24-10h46c0 7-6 11-14 11h-6v9h10v8h-34v-8h10v-9h-6c-8 0-12-4-6-11z"/><path d="M10-20l3-6M18-16l6-3M2-22v-7"/>',
@@ -5057,14 +5108,11 @@
     ];
 
     const MAP_TREES = [
-      [34, 435, 1.4], [78, 350, 1.1], [128, 300, 1.2], [58, 205, 1.3], [176, 180, 1.1],
-      [248, 250, 1.4], [322, 160, 1.2], [386, 250, 1.1], [444, 140, 1.3], [520, 195, 1.4],
-      [604, 120, 1.2], [684, 215, 1.3], [758, 122, 1.1], [838, 185, 1.3], [918, 105, 1.2],
-      [966, 245, 1.1], [40, 610, 1.3], [108, 665, 1.2], [210, 645, 1.4], [280, 615, 1.1],
-      [372, 660, 1.2], [438, 625, 1.4], [540, 675, 1.2], [612, 635, 1.3], [700, 670, 1.1],
-      [762, 640, 1.4], [838, 610, 1.1], [902, 655, 1.3], [966, 610, 1.2], [970, 455, 1.3],
-      [54, 500, 1.2], [26, 700, 1.2], [748, 265, 1.1], [880, 300, 1.1], [410, 330, 1.2],
-      [140, 420, 1.1]
+      [40, 120, 1.3], [105, 205, 1.1], [180, 120, 1.2], [300, 105, 1.1], [395, 150, 1.2],
+      [505, 100, 1.3], [600, 140, 1.2], [735, 100, 1.1], [805, 150, 1.2], [930, 120, 1.3],
+      [975, 255, 1.1], [30, 335, 1.2], [60, 690, 1.2], [195, 692, 1.1], [300, 692, 1.2],
+      [350, 690, 1.1], [540, 692, 1.2], [620, 692, 1.1], [770, 692, 1.2], [905, 692, 1.1],
+      [965, 540, 1.2], [960, 640, 1.1]
     ];
 
     const MAP_STARS = [
@@ -5444,7 +5492,10 @@
     function claimTrail(id) {
       const trail = trailById(id);
       if (!trail) return;
-      if (currentStreak() < trail.days) return;
+      if (currentStreak() < trail.days) {
+        showToast("Тропа откроется на " + trail.days + "-й день серии.");
+        return;
+      }
       if (hasFind(trail.find)) {
         showToast("Здесь уже найдено: " + FINDS[trail.find].name + ".");
         return;
@@ -5698,6 +5749,168 @@
       }
     }
 
+    function stagesProgress() {
+      return ROADMAP.map((stage, index) => {
+        const total = stage.tasks.length;
+        const done = stage.tasks.reduce((count, _, taskIndex) =>
+          count + (state.tasks[taskKey(stage.id, taskIndex)] ? 1 : 0), 0);
+        const stateName = done <= 0 ? "empty" : (total > 0 && done >= total ? "done" : "progress");
+        return { stage, index, total, done, stateName };
+      });
+    }
+
+    function annexPlotSvg(index) {
+      return `<path class="annex-plot" d="M-36 6h72v18h-72z" fill="none" stroke="#4a5190" stroke-width="1.2" stroke-dasharray="5 3" opacity=".75"/>
+        <path d="M-30 6 0-2 30 6" fill="none" stroke="#3a4166" stroke-width="1" opacity=".6"/>
+        <g class="map-sign" transform="translate(0 2)">
+          <path d="M-3 0v12M3 0v12" stroke="#5b4a2f" stroke-width="2"/>
+          <rect x="-18" y="-16" width="36" height="18" rx="1" fill="#241a10" stroke="#6b5a3b" stroke-width="1.4"/>
+          <text class="map-sign-text" x="0" y="-4">${index + 1}</text>
+        </g>`;
+    }
+
+    function annexScaffoldSvg() {
+      return `<g class="map-scaffold" fill="none" stroke="#7a6136" stroke-width="2" stroke-linecap="square">
+        <path d="M-34 6V-64M34 6V-64M-34-44H34M-34-18H34"/>
+        <path d="M-34-64 34-16M34-64-34-16" stroke-width="1.2" opacity=".7"/>
+      </g>`;
+    }
+
+    function annexWarmWindow(x, y, w, h, lit) {
+      return `<rect class="annex-window${lit ? " is-lit" : ""}" x="${x}" y="${y}" width="${w}" height="${h}" fill="${lit ? "#ffb347" : "#1a2234"}" stroke="#0d1018" stroke-width="1.2"${lit ? ' opacity=".95"' : ""}/>
+        <path d="M${x + w / 2} ${y}v${h}" stroke="#0d1018" stroke-width="1"/>`;
+    }
+
+    function annexSvg(type, stateName, done, total, index) {
+      const finished = stateName === "done";
+      const building = stateName === "progress";
+      const smoke = finished
+        ? '<path class="annex-smoke" d="M21 -62c7-8 1-13 5-20M27 -64c4-6 0-10 3-15" fill="none" stroke="#8f96d8" stroke-width="1.6" opacity=".22"/>'
+        : "";
+      const flag = finished
+        ? '<path class="annex-flag" d="M30 -66v-16l13 4-13 4" fill="var(--gold)" stroke="#7a5a1a" stroke-width="1"/>'
+        : "";
+      let art = "";
+      if (type === "workshop") {
+        art = building
+          ? `<rect x="-26" y="-14" width="52" height="24" fill="#5a3a22" stroke="#24160d" stroke-width="2"/>
+             <path d="M-32-14 0-34 32-14" fill="none" stroke="#3b2410" stroke-width="3"/>
+             <rect x="-30" y="-4" width="60" height="4" fill="#7a4a22"/>`
+          : finished
+            ? `<rect x="-34" y="-30" width="68" height="40" fill="#5a3a22" stroke="#24160d" stroke-width="2"/>
+               <path d="M-41-30 0-54 41-30Z" fill="#3b2410" stroke="#140b06" stroke-width="2"/>
+               <rect x="-30" y="-29" width="60" height="4" fill="#7a4a22"/>
+               <rect x="-9" y="-16" width="18" height="26" fill="#2a1c14" stroke="#0f0803"/>
+               ${annexWarmWindow(14, -24, 13, 11, true)}
+               <rect x="19" y="-60" width="9" height="14" fill="#4a3324" stroke="#24160d"/>
+               <path d="M-32 0h64" stroke="#7a4a22" stroke-width="2"/>`
+            : "";
+      } else if (type === "arena") {
+        art = building
+          ? `<ellipse cx="0" cy="8" rx="38" ry="9" fill="#3a3222" stroke="#191509"/>
+             <path d="M-30 2V-42M30 2V-42M-30-42H8" fill="none" stroke="#6b5a3b" stroke-width="3"/>`
+          : finished
+            ? `<ellipse cx="0" cy="8" rx="40" ry="10" fill="#3a3222" stroke="#191509"/>
+               <path d="M-32 4V-44M32 4V-44" stroke="#6b5a3b" stroke-width="4"/>
+               <path d="M-38-44H38L30-56H-30Z" fill="#4a3a22" stroke="#1c1408" stroke-width="1.6"/>
+               <path d="M-30-44v-16h12v16" fill="#7f2237" opacity=".8"/>
+               <path d="M18-44v-16h12v16" fill="#7f2237" opacity=".8"/>
+               <circle cx="-26" cy="-36" r="3" fill="var(--gold)"/>
+               <circle cx="26" cy="-36" r="3" fill="var(--gold)"/>
+               <path d="M-20 8h40" stroke="#8b7446" stroke-width="1.4"/>`
+            : "";
+      } else if (type === "archive") {
+        art = building
+          ? `<rect x="-28" y="-20" width="56" height="30" fill="#3c414f" stroke="#161a24" stroke-width="2"/>
+             <rect x="-32" y="-24" width="64" height="5" fill="#2a2f3b"/>
+             <path d="M-20 4V-14M20 4V-14" stroke="#252b38" stroke-width="2"/>`
+          : finished
+            ? `<rect x="-30" y="-42" width="60" height="52" fill="#3c414f" stroke="#161a24" stroke-width="2"/>
+               <path d="M-36-42 0-58 36-42Z" fill="#252b38" stroke="#10131b" stroke-width="2"/>
+               <path d="M-24 8V-34M-8 8V-34M8 8V-34M24 8V-34" stroke="#252b38" stroke-width="2"/>
+               <rect x="-10" y="-8" width="20" height="16" fill="#2a1c14" stroke="#100a05"/>
+               ${annexWarmWindow(-24, -30, 12, 9, true)}
+               <path d="M14-30h14M14-26h14M14-22h10" stroke="#c8b98f" stroke-width="1.4" opacity=".7"/>`
+            : "";
+      } else if (type === "lab") {
+        art = building
+          ? `<rect x="-30" y="-18" width="60" height="28" fill="#6b3a2a" stroke="#2a130b" stroke-width="2"/>
+             <path d="M-32-18 0-38 32-18Z" fill="#1b3a44" stroke="#0c1a20" stroke-width="1.6"/>
+             <path d="M-18-18v-12M8-18v-14" stroke="#3a6b7a" stroke-width="1.4"/>`
+          : finished
+            ? `<rect x="-32" y="-40" width="64" height="50" fill="#6b3a2a" stroke="#2a130b" stroke-width="2"/>
+               <path d="M-34-40 0-60 34-40Z" fill="#1b3a44" stroke="#0a181e" stroke-width="2"/>
+               <path d="M-24-40 0-54 24-40M-14-40 0-49 14-40" fill="none" stroke="#4fb3c7" stroke-width="1.2" opacity=".55"/>
+               ${annexWarmWindow(-20, -30, 15, 13, true)}
+               <rect x="8" y="-22" width="18" height="32" fill="#2a130b" stroke="#170803"/>
+               <path d="M26-58h8v14" fill="none" stroke="#3a2c20" stroke-width="3"/>`
+            : "";
+      } else if (type === "forge") {
+        art = building
+          ? `<rect x="-28" y="-16" width="56" height="26" fill="#3b342c" stroke="#17120c" stroke-width="2"/>
+             <rect x="4" y="-46" width="12" height="32" fill="#3b342c" stroke="#17120c" stroke-width="2"/>
+             <path d="M-12-8h18v16h-18z" fill="#2a1208"/>`
+          : finished
+            ? `<rect x="-30" y="-42" width="60" height="52" fill="#3b342c" stroke="#17120c" stroke-width="2"/>
+               <rect x="14" y="-62" width="13" height="22" fill="#3b342c" stroke="#17120c" stroke-width="2"/>
+               <path d="M-30-42h60" stroke="#5a5044" stroke-width="3"/>
+               <path d="M-24-14h26v24h-26z" fill="#180a05"/>
+               <path d="M-18 8c-5-8 0-14 4-20 3 7 9 10 5 20z" fill="var(--fire)" opacity=".9"/>
+               <circle class="annex-forge-glow" cx="-11" cy="2" r="14" fill="var(--fire)" opacity=".18"/>
+               ${annexWarmWindow(8, -32, 12, 10, true)}
+               <path d="M34 6h20l-4-8H36z" fill="#4a4f5e" stroke="#191c24"/>
+               <path d="M44-2V6" stroke="#2a2119" stroke-width="3"/>`
+            : "";
+      } else if (type === "observatory") {
+        art = building
+          ? `<rect x="-20" y="-48" width="40" height="58" fill="#3c414f" stroke="#161a24" stroke-width="2"/>
+             <path d="M-24-48h48M-14 8V-40" fill="none" stroke="#252b38" stroke-width="2"/>
+             <path d="M-22-48a22 22 0 0 1 44 0Z" fill="#1d3328" stroke="#0c1a14" stroke-width="1.6"/>`
+          : finished
+            ? `<rect x="-20" y="-70" width="40" height="80" fill="#3c414f" stroke="#161a24" stroke-width="2"/>
+               <path d="M-28-70h56M-28-54h56M-16 10V-50" fill="none" stroke="#252b38" stroke-width="2"/>
+               <path class="annex-dome" d="M-22-70a22 22 0 0 1 44 0Z" fill="#1d3328" stroke="#0c1a14" stroke-width="1.6"/>
+               <circle cx="0" cy="-78" r="4" fill="var(--gold)"/>
+               <path class="annex-beam" d="M26-78 86-116 78-134Z" fill="var(--gold)" opacity=".16"/>
+               ${annexWarmWindow(-8, -58, 16, 12, true)}
+               ${annexWarmWindow(-10, -30, 20, 14, true)}
+               <path d="M-18 10h36" stroke="#2a2f3b" stroke-width="3"/>`
+            : "";
+      }
+      const stateLabel = stateName === "done" ? "достроено" : stateName === "progress" ? done + " из " + total : "пусто";
+      return `<g class="map-annex" data-annex-type="${type}" data-state="${stateName}" aria-label="${stateLabel}">
+        <ellipse cx="0" cy="12" rx="40" ry="9" fill="#04050c" opacity=".55"/>
+        ${stateName === "empty" ? annexPlotSvg(index) : art}
+        ${building ? annexScaffoldSvg() : ""}
+        ${building ? `<g class="map-progress-board" transform="translate(0 -72)"><rect x="-18" y="-10" width="36" height="16" fill="#241a10" stroke="#7a6136" stroke-width="1.2"/><text class="map-sign-text" x="0" y="2">${done}/${total}</text></g>` : ""}
+        ${smoke}${flag}
+        <rect class="annex-hit" x="-46" y="-100" width="92" height="118" fill="transparent"/>
+      </g>`;
+    }
+
+    function annexPlateSvg(stage, index, done, total, stateName) {
+      const pos = ANNEX_PLATE_POS[index];
+      const slot = ANNEX_SLOTS[index];
+      const lines = wrapText(stage.title, 17).slice(0, 2);
+      const ratio = total ? Math.max(0, Math.min(1, done / total)) : 0;
+      const complete = stateName === "done";
+      const endX = Math.max(pos.x + 10, Math.min(pos.x + PLATE_W - 10, slot.x));
+      const endY = pos.y < slot.y ? pos.y + PLATE_H : pos.y;
+      return `<g class="map-plate-group" data-plate-for="${slot.id}">
+        <path class="map-deco-line" d="M${slot.x} ${slot.y} L${endX} ${endY}"/>
+        <rect class="map-plate" x="${pos.x}" y="${pos.y}" width="${PLATE_W}" height="${PLATE_H}" rx="3"/>
+        <rect class="map-plate-strip" x="${pos.x}" y="${pos.y}" width="3" height="${PLATE_H}" rx="1.5"/>
+        <circle class="map-plate-rivet" cx="${pos.x + 8}" cy="${pos.y + 6}" r="1.3"/>
+        <circle class="map-plate-rivet" cx="${pos.x + PLATE_W - 8}" cy="${pos.y + 6}" r="1.3"/>
+        <circle class="map-plate-num" cx="${pos.x + 14}" cy="${pos.y + 14}" r="8"/>
+        <text class="map-plate-num-text" x="${pos.x + 14}" y="${pos.y + 17.5}">${index + 1}</text>
+        <text class="map-title" x="${pos.x + 27}" y="${pos.y + 14}">${lines.map((line, i) => `<tspan x="${pos.x + 27}" dy="${i ? 11 : 0}">${escapeHtml(line)}</tspan>`).join("")}</text>
+        <text class="map-count" x="${pos.x + 27}" y="${pos.y + 37}">${complete ? "пройдено" : done + " из " + total}</text>
+        <rect class="map-mini-track" x="${pos.x + 8}" y="${pos.y + 40}" width="${PLATE_W - 16}" height="2.4"/>
+        <rect class="map-mini-fill" x="${pos.x + 8}" y="${pos.y + 40}" width="${((PLATE_W - 16) * ratio).toFixed(1)}" height="2.4"/>
+      </g>`;
+    }
+
     function mapSkyDecorSvg() {
       return `
         <g class="map-sky-decor" aria-hidden="true">
@@ -5722,30 +5935,30 @@
           <path d="M44 640v-20M60 642v-20M76 644v-20M92 646v-20M108 648v-20" stroke="#2a2119" stroke-width="3"/>
           <path d="M40 630h74M40 640h74" stroke="#3a2c20" stroke-width="2"/>
         </g>
-        <g class="map-deco" data-decor="1" data-prop="barrel" aria-hidden="true" transform="translate(140 615)">
+        <g class="map-deco" data-decor="1" data-prop="barrel" aria-hidden="true" transform="translate(80 590)">
           <ellipse cx="0" cy="9" rx="10" ry="3" fill="#05080d" opacity=".5"/>
           <rect x="-8" y="-8" width="16" height="17" rx="2" fill="#4a3324" stroke="#24160d"/>
           <path d="M-8-2h16M-8 5h16" stroke="#24160d" stroke-width="1.4"/>
         </g>
-        <g class="map-deco" data-decor="1" data-prop="bench" aria-hidden="true" transform="translate(268 642)">
+        <g class="map-deco" data-decor="1" data-prop="bench" aria-hidden="true" transform="translate(110 690)">
           <rect x="-16" y="-2" width="32" height="6" fill="#4a3324" stroke="#24160d"/>
           <path d="M-12 4v8M12 4v8" stroke="#3a2c20" stroke-width="3"/>
         </g>
-        <g class="map-deco" data-decor="1" data-prop="lamp" aria-hidden="true" transform="translate(362 628)">
+        <g class="map-deco" data-decor="1" data-prop="lamp" aria-hidden="true" transform="translate(350 686)">
           <path d="M0 12v-8" stroke="#3a2c20" stroke-width="3"/>
           <circle class="map-prop-lamp" cx="0" cy="2" r="6" opacity=".25"/>
           <circle class="map-prop-lamp" cx="0" cy="2" r="2.2"/>
         </g>
         <g class="map-deco" data-decor="1" data-prop="stones" aria-hidden="true">
-          <ellipse cx="312" cy="666" rx="9" ry="3" fill="#3c414f"/>
-          <ellipse cx="330" cy="672" rx="6" ry="2.4" fill="#333845"/>
-          <ellipse cx="292" cy="672" rx="5" ry="2" fill="#2c313d"/>
+          <ellipse cx="30" cy="556" rx="9" ry="3" fill="#3c414f"/>
+          <ellipse cx="48" cy="562" rx="6" ry="2.4" fill="#333845"/>
+          <ellipse cx="10" cy="562" rx="5" ry="2" fill="#2c313d"/>
         </g>
-        <g class="map-deco" data-decor="1" data-prop="crates" aria-hidden="true" transform="translate(575 662)">
+        <g class="map-deco" data-decor="1" data-prop="crates" aria-hidden="true" transform="translate(26 686)">
           <rect x="-9" y="-9" width="18" height="18" fill="#4a3324" stroke="#24160d"/>
           <path d="M-9-9l18 18M9-9L-9 9" stroke="#2f2117" stroke-width="1.2"/>
         </g>
-        <g class="map-deco" data-decor="1" data-prop="well" aria-hidden="true" transform="translate(900 665)">
+        <g class="map-deco" data-decor="1" data-prop="well" aria-hidden="true" transform="translate(972 470)">
           <ellipse cx="0" cy="6" rx="13" ry="4" fill="#05080d" opacity=".5"/>
           <rect x="-11" y="-6" width="22" height="12" fill="#3c414f" stroke="#1c2029"/>
           <path d="M-13-6h26M-10-6v-11h20v11" fill="none" stroke="#3a2c20" stroke-width="2"/>
@@ -5755,8 +5968,8 @@
     function mapStaticSvg(stats) {
       const streak = stats ? stats.streak : currentStreak();
       const radius = lightRadius(streak);
-      const campX = MAP_POINTS[0][0];
-      const campY = MAP_POINTS[0][1];
+      const campX = COURT_FIRE.x;
+      const campY = COURT_FIRE.y;
       const trees = MAP_TREES.map(([x, y, s]) => {
         const lit = Math.hypot(x - campX, y - campY) < radius * 0.94;
         return `<g class="map-pine${lit ? " map-pine-lit" : ""}" transform="translate(${x} ${y}) scale(${s.toFixed(2)})">
@@ -5781,13 +5994,13 @@
         ? '<g aria-hidden="true"><path class="map-meteor" d="M260 40l-22 17"/><path class="map-meteor" d="M700 26l-22 17"/></g>'
         : "";
       const eyes = streak < 3
-        ? [[300, 430], [640, 630], [880, 520], [456, 300], [742, 340]]
+        ? [[95, 430], [555, 250], [920, 350], [375, 250], [745, 145]]
           .map(([x, y]) => `<g class="map-eyes" aria-hidden="true"><circle cx="${x}" cy="${y}" r="1.8"/><circle cx="${x + 8}" cy="${y}" r="1.8"/></g>`).join("")
         : "";
       const fireflies = (hasFind("fireflies") || streak >= 14)
         ? `<g class="map-fireflies" aria-hidden="true">
-            <circle cx="140" cy="590" r="1.4"/><circle cx="224" cy="612" r="1.6"/><circle cx="116" cy="622" r="1.2"/>
-            <circle cx="252" cy="558" r="1.4"/><circle cx="158" cy="632" r="1.2"/><circle cx="208" cy="544" r="1.5"/>
+            <circle cx="150" cy="580" r="1.4"/><circle cx="206" cy="558" r="1.6"/><circle cx="182" cy="636" r="1.2"/>
+            <circle cx="118" cy="622" r="1.4"/><circle cx="332" cy="566" r="1.2"/><circle cx="360" cy="612" r="1.5"/>
           </g>`
         : "";
       const dawn = streak >= 100
@@ -5850,10 +6063,10 @@
         <rect y="${MAP_GROUND_Y - 34}" width="${MAP_W}" height="52" fill="#8f96d8" opacity=".03"/>
         <rect y="${MAP_GROUND_Y + 46}" width="${MAP_W}" height="26" fill="#6ee7b7" opacity=".022"/>
         <rect y="${MAP_GROUND_Y + 4}" width="${MAP_W}" height="18" fill="#c9cdf5" opacity=".035"/>
-        <ellipse cx="${campX}" cy="${campY + 12}" rx="92" ry="28" fill="#0f2c20" opacity=".6"/>
-        <path class="map-grass" d="M130 602v-8M136 604v-5M232 590v-8M240 592v-6M118 558v-7M252 548v-6M92 512v-6M274 628v-6"/>
-        <circle class="map-rock" cx="128" cy="616" r="3"/><circle class="map-rock" cx="258" cy="600" r="2.4"/><circle class="map-rock" cx="96" cy="598" r="2"/>
-        <g class="map-java-mark" transform="translate(872 486) scale(1.5)">
+        <ellipse cx="${campX}" cy="${campY + 12}" rx="86" ry="26" fill="#0f2c20" opacity=".6"/>
+        <path class="map-grass" d="M84 598v-8M90 600v-5M150 556v-8M158 558v-6M342 560v-7M350 566v-6M72 520v-6M156 646v-6"/>
+        <circle class="map-rock" cx="76" cy="606" r="3"/><circle class="map-rock" cx="364" cy="596" r="2.4"/><circle class="map-rock" cx="112" cy="548" r="2"/>
+        <g class="map-java-mark" transform="translate(60 250) scale(1.5)">
           <path d="M-24-10h46c0 7-6 11-14 11h-6v9h10v8h-34v-8h10v-9h-6c-8 0-12-4-6-11z"/>
           <path class="steam" d="M10-20l3-6M18-16l6-3M2-22v-7"/>
         </g>
@@ -5867,11 +6080,13 @@
         ${meteors}
         ${eyes}
         ${fireflies}
-        <g class="map-finish" transform="translate(950 220)" aria-hidden="true">
+        <g class="map-finish" data-stage-open="stage6" tabindex="0" role="button" aria-label="Стажировка: открыть этап 6" transform="translate(${COURT_BEACON.x} ${COURT_BEACON.y})">
+          <circle r="34" fill="var(--gold)" opacity=".06"/>
           <circle r="22" fill="var(--gold)" opacity=".09"/>
           <circle r="4.5" fill="var(--gold)"/>
           <path d="M-15 0h9M6 0h9M0-15v9M0 6v9M-11-11l6 6M11 11l-6-6M11-11l-6 6M-11 11l6-6" stroke="var(--gold)" stroke-width="1.2" opacity=".75"/>
-          <text class="map-finish-label" x="-18" y="4" text-anchor="end">СТАЖИРОВКА</text>
+          <path d="M-3 0 -46 -56 -26 -60Z" fill="var(--gold)" opacity=".08"/>
+          <text class="map-finish-label" x="-20" y="4" text-anchor="end">СТАЖИРОВКА</text>
         </g>
         <path id="mapRoad" class="map-road" d="${MAP_D}"/>
         <path class="map-road-dark" d="${MAP_D}"/>
@@ -5881,94 +6096,101 @@
     }
 
     function buildMapGeo(road) {
-      const length = road.getTotalLength();
-      const points = MAP_POINTS.slice(1, 7).map((target) => {
+      const total = road.getTotalLength();
+      const stageLengths = ANNEX_SLOTS.map((slot) => {
         let best = 0;
         let bestD = Infinity;
-        for (let l = 0; l <= length; l += 2) {
-          const point = road.getPointAtLength(l);
-          const d = (point.x - target[0]) ** 2 + (point.y - target[1]) ** 2;
-          if (d < bestD) { bestD = d; best = l; }
+        for (let length = 0; length <= total; length += 4) {
+          const point = road.getPointAtLength(length);
+          const d = (point.x - slot.x) ** 2 + (point.y - slot.y) ** 2;
+          if (d < bestD) { bestD = d; best = length; }
         }
-        return road.getPointAtLength(best);
+        return best;
       });
-      return { length, points };
+      return { length: total, total, stageLengths, points: ANNEX_SLOTS.map((slot) => ({ x: slot.x, y: slot.y })) };
+    }
+
+    function currentStageIndex() {
+      return ROADMAP.findIndex((stage) =>
+        stage.tasks.some((_, index) => !state.tasks[taskKey(stage.id, index)]));
+    }
+
+    function walkerPointFor(index) {
+      if (index < 0) {
+        const end = dom.journeyMap ? dom.journeyMap.querySelector("#mapRoad") : null;
+        if (end) {
+          const point = end.getPointAtLength(Math.max(0, end.getTotalLength() - 30));
+          return { x: point.x - 12, y: point.y + 10 };
+        }
+        return { x: COURT_BEACON.x - 34, y: COURT_BEACON.y + 26 };
+      }
+      const slot = ANNEX_SLOTS[index] || ANNEX_SLOTS[0];
+      return { x: slot.x - 46, y: slot.y + 8 };
     }
 
     function mapDynamicSvg(stats) {
-      const current = firstIncompleteStage();
-      const stagePoints = ROADMAP.map((_, index) => (mapGeo && mapGeo.points[index]) || { x: 320 + index * 120, y: 520 });
-      const currentIndex = current ? ROADMAP.findIndex((stage) => stage.id === current.id) : -1;
-      const plates = layoutStagePlates(stagePoints, currentIndex);
-      const stages = ROADMAP.map((stage, index) => {
-        const total = stage.tasks.length;
-        const done = stage.tasks.reduce((count, _, taskIndex) =>
-          count + (state.tasks[taskKey(stage.id, taskIndex)] ? 1 : 0), 0);
-        const ratio = total ? done / total : 0;
-        const complete = total > 0 && done === total;
-        const isCurrent = Boolean(current && current.id === stage.id);
+      const progress = stagesProgress();
+      const currentIndex = currentStageIndex();
+      const stages = progress.map((entry) => {
+        const { stage, index, done, total, stateName } = entry;
+        const complete = stateName === "done";
+        const isCurrent = index === currentIndex;
         const cls = complete ? "is-done" : (isCurrent ? "is-current" : "is-future");
         const justCompleted = justCompletedStage === stage.id;
-        const point = stagePoints[index];
-        const plate = plates[index];
-        const above = plate.above;
-        const plateW = plate.w;
-        const plateH = plate.h;
-        const px = plate.x;
-        const py = plate.y;
-        const lines = wrapText(stage.title, 16).slice(0, 3);
-        const icon = STAGE_ICONS[index % STAGE_ICONS.length];
+        const slot = ANNEX_SLOTS[index];
         const nodeInner = complete
           ? '<path class="map-node-check" d="M-4 0l3 3 5-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'
           : `<text class="map-node-num" y="4">${index + 1}</text>`;
-        return `<g class="map-stage ${cls}${justCompleted ? " is-just-completed" : ""}" data-stage-open="${escapeHtml(stage.id)}" tabindex="0" role="button" aria-label="${escapeHtml(stage.title)}: ${done} из ${total}">
-          <path class="map-deco-line" d="M${point.x} ${point.y} L${point.x} ${above ? py + plateH : py}"/>
-          <rect class="map-plate" x="${px}" y="${py}" width="${plateW}" height="${plateH}" rx="3"/>
-          <rect class="map-plate-strip" x="${px}" y="${py}" width="3" height="${plateH}" rx="1.5"/>
-          <rect class="map-plate-post" x="${px + plateW / 2 - 2}" y="${above ? py + plateH : py - 7}" width="4" height="7" rx="1"/>
-          <circle class="map-plate-rivet" cx="${px + 9}" cy="${py + 8}" r="1.4"/>
-          <circle class="map-plate-rivet" cx="${px + plateW - 9}" cy="${py + 8}" r="1.4"/>
-          <g class="map-icon" transform="translate(${px + 18} ${py + 15}) scale(.3)">${icon}</g>
-          <text class="map-title" x="${px + 34}" y="${py + 21}">${lines.map((line, i) => `<tspan x="${px + 34}" dy="${i ? 13 : 0}">${escapeHtml(line)}</tspan>`).join("")}</text>
-          <text class="map-count" x="${px + 34}" y="${py + 61}">${complete ? "пройдено" : done + " из " + total}</text>
-          <rect class="map-mini-track" x="${px + 34}" y="${py + 68}" width="${plateW - 48}" height="3"/>
-          <rect class="map-mini-fill" x="${px + 34}" y="${py + 68}" width="${((plateW - 48) * ratio).toFixed(1)}" height="3"/>
-          ${isCurrent ? `<circle class="map-current-ring" cx="${point.x}" cy="${point.y}" r="20"/>` : ""}
-          <g transform="translate(${point.x} ${point.y})">
+        return `<g class="map-stage ${cls}${stateName === "progress" ? " is-progress" : ""}${stateName === "empty" ? " is-empty" : ""}${justCompleted ? " is-just-completed" : ""}" data-stage-open="${escapeHtml(stage.id)}" data-state="${stateName}" tabindex="0" role="button" aria-label="${escapeHtml(stage.title)}: ${done} из ${total}. ${stateName === "done" ? "Пристройка достроена" : stateName === "progress" ? "Идёт стройка" : "Пустой участок"}">
+          ${annexPlateSvg(stage, index, done, total, stateName)}
+          <g class="map-annex-wrap" transform="translate(${slot.x} ${slot.y})">
+            ${annexSvg(slot.type, stateName, done, total, index)}
             <circle class="map-node" r="12"/>
             ${nodeInner}
           </g>
+          ${isCurrent ? `<circle class="map-current-ring" cx="${slot.x}" cy="${slot.y}" r="24"/>` : ""}
         </g>`;
       }).join("");
 
       const houseStage = houseStageFor(stats.percent);
-      const house = `<g class="map-house" data-house tabindex="0" role="button" aria-label="Дом: ${HOUSE_STAGE_NAMES[houseStage - 1]}. Открыть дом">
-        <g transform="translate(96 460) scale(1.35)">${houseSvg(houseStage)}</g>
-        <text class="house-title" x="96" y="526">Дом</text>
-        <text class="house-sub" x="96" y="541">${HOUSE_STAGE_NAMES[houseStage - 1]} · ${stats.percent}%</text>
+      const house = `<g class="map-house" data-house tabindex="0" role="button" aria-label="Дом: ${HOUSE_STAGE_NAMES[houseStage - 1]}. Открыть комнаты">
+        <g transform="translate(${COURT_HOUSE.x} ${COURT_HOUSE.y}) scale(${COURT_HOUSE.scale})" opacity=".34">
+          <path d="M-46-6 0-54 46-6V34H-46Z" fill="none" stroke="#8f96d8" stroke-width="1.2" stroke-dasharray="5 4"/>
+          <path d="M-14 34V4h28v30" fill="none" stroke="#8f96d8" stroke-width="1.1" stroke-dasharray="4 3"/>
+          <rect x="-24" y="10" width="12" height="11" fill="none" stroke="#8f96d8" stroke-width="1"/>
+          <rect x="12" y="10" width="12" height="11" fill="none" stroke="#8f96d8" stroke-width="1"/>
+        </g>
+        <g transform="translate(${COURT_HOUSE.x} ${COURT_HOUSE.y}) scale(${COURT_HOUSE.scale})">${houseSvg(houseStage)}</g>
+        <text class="house-title" x="${COURT_HOUSE.x}" y="376">Дом</text>
+        <text class="house-sub" x="${COURT_HOUSE.x}" y="390">${HOUSE_STAGE_NAMES[houseStage - 1]} · ${stats.percent}%</text>
       </g>`;
-      const trails = TRAILS.filter((trail) => stats.streak >= trail.days).map((trail) => {
+      const trails = TRAILS.map((trail) => {
         const found = hasFind(trail.find);
-        const dir = trail.x < MAP_W / 2 ? 1 : -1;
-        const sx = trail.x + dir * 44;
-        const sy = trail.y + 30;
-        return `<g class="map-trail${found ? " is-found" : ""}" data-trail="${trail.id}" tabindex="0" role="button" aria-label="${escapeHtml(trail.name)}${found ? ": находка уже здесь" : ": исследовать"}">
+        const unlocked = stats.streak >= trail.days;
+        const dir = trail.x < 250 ? 1 : (trail.x > 750 ? -1 : (trail.y < 150 ? 1 : -1));
+        const sx = trail.x + dir * 52;
+        const sy = trail.y + 34;
+        return `<g class="map-trail${found ? " is-found" : ""}${unlocked ? "" : " is-locked"}" data-trail="${trail.id}" tabindex="0" role="button" aria-label="${escapeHtml(trail.name)}${found ? ": находка уже здесь" : unlocked ? ": исследовать" : ": откроется на " + trail.days + "-й день серии"}">
           <path class="trail-path" d="M${sx} ${sy}Q${trail.x} ${trail.y + 18} ${trail.x} ${trail.y}"/>
           <circle class="trail-glow" cx="${trail.x}" cy="${trail.y}" r="10"/>
           <circle class="trail-mark" cx="${trail.x}" cy="${trail.y}" r="3.1"/>
+          ${unlocked ? "" : `<path class="trail-lock" d="M${trail.x - 3} ${trail.y - 1}v-3a3 3 0 0 1 6 0v3M${trail.x - 4} ${trail.y - 1}h8v6h-8z" fill="none" stroke="#8f96d8" stroke-width="1.2"/>`}
           <text class="trail-label" x="${trail.x}" y="${trail.y + 17}">${escapeHtml(trail.name)}</text>
         </g>`;
       }).join("");
       const fox = stats.streak >= 7
-        ? `<g class="map-fox" aria-hidden="true" transform="translate(248 608) scale(1.6)">
+        ? `<g class="map-fox" aria-hidden="true" transform="translate(528 688) scale(1.5)">
             <path d="M-10 8C-18 8-22 4-22-1c0-5 4-8 9-8 4 0 6 2 8 4l3-5 3 6 4-4 1 6c1 4-1 10-8 10z" fill="#d9772f" stroke="#3a1a08" stroke-width=".8"/>
             <circle cx="-15" cy="-2" r="1.2" fill="#0b0d1a"/>
             <path d="M-22 2h-6" stroke="#d9772f" stroke-width="2.2" stroke-linecap="square"/>
           </g>`
         : "";
       const litToday = Boolean(state.activity[dayKey()]);
-      return `${trails}${house}${fox}
-        <g id="mapWalker" class="map-walker" transform="translate(180 570)">
+      return `${trails}${stages}${house}${fox}
+        <g class="map-campfire" data-fire tabindex="0" role="button" aria-label="Костёр. Нажми, чтобы открыть историю огня.">
+          <g transform="translate(${COURT_FIRE.x} ${COURT_FIRE.y}) scale(${COURT_FIRE.scale})">${mapCampfireInner(stats.streak, litToday)}</g>
+        </g>
+        <g id="mapWalker" class="map-walker" transform="translate(${COURT_FIRE.x} ${COURT_FIRE.y})">
           <g transform="scale(2.2) translate(0 -4)">
             <g class="walker-body">
               <circle class="walker-head" cy="-17" r="3.6"/>
@@ -5978,54 +6200,7 @@
               <circle class="walker-glow" cx="9" cy="-3" r="4.6"/>
             </g>
           </g>
-        </g>${stages}
-        <g class="map-campfire" data-fire tabindex="0" role="button" aria-label="Костёр. Нажми, чтобы открыть действия.">
-          <g transform="translate(${MAP_POINTS[0][0]} ${MAP_POINTS[0][1]}) scale(1.85)">${mapCampfireInner(stats.streak, litToday)}</g>
         </g>`;
-    }
-
-    function layoutStagePlates(points, currentIndex) {
-      const obstacles = points.map((node) => ({ x: node.x - 24, y: node.y - 24, w: 48, h: 48 }));
-      if (currentIndex >= 0 && points[currentIndex]) {
-        const ring = points[currentIndex];
-        obstacles.push({ x: ring.x - 26, y: ring.y - 26, w: 52, h: 52 });
-      }
-      const result = [];
-      points.forEach((point, index) => {
-        const prefersAbove = index % 2 === 0;
-        const w = PLATE_W;
-        const h = PLATE_H;
-        let x = Math.max(10, Math.min(MAP_W - w - 10, point.x - w / 2));
-        let y = prefersAbove ? point.y - 100 - h : point.y + 42;
-        y = Math.max(200, Math.min(MAP_H - h - 12, y));
-        for (let guard = 0; guard < 12; guard += 1) {
-          const hit = obstacles.concat(result).find((box) => (
-            x < box.x + box.w + PLATE_GAP && x + w + PLATE_GAP > box.x
-            && y < box.y + box.h + PLATE_GAP && y + h + PLATE_GAP > box.y
-          ));
-          if (!hit) break;
-          const leftFirst = (x + w / 2) < (hit.x + hit.w / 2);
-          const sideways = leftFirst ? hit.x - w - PLATE_GAP : hit.x + hit.w + PLATE_GAP;
-          if (sideways >= 10 && sideways + w <= MAP_W - 10) {
-            x = sideways;
-            continue;
-          }
-          const down = hit.y + hit.h + PLATE_GAP;
-          const up = hit.y - h - PLATE_GAP;
-          if (prefersAbove && up >= 200 && point.y - (up + h) <= 160) {
-            y = up;
-          } else if (down + h <= MAP_H - 12) {
-            y = down;
-          } else if (up >= 200) {
-            y = up;
-          } else {
-            break;
-          }
-        }
-        const above = y + h <= point.y;
-        result.push({ x, y, w, h, above });
-      });
-      return result;
     }
 
     function updateMapWalk(stats, animate) {
@@ -6035,45 +6210,34 @@
       const walker = dom.journeyMap.querySelector("#mapWalker");
       if (!road || !progress || !walker) return;
       walker.style.display = stats.tasks > 0 ? "" : "none";
-      const ratio = TOTAL_TASKS ? Math.max(0, Math.min(1, stats.tasks / TOTAL_TASKS)) : 0;
       const totalLength = road.getTotalLength();
-      const target = totalLength * ratio;
-      const nodePoints = (mapGeo && mapGeo.points ? mapGeo.points.slice() : []).concat([{ x: MAP_POINTS.slice(-1)[0][0], y: MAP_POINTS.slice(-1)[0][1] }]);
-      const nodeLengths = nodePoints.map((node) => {
-        let best = 0;
-        let bestDistance = Infinity;
-        for (let length = 0; length <= totalLength; length += 3) {
-          const p = road.getPointAtLength(length);
-          const distance = (p.x - node.x) ** 2 + (p.y - node.y) ** 2;
-          if (distance < bestDistance) { bestDistance = distance; best = length; }
-        }
-        return best;
-      }).sort((a, b) => a - b);
-      const walkerPosition = (position) => {
-        const near = nodeLengths.find((length) => Math.abs(length - position) < 60);
-        if (near === undefined) return position;
-        const index = nodeLengths.indexOf(near);
-        const previous = index > 0 ? nodeLengths[index - 1] : 28;
-        return Math.max(28, previous + (near - previous) * 0.42);
-      };
+      const index = currentStageIndex();
+      const target = index < 0
+        ? totalLength
+        : ((mapGeo && mapGeo.stageLengths[index]) || 0);
+      const point = walkerPointFor(index);
       const from = lastMapPos;
+      const fromPoint = lastWalkerPoint || { x: COURT_FIRE.x, y: COURT_FIRE.y };
       lastMapPos = target;
-      const apply = (position) => {
-        const point = road.getPointAtLength(walkerPosition(position));
-        walker.setAttribute("transform", "translate(" + point.x + " " + point.y + ")");
-        progress.setAttribute("stroke-dasharray", position + " 9999");
+      lastWalkerPoint = point;
+      const apply = (length, position) => {
+        walker.setAttribute("transform", "translate(" + position.x + " " + position.y + ")");
+        progress.setAttribute("stroke-dasharray", length + " 9999");
       };
       if (!animate || from === target || (reducedMotion && reducedMotion.matches)) {
-        apply(target);
+        apply(target, point);
       } else {
         const token = ++mapWalkToken;
         const start = performance.now();
-        const duration = Math.min(1500, 500 + Math.abs(target - from) * 1.2);
+        const duration = Math.min(1200, 380 + Math.abs(target - from) * 0.8);
         const step = (now) => {
           if (token !== mapWalkToken) return;
           const k = Math.min(1, (now - start) / duration);
           const eased = 1 - Math.pow(1 - k, 3);
-          apply(from + (target - from) * eased);
+          apply(from + (target - from) * eased, {
+            x: fromPoint.x + (point.x - fromPoint.x) * eased,
+            y: fromPoint.y + (point.y - fromPoint.y) * eased
+          });
           if (k < 1) requestAnimationFrame(step);
         };
         requestAnimationFrame(step);
